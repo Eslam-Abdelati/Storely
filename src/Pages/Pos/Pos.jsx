@@ -1,6 +1,6 @@
 import React from 'react'
 
-function POS() {
+function Pos() {
   return (
     <div>
       POS
@@ -8,4 +8,4 @@ function POS() {
   )
 }
 
-export default POS
+export default Pos

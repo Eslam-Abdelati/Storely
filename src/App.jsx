@@ -15,7 +15,7 @@ import Productes from "./Pages/Productes/Productes";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import Category from "./Pages/Category/Category";
 import PosShifts from "./Pages/PosShifts/PosShifts";
-import POS from "./Pages/POS/POS";
+import Pos from "./Pages/Pos/Pos";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
 
@@ -53,7 +53,7 @@ function App() {
               <Route path="/product/label" element={<ProductLabel />} />
               <Route path="/category" element={<Category />} />
               <Route path="/pos_shifts" element={<PosShifts />} />
-              <Route path="/pos" element={<POS />} />
+              <Route path="/pos" element={<Pos />} />
             </Route>
           </Routes>
         </BrowserRouter>
