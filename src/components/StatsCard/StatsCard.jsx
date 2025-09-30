@@ -45,35 +45,35 @@ function StatsCard() {
     <>
       <div className="w-full max-w-full p-2 mb-3 bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] rounded-md grid grid-cols-5 gap-4">
         {/* العناصر */}
-        <Link to="/pos_shifts">
+        <Link to="pos_shifts">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <LuComputer className="text-[25px] mb-2 text-[#13b272]" />
             <h3 className="text-[14px] font-[500]">بدأ البيع</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <RiFileTextLine className="text-[25px] mb-2 text-[#d87a7f]" />
             <h3 className="text-[14px] font-[500]">فواتير الشراء</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <LuReceipt className="text-[25px] mb-2 text-[#6f42c1]" />
             <h3 className="text-[14px] font-[500]">فواتير المبيعات</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <LuPackage className="text-[25px] mb-2 text-primary" />
             <h3 className="text-[14px] font-[500]">المنتجات</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <LuUsers className="text-[25px] mb-2 text-[#27c24c]" />
             <h3 className="text-[14px] font-[500]">العملاء</h3>
@@ -83,21 +83,21 @@ function StatsCard() {
 
       <div className="w-full max-w-full p-2 bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] rounded-md grid grid-cols-5 gap-4">
         {/* العناصر */}
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <TbUsersPlus className="text-[25px] mb-2 text-[#17a2b8]" />
             <h3 className="text-[14px] font-[500]">إضافة مورد</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <HiOutlineReceiptRefund className="text-[25px] mb-2 text-[#7d8fe9]" />
             <h3 className="text-[14px] font-[500]">المرتجعات</h3>
           </div>
         </Link>
 
-        <Link to="/product">
+        <Link to="product">
           <div className="box cursor-pointer flex items-center flex-col text-[rgb(100,116,139)] hover:bg-[rgba(100,116,139,0.1)] p-2 rounded-md">
             <LuChartColumn className="text-[25px] mb-2 text-[#17a2b8]" />
             <h3 className="text-[14px] font-[500]">التقارير</h3>

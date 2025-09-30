@@ -158,12 +158,12 @@ function Productes() {
         </h2>
 
         <div className="flex items-center gap-3">
-          <Link to={"/category"}>
+          <Link to={"category"}>
             <Button className="btn-blue !text-white btn-sm flex items-center gap-2">
               الفئات
             </Button>
           </Link>
-          <Link to={"/add-product"}>
+          <Link to={"add-product"}>
             <Button className="btn-green !text-white btn-sm flex items-center gap-2">
               <FaPlus className="text-[16px]" />
               إضافة صنف
@@ -374,13 +374,19 @@ function Productes() {
                     className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 "
                   >
                     <td className="px-6 py-2 whitespace-nowrap">
-                      <Link to={"/product/1"} className=" hover:!text-primary">
+                      <Link
+                        to={"/app/product/1"}
+                        className=" hover:!text-primary"
+                      >
                         {Producte.code}
                       </Link>
                     </td>
 
                     <td className="px-6 py-2 whitespace-nowrap">
-                      <Link to={"/product/1"} className=" hover:!text-primary">
+                      <Link
+                        to={"/app/product/1"}
+                        className=" hover:!text-primary"
+                      >
                         {Producte.name}
                       </Link>
                     </td>
@@ -406,7 +412,7 @@ function Productes() {
 
                     <td className="px-6 py-2 whitespace-nowrap">
                       <div className="flex items-center gap-1">
-                        <Link to="/">
+                        <Link to="product/1">
                           <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
                             <FaRegEye className="text-[#10b981] text-[20px] " />
                           </Button>

@@ -35,7 +35,7 @@ function Login() {
     setTimeout(() => {
       toast.success("تم الدخول بنجاح");
       setLoading(false);
-      navigate("/");
+      navigate("/app");
     }, 2000);
   };
 

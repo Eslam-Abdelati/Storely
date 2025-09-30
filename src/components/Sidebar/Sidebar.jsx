@@ -34,7 +34,7 @@ const Sidebar = () => {
       <ul className="mt-4 max-h-[80vh]">
         {/* لوحة التحكم */}
         <li>
-          <Link to="/">
+          <Link to={"/app"}>
             <Button className="w-full !capitalize !justify-start flex gap-3 !text-[rgba(0,0,0,0.8)] !font-[500] items-center !py-2 hover:!bg-[rgba(229,233,236,0.5)] ">
               <RxDashboard className="text-[18px]" />
               <span className="text-[15px]">لوحة التحكم</span>
@@ -58,7 +58,7 @@ const Sidebar = () => {
           <Collapse isOpened={submenuIndex === 1 ? true : false}>
             <ul className="w-full">
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app/invoices"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     إداره الفواتير
@@ -67,7 +67,7 @@ const Sidebar = () => {
               </li>
 
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app/invoices/add-invoice"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     إنشاء فاتورة
@@ -94,7 +94,7 @@ const Sidebar = () => {
           <Collapse isOpened={submenuIndex === 2 ? true : false}>
             <ul className="w-full">
               <li className="w-full">
-                <Link to={"/pos_shifts"}>
+                <Link to={"/app/pos_shifts"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     بدأ البيع
@@ -103,7 +103,7 @@ const Sidebar = () => {
               </li>
 
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app/pos"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     الجلسات
@@ -111,7 +111,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     تقرير نقاط البيع
@@ -138,7 +138,7 @@ const Sidebar = () => {
           <Collapse isOpened={submenuIndex === 3 ? true : false}>
             <ul className="w-full">
               <li className="w-full">
-                <Link to={"/product"}>
+                <Link to={"/app/product"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     الكميات المتاحة
@@ -147,7 +147,7 @@ const Sidebar = () => {
               </li>
 
               <li className="w-full">
-                <Link to={"/add-product"}>
+                <Link to={"/app/add-product"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     اضافة صنف
@@ -155,7 +155,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="w-full">
-                <Link to={"/category"}>
+                <Link to={"/app/category"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     الفئات
@@ -163,7 +163,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     طباعة تكت
@@ -190,7 +190,7 @@ const Sidebar = () => {
           <Collapse isOpened={submenuIndex === 4 ? true : false}>
             <ul className="w-full">
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     المخازن
@@ -199,7 +199,7 @@ const Sidebar = () => {
               </li>
 
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     اذن صرف
@@ -207,7 +207,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     اذن إضافة
@@ -215,7 +215,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li className="w-full">
-                <Link to={"/"}>
+                <Link to={"/app"}>
                   <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[14px] !font-[500] !pl-9 flex gap-3">
                     <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                     عرض اوامر التحويل
