@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* اخفي أي عناصر غير الملصق */
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-label,
+  #printable-label * {
+    visibility: visible;
+  }
+
+  #printable-label {
+    width: 200px;   /* 👈 العرض اللي عايزه للملصق */
+    margin: 0 auto; /* وسط الصفحة */
+    border: 1px solid #000;
+    padding: 10px;
+  }
+
+  /* اخفاء زر الطباعة */
+  .no-print {
+    display: none !important;
+  }
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ccc !important;
+}
+
+.name-user {
+  font-family: "Cairo", sans-serif !important;
+}
+
+body {
+  /* font-family: Montserrat, serif !important; */
+  /* font-family: "Cairo", sans-serif !important; */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-optical-sizing: auto !important;
+  background-color: #eff6ff !important;
+  overflow-x: hidden;
+}
+a {
+  color: inherit !important;
+  text-decoration: inherit;
+}
+
+button {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-optical-sizing: auto !important;
+  text-transform: capitalize !important;
+  color: rgba(241, 245, 249, 0.5);
+}
+
+.btn-blue {
+  background: #3872fa !important;
+  color: #fff !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+}
+.btn-blue:hover {
+  background-color: #3067e5 !important;
+}
+.btn-green {
+  background: #10b981 !important;
+  color: #fff !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+}
+
+.btn-green:hover {
+  background: #059669 !important;
+}
+.btn-red {
+  background: #fc5f7d !important;
+  color: #fff !important;
+  padding: 8px 20px !important;
+  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+}
+.btn-red:hover {
+  background: #e65771 !important;
+}
+.btn-lg {
+  padding: 8px 20px !important;
+  font-size: 16px !important;
+}
+.btn-sm {
+  padding: 6px 20px !important;
+  font-size: 15px !important;
+}
+.btn-border {
+  background: white !important;
+  color: #4b5563 !important;
+  border: 1px solid rgb(219, 234, 254) !important;
+  padding: 5px 30px !important;
+}
+.btn-border:hover {
+  background-color: #f8f8f8 !important;
+}
+.ReactCollapse--collapse {
+  transition: height 500ms;
+}
+
+.MuiBadge-badge {
+  background-color: #ff5252 !important;
+}
+
+th.MuiTableCell-root {
+  background-color: #f1f1f1;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* .MuiInputBase-root.MuiOutlinedInput-root {
+  height: 35px !important; 
+  font-size: 14px; 
+} */
+.MuiOutlinedInput-root.Mui-focused fieldset {
+  border: 1px solid #3872fa !important;
+  outline: none !important;
+}
+
+.nav-link.active button {
+  background-color: #dcdcdc !important;
+}
+
+.MuiButton-icon svg {
+  font-size: 25px !important;
+}
+.MuiInputAdornment-root {
+  position: absolute !important;
+  left: 5px;
+}
+.css-2u11ia-MuiInputBase-input-MuiOutlinedInput-input {
+  position: relative;
+  left: 50px;
+}
+.MuiFormControl-root {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 6px !important;
+}
+.otpBox input {
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  outline: none !important;
+  border-radius: 4px !important;
+}
+.otpBox input:focus {
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
