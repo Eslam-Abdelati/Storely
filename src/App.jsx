@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { ToastContainer } from "react-toastify";
@@ -18,6 +18,7 @@ import PosShifts from "./Pages/PosShifts/PosShifts";
 import Pos from "./Pages/Pos/Pos";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
+import { useState } from "react";
 
 const theme = createTheme({
   typography: {
@@ -34,11 +35,22 @@ const theme = createTheme({
 });
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // حالة تسجيل الدخول
   return (
     <>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Navigate to="/sign-up" replace />
+                )
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/first_settings" element={<SignUp2 />} />

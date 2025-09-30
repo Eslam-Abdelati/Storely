@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import bgImage from "../../assets/patern.webp";
 import logo from "../../assets/logo.jpg";
 import logo2 from "../../assets/icon.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
@@ -12,6 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 
 function SignUp2() {
+  const navigate = useNavigate();
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
@@ -57,6 +58,7 @@ function SignUp2() {
     setTimeout(() => {
       toast.success("تم التسجيل بنجاح");
       setLoading(false);
+      navigate("/login");
     }, 2000);
   };
 
