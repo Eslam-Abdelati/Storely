@@ -158,12 +158,12 @@ function Productes() {
         </h2>
 
         <div className="flex items-center gap-3">
-          <Link to={"category"}>
+          <Link to={"/app/category"}>
             <Button className="btn-blue !text-white btn-sm flex items-center gap-2">
               الفئات
             </Button>
           </Link>
-          <Link to={"add-product"}>
+          <Link to={"/app/add-product"}>
             <Button className="btn-green !text-white btn-sm flex items-center gap-2">
               <FaPlus className="text-[16px]" />
               إضافة صنف
@@ -335,7 +335,7 @@ function Productes() {
         <div className="relative overflow-x-auto mt-5">
           {filteredProducts.length > 0 ? (
             <table className="w-full text-sm text-left rtl:text-right dark:text-gray-400">
-              <thead className="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                 <tr className="">
                   <th scope="col" className="px-6 py-3 whitespace-nowrap">
                     رقم الصنف
@@ -412,7 +412,7 @@ function Productes() {
 
                     <td className="px-6 py-2 whitespace-nowrap">
                       <div className="flex items-center gap-1">
-                        <Link to="product/1">
+                        <Link to="/app/product/1">
                           <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
                             <FaRegEye className="text-[#10b981] text-[20px] " />
                           </Button>

@@ -55,6 +55,8 @@ function AddProduct() {
     { value: "phones", label: "موبايلات" },
     { value: "laptops", label: "لابتوبات" },
   ]);
+
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

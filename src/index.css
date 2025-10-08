@@ -20,7 +20,7 @@
   }
 
   #printable-label {
-    width: 200px;   /* 👈 العرض اللي عايزه للملصق */
+    width: 200px; /* 👈 العرض اللي عايزه للملصق */
     margin: 0 auto; /* وسط الصفحة */
     border: 1px solid #000;
     padding: 10px;
@@ -31,7 +31,6 @@
     display: none !important;
   }
 }
-
 
 * {
   margin: 0;
@@ -130,7 +129,9 @@ th.MuiTableCell-root {
   background-color: #f1f1f1;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+  
 }
+
 
 /* .MuiInputBase-root.MuiOutlinedInput-root {
   height: 35px !important; 
@@ -168,4 +169,3 @@ th.MuiTableCell-root {
 .otpBox input:focus {
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
-

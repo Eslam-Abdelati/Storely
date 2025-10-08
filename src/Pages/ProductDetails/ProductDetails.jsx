@@ -78,7 +78,7 @@ function ProductDetails() {
           <MenuItem
             onClick={() => {
               handleClose();
-              navigate("/product/label");
+              navigate("/app/product/label");
             }}
           >
             ملصق
