@@ -14,7 +14,6 @@ import Productes from "./Pages/Productes/Productes";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import Category from "./Pages/Category/Category";
 import PosShifts from "./Pages/PosShifts/PosShifts";
-import Pos from "./Pages/Pos/Pos";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { useState } from "react";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
@@ -72,7 +71,7 @@ function App() {
             <Route path="invoices" element={<Invoices />} />
             <Route path="invoices/add-invoice" element={<AddInvoice />} />
             <Route path="pos_shifts" element={<PosShifts />} />
-            <Route path="pos" element={<Pos />} />
+            {/* <Route path="pos" element={<Pos />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>
