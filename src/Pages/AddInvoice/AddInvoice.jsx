@@ -1,31 +1,38 @@
-// InvoicePage.jsx
-import React, { useState, useMemo } from "react";
-import Select from "react-select";
+import React, { useState, useRef } from "react";
 import Button from "@mui/material/Button";
-
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-
-import Typography from "@mui/material/Typography";
-import { IoClose } from "react-icons/io5";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
+import Select from "react-select";
+import { TbFileInvoice } from "react-icons/tb";
+import PrintInvoice from "../../components/PrintInvoice/PrintInvoice";
+import AddClient from "../../components/AddClient/AddClient";
+import "../../components/PrintInvoice/invoice-print.css";
 
 const customersList = [
-  { value: 1, label: "أحمد محمد" },
-  { value: 2, label: "إسلام عمار" },
-  { value: 3, label: "يوسف خالد" },
+  {
+    value: 0,
+    label: "client",
+    phone: "بدون رقم",
+    address: "بدون عنوان",
+  },
+  {
+    value: 1,
+    label: "أحمد عمار",
+    phone: "01012345678",
+    address: "الوادي الجديد - بلاط",
+  },
+  {
+    value: 2,
+    label: "إسلام عمار",
+    phone: "01098765432",
+    address: "الوادي الجديد - الداخلة",
+  },
+  {
+    value: 3,
+    label: "محمد حمدي",
+    phone: "01122223333",
+    address: "الوادي الجديد - الخارجة",
+  },
 ];
+
 const salesmanList = [
   { value: 1, label: "أحمد محمد" },
   { value: 2, label: "إسلام عمار" },
@@ -34,707 +41,842 @@ const salesmanList = [
 
 // قائمة المنتجات للتجربة
 const productsList = [
-  { barcode: "6223008330717", name: " دراجون مزيل العرق ", price: 5000 },
-  { barcode: "6956611053192", name: "مج بورسلين ", price: 250 },
+  { barcode: "111", name: "موبايل سامسونج", price: 5000 },
+  { barcode: "222", name: "شاحن اصلي", price: 250 },
   { barcode: "333", name: "كابل USB", price: 100 },
-  { barcode: "6223008330717", name: " دراجون مزيل العرق ", price: 5000 },
-  { barcode: "6956611053192", name: "مج بورسلين ", price: 250 },
-  { barcode: "333", name: "كابل USB", price: 100 },
-  { barcode: "6223008330717", name: " دراجون مزيل العرق ", price: 5000 },
-  { barcode: "6956611053192", name: "مج بورسلين ", price: 250 },
-  { barcode: "333", name: "كابل USB", price: 100 },
+  { barcode: "444", name: "opoo reno 5", price: 5000 },
+  { barcode: "555", name: "سماعه ايربود ", price: 250 },
+  { barcode: "6956611053192", name: "شاحن  USB", price: 100 },
 ];
 
-function formatCurrency(n) {
-  return n?.toLocaleString("ar-EG") + " ج.م";
-}
-
-const InvoicePage = () => {
-  const [open, setOpen] = useState(false);
-  const [invoiceNumber] = useState(() => `INV-${Date.now()}`);
-  const [date] = useState(() => new Date().toLocaleDateString("ar-EG"));
-  const [customer, setCustomer] = useState({ name: "", phone: "" });
-  const [paidAmount, setPaidAmount] = useState(0);
-  // خصم على الإجمالي
-  const [globalDiscountType, setGlobalDiscountType] = useState("amount");
-  const [globalDiscountValue, setGlobalDiscountValue] = useState(0);
-  const [globalDiscountReason, setGlobalDiscountReason] = useState("");
-
-  const [items, setItems] = useState([
-    { name: "", barcode: "", qty: 0, price: 0, discount: 0, total: 0 },
+function AddInvoice() {
+  const [formData, setFormData] = useState({
+    invoiceNumber: "INV-2025107-001",
+    selectedCustomer: customersList[0],
+    salesman: null,
+    date: new Date().toISOString().split("T")[0],
+    releaseDate: new Date().toISOString().split("T")[0],
+    paymentMethod: "نقدي",
+  });
+  const [cartItems, setCartItems] = useState([
+    {
+      barcode: "",
+      name: "",
+      price: 0,
+      qty: 0,
+      discount: 0,
+      discountType: "value",
+    },
   ]);
-  const [invoiceDate, setInvoiceDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [salesman, setSalesman] = useState("");
-  const [discountType, setDiscountType] = useState({}); // نوع الخصم لكل صف
-  const [paymentMethod, setPaymentMethod] = useState("cash"); // طريقة الدفع
+
+  const [barcodeInput, setBarcodeInput] = useState("");
+  const barcodeInputRef = useRef(null);
+
+  const [openClientModal, setOpenClientModal] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenClientModal(true);
   };
   const handleClose = () => {
-    setOpen(false);
+    setOpenClientModal(false);
+  };
+  // التعامل مع تغييرات  الحقول
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  // تحديث صف في الجدول
-  const updateItem = (index, field, value) => {
-    setItems((prev) => {
-      const copy = [...prev];
-      copy[index][field] = value;
-
-      const price = Number(copy[index].price) || 0;
-      const qty = Number(copy[index].qty) || 0;
-      let discount = Number(copy[index].discount) || 0;
-
-      // تطبيق نسبة أو مبلغ
-      if (discountType[index] === "percent") {
-        discount = (price * qty * discount) / 100;
-      }
-
-      copy[index].total = Math.max(0, qty * price - discount);
-      return copy;
-    });
+  // التعامل مع تغييرات حقل السيليكت
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    const { name } = actionMeta;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: selectedOption,
+    }));
   };
 
-  // إضافة صف جديد
-  const addRow = () => {
-    setItems((prev) => [
-      ...prev,
-      { name: "", barcode: "", qty: 0, price: 0, discount: 0, total: 0 },
-    ]);
-  };
-
-  // حذف صف
-  const removeRow = (index) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // حساب الإجمالي
-  const totals = useMemo(() => {
-    const subtotal = items.reduce((s, it) => s + it.qty * it.price, 0);
-    let discounts = 0;
-    items.forEach((it, idx) => {
-      if (discountType[idx] === "percent") {
-        discounts += (it.price * it.qty * (Number(it.discount) || 0)) / 100;
-      } else {
-        discounts += Number(it.discount) || 0;
-      }
-    });
-    const grandTotal = subtotal - discounts;
-    return { subtotal, discounts, grandTotal };
-  }, [items, discountType]);
-
-  const handleSave = () => {
-    // 🛑 تحقق من وجود منتج أول
-    const hasProduct = items.some((it) => it.name && it.price > 0);
-    if (!hasProduct) {
-      alert("⚠️ يجب اختيار منتج أولًا قبل حفظ الفاتورة.");
-      return;
-    }
-    if (!customer?.name) {
-      alert(" ⚠️ يجب اختيار عميل قبل حفظ الفاتورة.");
-      return;
-    }
-    if (!salesman?.label) {
-      alert(" ⚠️ يجب اختيار مسؤول المبيعات قبل حفظ الفاتورة.");
-      return;
-    }
-
-    // 🧹 تجاهل الصفوف الفارغة
-    const validItems = items.filter(
-      (it) => it.name && it.price > 0 && it.qty > 0
+  const handleSelectProduct = (selected, index) => {
+    if (!selected) return;
+    const product = productsList.find((p) => p.barcode === selected.value);
+    if (!product) return;
+    // ✅ تحقق أولًا خارج setState لتجنب التحديث الخاطئ
+    const isExist = cartItems.some(
+      (item, i) => item.barcode === product.barcode && i !== index
     );
+    if (isExist) {
+      alert("⚠️ هذا المنتج موجود بالفعل في الفاتورة!");
+      return;
+    }
+    setCartItems((prev) => {
+      const updated = [...prev];
+      updated[index] = {
+        ...product,
+        qty: 1,
+        discount: 0,
+        discountType: "value",
+      };
 
-    // 💰 حساب الإجمالي بعد الخصم
-    const netTotal =
-      globalDiscountType === "percent"
-        ? totals.grandTotal -
-          (totals.grandTotal * (globalDiscountValue || 0)) / 100
-        : totals.grandTotal - (globalDiscountValue || 0);
+      // ✅ لو آخر صف تم تعبئته، أضف صف جديد تلقائي
+      if (index === prev.length - 1) {
+        updated.push({
+          barcode: "",
+          name: "",
+          price: 0,
+          qty: 0,
+          discount: 0,
+          discountType: "value",
+        });
+      }
+      return updated;
+    });
+  };
 
-    // 📦 بناء بيانات الفاتورة
+  // ✅ عند تمرير باركود (Enter)
+  const handleBarcodeKeyUp = (e) => {
+    if (e.key === "Enter") {
+      const code = barcodeInput.trim();
+      if (!code) return;
+      const product = productsList.find((p) => p.barcode === code);
+      if (!product) {
+        alert("❌ المنتج غير موجود");
+        setBarcodeInput("");
+        return;
+      }
+      setCartItems((prev) => {
+        const isExist = prev.find((item) => item.barcode === product.barcode);
+        if (isExist) {
+          // ✅ لو المنتج موجود، زوّد الكمية فقط
+          return prev.map((item) =>
+            item.barcode === product.barcode
+              ? { ...item, qty: item.qty + 1 }
+              : item
+          );
+        }
+        // ✅ لو المنتج غير موجود، ابحث عن أول صف فارغ لتعبئته
+        const emptyIndex = prev.findIndex((item) => !item.barcode);
+        const updated = [...prev];
+        if (emptyIndex !== -1) {
+          updated[emptyIndex] = {
+            ...product,
+            qty: 1,
+            discount: 0,
+            discountType: "value",
+          };
+        } else {
+          updated.push({ ...product, qty: 1, discount: 0 });
+        }
+        // لو آخر صف ممتلئ أضف صف جديد فارغ
+        if (updated[updated.length - 1].barcode) {
+          updated.push({
+            barcode: "",
+            name: "",
+            price: 0,
+            qty: 0,
+            discount: 0,
+            discountType: "value",
+          });
+        }
+        return updated;
+      });
+      setBarcodeInput("");
+      barcodeInputRef.current.focus();
+    }
+  };
+
+  // التعامل مع تغييرات حقل الباركود
+  const handleBarcodeChange = (e) => {
+    setBarcodeInput(e.target.value);
+  };
+
+  // حذف منتج من الفاتورة
+  const handleDeleteItem = (barcode) => {
+    setCartItems((prev) => prev.filter((item) => item.barcode !== barcode));
+  };
+
+  // تغيير الكمية أو الخصم أو الضريبة
+  const handleItemChange = (barcode, field, value) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.barcode === barcode
+          ? {
+              ...item,
+              [field]: field === "discountType" ? value : Number(value), // 👈 التعديل هنا
+            }
+          : item
+      )
+    );
+  };
+
+  const handleCancel = () => {
+    if (
+      window.confirm(
+        "هل أنت متأكد من إلغاء الفاتورة؟ سيتم فقدان جميع البيانات."
+      )
+    ) {
+      // إعادة تعيين جميع الحقول إلى القيم الافتراضية
+      setFormData({
+        invoiceNumber: "INV-2025107-001",
+        selectedCustomer: null,
+        salesman: null,
+        date: new Date().toISOString().split("T")[0],
+        invoiceDate: new Date().toISOString().split("T")[0],
+        releaseDate: new Date().toISOString().split("T")[0],
+        paymentMethod: "نقدي",
+      });
+      setCartItems([
+        {
+          barcode: "",
+          name: "",
+          price: 0,
+          qty: 0,
+          discount: 0,
+          discountType: "value",
+        },
+      ]);
+      setBarcodeInput("");
+      barcodeInputRef.current.focus();
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // =================== دالة إضافة عميل جديد ===================
+  const handleAddClient = (newClient) => {
+    // أضف العميل الجديد إلى قائمة العملاء
+    customersList.push(newClient);
+    // حدده مباشرة
+    setFormData((prev) => ({
+      ...prev,
+      selectedCustomer: newClient,
+    }));
+  };
+  // =================== دالة الحفظ والطباعة ===================
+  const handleSubmit = () => {
+    const validItems = cartItems.filter((item) => item.barcode);
+
+    if (!formData.selectedCustomer) {
+      alert("⚠️ يرجى اختيار العميل أولاً");
+      return;
+    }
+    if (validItems.length === 0) {
+      alert("⚠️ يجب إدخال صنف واحد على الأقل في الفاتورة");
+      return;
+    }
+
+    // 🧮 حساب الإجماليات
+    const subtotal = validItems.reduce((sum, i) => sum + i.qty * i.price, 0);
+    const totalDiscount = validItems.reduce((sum, i) => {
+      const itemDiscount =
+        i.discountType === "percent"
+          ? (i.price * i.qty * (i.discount || 0)) / 100
+          : i.discount || 0;
+      return sum + itemDiscount;
+    }, 0);
+
+    const generalDiscountValue =
+      formData.generalDiscountType === "percent"
+        ? (subtotal - totalDiscount) * ((formData.generalDiscount || 0) / 100)
+        : formData.generalDiscount || 0;
+
+    const netTotal = subtotal - totalDiscount - generalDiscountValue;
+
     const invoiceData = {
-      invoiceNumber,
-      invoiceDate,
-      date,
-      salesman: salesman?.label || "",
-      customer,
-      items: validItems,
+      ...formData,
+      items: validItems.map((i) => ({
+        barcode: i.barcode,
+        name: i.name,
+        qty: i.qty,
+        price: i.price,
+        discount: i.discount,
+        discountType: i.discountType,
+        total:
+          i.qty * i.price -
+          (i.discountType === "percent"
+            ? (i.price * i.qty * i.discount) / 100
+            : i.discount),
+      })),
       totals: {
-        ...totals,
-        globalDiscountType,
-        globalDiscountValue,
-        globalDiscountReason,
+        subtotal,
+        totalDiscount,
+        generalDiscountValue,
         netTotal,
+        paidNow,
+        remaining,
       },
-      paymentMethod,
-      paidAmount,
     };
 
-    // 💾 حفظ الفواتير السابقة + الحالية
-    const existingInvoices =
-      JSON.parse(localStorage.getItem("invoices") || "[]") || [];
-    const updatedInvoices = [...existingInvoices, invoiceData];
-    localStorage.setItem("invoices", JSON.stringify(updatedInvoices));
+    console.log("🚀 بيانات الفاتورة:", invoiceData);
 
+    // ✅ رسالة نجاح
     alert("✅ تم حفظ الفاتورة بنجاح!");
 
-    // 🔄 إعادة التصفير بعد الحفظ
-    setCustomer({ name: "", phone: "" });
-    setItems([
-      { name: "", barcode: "", qty: 1, price: 0, discount: 0, total: 0 },
+    // استدعاء الطباعة
+    handlePrint();
+
+    // إعادة التعيين بعد الحفظ
+    setFormData({
+      invoiceNumber: "INV-2025107-001",
+      selectedCustomer: null,
+      salesman: null,
+      today: new Date().toISOString().split("T")[0],
+      invoiceDate: new Date().toISOString().split("T")[0],
+      releaseDate: new Date().toISOString().split("T")[0],
+      paymentMethod: "نقدي",
+    });
+    setCartItems([
+      {
+        barcode: "",
+        name: "",
+        price: 0,
+        qty: 0,
+        discount: 0,
+        discountType: "value",
+      },
     ]);
-    setDiscountType({});
-    setPaymentMethod("cash");
-    setPaidAmount(0);
-    setSalesman("");
-    setInvoiceDate(new Date().toISOString().split("T")[0]);
-    setGlobalDiscountType("amount");
-    setGlobalDiscountValue(0);
-    setGlobalDiscountReason("");
+  };
+
+  // حسابات الفاتورة
+
+  const validItems = cartItems.filter((i) => i.barcode);
+  const totalItems = validItems.length;
+  const subtotal = validItems.reduce((sum, i) => sum + i.qty * i.price, 0);
+  const totalDiscount = validItems.reduce((sum, i) => {
+    const itemDiscount =
+      i.discountType === "percent"
+        ? (i.price * i.qty * (i.discount || 0)) / 100
+        : i.discount || 0;
+    return sum + itemDiscount;
+  }, 0);
+
+  const generalDiscountValue =
+    formData.generalDiscountType === "percent"
+      ? (subtotal - totalDiscount) * ((formData.generalDiscount || 0) / 100)
+      : formData.generalDiscount || 0;
+
+  const netTotal = subtotal - totalDiscount - generalDiscountValue;
+
+  const paidNow =
+    formData.paymentMethod === "آجل" ? formData.paidAmount || 0 : netTotal;
+
+  const remaining = formData.paymentMethod === "آجل" ? netTotal - paidNow : 0;
+  const invoiceData = {
+    customer: formData.selectedCustomer,
+    invoiceNumber: formData.invoiceNumber,
+    date: formData.date,
+    salesman: formData.salesman,
+    items: cartItems
+      .filter((i) => i.barcode)
+      .map((i) => ({
+        name: i.name,
+        qty: i.qty,
+        price: i.price,
+        discount: i.discount,
+        discountType: i.discountType,
+      })),
+    totals: {
+      subtotal,
+      totalDiscount,
+      generalDiscountValue,
+      netTotal,
+      paidNow,
+      remaining,
+      generalDiscountType: formData.generalDiscountType,
+    },
+    paymentMethod: formData.paymentMethod,
   };
 
   return (
     <>
-      {/* Header */}
-      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] flex mb-5 justify-between rounded-md">
-        <h1 className="text-[18px] lg:text-[20px] font-bold text-[rgb(30,64,175)]">
-          فاتورة بيع
-        </h1>
-        <div className="text-right">
-          <p>
-            رقم الفاتورة : <span className="text-primary">{invoiceNumber}</span>
-          </p>
-          <p>
-            التاريخ: <span className="text-primary">{date}</span>
-          </p>
+      {/* عنوان وازرار */}
+      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] flex items-center mb-5 justify-between rounded-md">
+        <div className="flex items-center justify-between w-full">
+          <h1 className="text-[18px] text-[rgb(30,64,175)] lg:text-[20px] font-bold leading-8 lg:leading-10">
+            فاتورة مبيعات جديدة
+            <TbFileInvoice className="inline-block mr-2 text-[22px] lg:text-[26px]" />
+          </h1>
+          <Button
+            type="submit"
+            className="btn-green !text-white btn-sm flex items-center gap-2"
+          >
+            حفظ كمسودة
+          </Button>
         </div>
       </div>
 
-      {/* Customer info */}
-      <div className="w-full flex gap-4">
-        {/* اختيار العميل */}
+      {/* رقم الفاتوره وتاريخ اليوم */}
+      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] flex items-center mb-5 justify-between rounded-md">
+        <div className="flex items-center w-full gap-2">
+          <h3 className="text-sm font-semibold text-gray-700">
+            رقم الفاتورة :
+          </h3>
+          <span className="text-primary">{formData.invoiceNumber}</span>
+        </div>
+
+        <div className="flex items-center justify-end w-full gap-2">
+          <h3 className="text-sm font-semibold text-gray-700">التاريخ :</h3>
+          <span className="text-primary">{formData.date}</span>
+        </div>
+      </div>
+
+      {/* اختيار العميل */}
+      <div className="w-full flex gap-4 flex-col lg:flex-row">
         <div className="w-[50%] bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] p-4 rounded-md">
           <h3 className="font-semibold text-[rgba(0,0,0,0.7)] mb-2">
             العميل <span className="text-red-500">*</span>
           </h3>
-          <div className="flex gap-2 items-center">
-            <div className="flex-1">
-              <Select
-                inputId="customerSelect"
-                value={
-                  customer?.id
-                    ? { value: customer.id, label: customer.name }
-                    : null
-                }
-                onChange={(selected) =>
-                  setCustomer({
-                    id: selected?.value,
-                    name: selected?.label,
-                  })
-                }
-                options={customersList}
-                placeholder="اختر العميل"
-                isSearchable
-                required
-                className="bg-white"
-              />
-            </div>
+          <div className="flex justify-between gap-2 items-center">
+            <Select
+              inputId="customer"
+              name="selectedCustomer"
+              options={customersList}
+              value={formData.selectedCustomer}
+              onChange={handleSelectChange}
+              placeholder="اختر عميل"
+              isSearchable
+              autoComplete="off"
+              className="w-[75%]"
+            />
+
             <Button
               type="button"
               onClick={handleClickOpen}
               className="btn-blue"
             >
-              + جديد
+              جديد
             </Button>
-
-            <BootstrapDialog
-              onClose={handleClose}
-              aria-labelledby="customized-dialog-title"
-              open={open}
-            >
-              <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                <div className="flex items-center justify-between">
-                  <h2> بيانات العميل</h2>
-                  <Button
-                    aria-label="close"
-                    onClick={handleClose}
-                    className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] text-[rgba(0,0,0,0.7)] hover:bg-[rgba(0,0,0,0.1)] "
-                  >
-                    <IoClose className="text-[rgba(0,0,0,0.7)] text-[18px]" />
-                  </Button>
-                </div>
-              </DialogTitle>
-
-              <DialogContent dividers>
-                <Typography gutterBottom>
-                  Cras mattis consectetur purus sit amet fermentum. Cras justo
-                  odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                  risus, porta ac consectetur ac, vestibulum at eros.
-                </Typography>
-                <Typography gutterBottom>
-                  Praesent commodo cursus magna, vel scelerisque nisl
-                  consectetur et. Vivamus sagittis lacus vel augue laoreet
-                  rutrum faucibus dolor auctor.
-                </Typography>
-                <Typography gutterBottom>
-                  Aenean lacinia bibendum nulla sed consectetur. Praesent
-                  commodo cursus magna, vel scelerisque nisl consectetur et.
-                  Donec sed odio dui. Donec ullamcorper nulla non metus auctor
-                  fringilla.
-                </Typography>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  autoFocus
-                  onClick={handleClose}
-                  className="btn-green !ml-2"
-                >
-                  حفظ العميل
-                </Button>
-                <Button
-                  autoFocus
-                  onClick={handleClose}
-                  className="!bg-gray-400 !text-[rgba(0,0,0,0.7)] hover:!bg-gray-500"
-                >
-                  الغاء
-                </Button>
-              </DialogActions>
-            </BootstrapDialog>
           </div>
 
-          <div className="mt-4 bg-white border border-gray-200 p-3 rounded-md text-sm">
-            <p>
-              <strong>الاسم:</strong> إسلام عمار
-            </p>
-            <p>
-              <strong>الهاتف:</strong> 01203702198
-            </p>
-            <p>
-              <strong>العنوان:</strong> بلاط الوادي الجديد
-            </p>
-          </div>
+          {formData.selectedCustomer && (
+            <div className="mt-5  bg-white border border-[rgb(219,234,254)] p-3 rounded-md">
+              <p>
+                <strong>الإسم : </strong> {formData.selectedCustomer.label}
+              </p>
+              <p>
+                <strong> الهاتف : </strong> {formData.selectedCustomer.phone}
+              </p>
+              <p>
+                <strong>العنوان :</strong> {formData.selectedCustomer.address}
+              </p>
+            </div>
+          )}
         </div>
-
-        {/* تفاصيل الفاتورة */}
+        {/* اختيار مسؤل المبيعات والتاريخ */}
         <div className="w-[50%] bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] p-4 rounded-md">
-          <div>
-            <label className="font-semibold text-[14px] text-[rgba(0,0,0,0.7)]">
+          <div className="form-group w-full flex flex-col gap-2 mb-4">
+            <label
+              htmlFor="invoiceDate"
+              className="text-sm font-semibold text-gray-700"
+            >
               تاريخ الفاتورة
             </label>
             <input
               type="date"
-              className="border p-1 mt-2 w-full rounded focus:ring-2 focus:ring-blue-400 outline-none text-[rgba(0,0,0,0.7)]"
-              value={invoiceDate}
-              onChange={(e) => setInvoiceDate(e.target.value)}
+              id="invoiceDate"
+              name="date"
+              autoComplete="off"
+              variant="outlined"
+              value={formData.date}
+              className="border p-1  w-full rounded focus:ring-2 focus:ring-blue-400 outline-none text-[rgba(0,0,0,0.7)]"
+              onChange={handleChange}
             />
           </div>
 
-          {/* موظف المبيعات */}
-          <div className="mt-2">
-            <label className="font-semibold text-[14px] text-[rgba(0,0,0,0.7)]">
-              مسؤول المبيعات
+          <div className="form-group w-full flex flex-col gap-2 mb-4">
+            <label
+              htmlFor="salesman"
+              className="text-sm font-semibold text-gray-700"
+            >
+              مسؤل المبيعات
             </label>
             <Select
-              inputId="salesmanSelect"
-              value={salesman}
-              onChange={(selected) => setSalesman(selected)}
+              inputId="salesman"
+              name="salesman"
               options={salesmanList}
-              placeholder="اختر الموظف"
+              value={formData.salesman}
+              onChange={handleSelectChange}
+              placeholder="اختر"
               isSearchable
-              className="mt-2"
+              autoComplete="off"
             />
           </div>
 
-          <div className="mt-2">
-            <label className="font-semibold text-[14px] text-[rgba(0,0,0,0.7)]">
+          <div className="form-group w-full flex flex-col gap-2 mb-4">
+            <label
+              htmlFor="releaseDate"
+              className="text-sm font-semibold text-gray-700"
+            >
               تاريخ الإصدار
             </label>
             <input
               type="date"
-              className="border p-1 mt-2 w-full rounded focus:ring-2 focus:ring-blue-400 outline-none text-[rgba(0,0,0,0.7)]"
-              value={invoiceDate}
-              onChange={(e) => setInvoiceDate(e.target.value)}
+              id="releaseDate"
+              name="releaseDate"
+              autoComplete="off"
+              variant="outlined"
+              value={formData.releaseDate}
+              className="border p-1  w-full rounded focus:ring-2 focus:ring-blue-400 outline-none text-[rgba(0,0,0,0.7)]"
+              onChange={handleChange}
             />
           </div>
         </div>
       </div>
 
       {/* Barcode Scanner Input */}
-      <div className="my-6">
-        <label className="block text-sm font-semibold text-primary">
-          مسح الباركود
-        </label>
-        <input
-          type="text"
-          className="border p-2 mt-2 rounded w-full focus:ring-2 focus:ring-blue-400 outline-none"
-          placeholder="مرر الباركود هنا..."
-          autoFocus
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              const code = e.target.value.trim();
-              if (!code) return;
-              e.target.value = "";
-
-              const product = productsList.find((p) => p.barcode === code);
-
-              if (product) {
-                setItems((prev) => {
-                  const copy = [...prev];
-
-                  // 🔹 تحقق إن كان المنتج موجود بالفعل
-                  const existingIndex = copy.findIndex(
-                    (it) => it.barcode === product.barcode
-                  );
-                  if (existingIndex !== -1) {
-                    copy[existingIndex] = {
-                      ...copy[existingIndex],
-                      qty: copy[existingIndex].qty + 1,
-                      total:
-                        (copy[existingIndex].qty + 1) *
-                          copy[existingIndex].price -
-                        copy[existingIndex].discount,
-                    };
-                    return copy;
-                  }
-
-                  // 🔹 ابحث عن أول صف فاضي
-                  const emptyIndex = copy.findIndex(
-                    (it) => !it.name && it.qty === 0
-                  );
-
-                  // 🔹 لو فيه صف فاضي → عبّيه بالمنتج
-                  if (emptyIndex !== -1) {
-                    copy[emptyIndex] = {
-                      barcode: product.barcode,
-                      name: product.name,
-                      qty: 1,
-                      price: product.price,
-                      discount: 0,
-                      total: product.price,
-                    };
-                    return copy;
-                  }
-
-                  // 🔹 لو مفيش صف فاضي → أضف صف جديد
-                  return [
-                    ...copy,
-                    {
-                      barcode: product.barcode,
-                      name: product.name,
-                      qty: 1,
-                      price: product.price,
-                      discount: 0,
-                      total: product.price,
-                    },
-                  ];
-                });
-              } else {
-                alert("المنتج غير موجود في القائمة ❌");
-              }
-            }
-          }}
-        />
+      <div className="w-full flex gap-4 flex-col lg:flex-row mt-5">
+        <div className="form-group w-full flex flex-col gap-2 mb-4">
+          <label
+            htmlFor="barcode"
+            className="text-sm font-semibold text-primary"
+          >
+            مسح الباركود
+          </label>
+          <input
+            ref={barcodeInputRef}
+            type="text"
+            id="barcode"
+            name="barcode"
+            value={barcodeInput}
+            onChange={handleBarcodeChange}
+            onKeyUp={handleBarcodeKeyUp}
+            autoComplete="off"
+            className="border p-2 mt-2 rounded w-full focus:ring-2 focus:ring-blue-400 outline-none"
+            placeholder="مرر الباركود هنا..."
+            autoFocus
+          />
+        </div>
       </div>
 
-      {/* Items table */}
-      <section className="bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] p-4 mb-4 rounded-md">
-        <table className="w-full bg-[rgb(239,246,255)] text-sm text-left rtl:text-right dark:text-gray-400 mb-3 border border-[#e2e8f0]">
+      {/* جدول الأصناف */}
+      <div className="bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] p-4 mb-4 rounded-md">
+        <table className="min-w-full bg-[#eff6ff] border border-[rgb(219,234,254)]">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2">#</th>
-              <th className="p-2">المنتج</th>
-              <th className="p-2">الكمية</th>
-              <th className="p-2">السعر</th>
-              <th className="p-2">الخصم</th>
-              <th className="p-2">الإجمالي</th>
-              <th className="p-2">إجراء</th>
+            <tr className="bg-[rgb(243,244,246)]">
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                الصنف
+              </th>
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                الكمية
+              </th>
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                سعر الوحدة
+              </th>
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                الخصم
+              </th>
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                الإجمالي
+              </th>
+              <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
+                إجراء
+              </th>
             </tr>
           </thead>
+
           <tbody>
-            {items.map((it, idx) => (
-              <tr key={idx} className="border-t">
-                <td className="p-2">{idx + 1}</td>
-                <td className="p-2">
-                  <Select
-                    value={
-                      it.name ? { value: it.barcode, label: it.name } : null
-                    }
-                    onChange={(selected) => {
-                      if (selected) {
-                        const product = productsList.find(
-                          (p) => p.barcode === selected.value
-                        );
+            {cartItems.map((item, index) => {
+              // ✅ حساب الخصم بناءً على نوعه
+              const itemDiscount =
+                item.discountType === "percent"
+                  ? (item.price * item.qty * (item.discount || 0)) / 100
+                  : item.discount || 0;
 
-                        setItems((prev) => {
-                          const copy = [...prev];
-
-                          // ✅ تحقق إن كان المنتج موجود بالفعل في أي صف آخر
-                          const existingIndex = copy.findIndex(
-                            (it, i) =>
-                              it.barcode === product.barcode && i !== idx
-                          );
-
-                          if (existingIndex !== -1) {
-                            alert("⚠️ هذا المنتج موجود بالفعل في الفاتورة!");
-                            return copy;
-                          }
-
-                          // 🔹 حدّث بيانات الصف الحالي
-                          copy[idx] = {
-                            ...copy[idx],
-                            barcode: product.barcode,
-                            name: product.name,
-                            price: product.price,
-                            qty: copy[idx].qty > 0 ? copy[idx].qty : 1,
-                            discount: copy[idx].discount || 0,
-                            total:
-                              (copy[idx].qty > 0 ? copy[idx].qty : 1) *
-                                product.price -
-                              (copy[idx].discount || 0),
-                          };
-
-                          // 🔹 أضف صف جديد لو كنا في آخر صف
-                          if (idx === copy.length - 1) {
-                            copy.push({
-                              name: "",
-                              barcode: "",
-                              qty: 0,
-                              price: 0,
-                              discount: 0,
-                              total: 0,
-                            });
-                          }
-
-                          return copy;
-                        });
-                      } else {
-                        updateItem(idx, "name", "");
-                        updateItem(idx, "price", 0);
+              const total = item.qty * item.price - itemDiscount;
+              return (
+                <tr key={index}>
+                  {/* خانة الصنف */}
+                  <td className="p-2 border">
+                    <Select
+                      options={productsList.map((p) => ({
+                        value: p.barcode,
+                        label: p.name,
+                        price: p.price,
+                      }))}
+                      value={
+                        item.barcode
+                          ? { value: item.barcode, label: item.name }
+                          : null
                       }
-                    }}
-                    options={productsList.map((p) => ({
-                      value: p.barcode,
-                      label: p.name,
-                    }))}
-                    placeholder="اختر المنتج"
-                    isSearchable
-                    // 👇👇 هنا الجزء المهم
-  menuPortalTarget={document.body}
-  styles={{
-    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-    menuList: (base) => ({
-      ...base,
-      maxHeight: "180px", 
-      overflowY: "auto",   
-    }),
-  }}
-                  />
-                </td>
+                      onChange={(selected) =>
+                        handleSelectProduct(selected, index)
+                      }
+                      placeholder="اختر منتج..."
+                      className="min-w-[200px]"
+                    />
+                  </td>
 
-                <td className="p-2">
-                  <input
-                    type="number"
-                    min="1"
-                    value={it.qty}
-                    onChange={(e) =>
-                      updateItem(idx, "qty", Number(e.target.value))
-                    }
-                    className="border p-1 w-[70px]"
-                  />
-                </td>
-                <td className="p-2">
-                  <input
-                    type="number"
-                    value={it.price}
-                    onChange={(e) =>
-                      updateItem(idx, "price", Number(e.target.value))
-                    }
-                    className="border p-1 w-[70px]"
-                  />
-                </td>
+                  {/* الكمية */}
+                  <td className="p-2 border">
+                    <input
+                      type="number"
+                      id={`qty-${index}`}
+                      min="1"
+                      value={item.qty || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          item.barcode,
+                          "qty",
+                          e.target.value || 1
+                        )
+                      }
+                      className="w-16 border rounded text-center"
+                    />
+                  </td>
 
-                {/* الخصم + نوع الخصم */}
-                <td className="p-2 flex gap-1 items-center">
-                  <input
-                    type="number"
-                    value={it.discount}
-                    onChange={(e) =>
-                      updateItem(idx, "discount", Number(e.target.value))
-                    }
-                    className="border p-1 w-[70px]"
-                  />
-                  <select
-                    value={discountType[idx] || "amount"}
-                    onChange={(e) =>
-                      setDiscountType((prev) => ({
-                        ...prev,
-                        [idx]: e.target.value,
-                      }))
-                    }
-                    className="border p-1 rounded"
-                  >
-                    <option value="amount">ج.م</option>
-                    <option value="percent">%</option>
-                  </select>
-                </td>
+                  {/* السعر */}
+                  <td className="p-2 border">
+                    <input
+                      type="number"
+                      id={`price-${index}`}
+                      min="1"
+                      value={item.price || 0}
+                      onChange={(e) =>
+                        handleItemChange(
+                          item.barcode,
+                          "price",
+                          e.target.value || 0
+                        )
+                      }
+                      className="w-16 border rounded text-center"
+                    />
+                  </td>
 
-                <td className="p-2">{formatCurrency(it.total)}</td>
-                <td className="p-2">
-                  <button
-                    className="bg-red-600 text-white px-2 py-1 rounded"
-                    onClick={() => removeRow(idx)}
-                  >
-                    حذف
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  {/* الخصم + نوع الخصم */}
+                  <td className="p-2 border flex items-center gap-1">
+                    <input
+                      type="number"
+                      id={`discount-${index}`}
+                      min="0"
+                      value={item.discount || 0}
+                      onChange={(e) =>
+                        handleItemChange(
+                          item.barcode,
+                          "discount",
+                          e.target.value || 0
+                        )
+                      }
+                      className="w-16 border rounded text-center"
+                    />
+                    <select
+                      id={`discountType-${index}`}
+                      value={item.discountType || "value"}
+                      onChange={(e) =>
+                        handleItemChange(
+                          item.barcode,
+                          "discountType",
+                          e.target.value
+                        )
+                      }
+                      className="border rounded px-1 py-0.5 text-sm"
+                    >
+                      <option value="value">ج.م</option>
+                      <option value="percent">%</option>
+                    </select>
+                  </td>
+
+                  {/* الإجمالي */}
+                  <td className="p-2 border font-semibold text-blue-700">
+                    {total > 0 ? total.toFixed(2) : ""}
+                  </td>
+
+                  {/* إجراء */}
+                  <td className="p-2 border text-center">
+                    <Button
+                      type="button"
+                      onClick={() => handleDeleteItem(item.barcode)}
+                      className="!w-[30px] !h-[30px] !rounded-full !min-w-[30px] !text-[rgba(0,0,0,0.8)] btn-red"
+                    >
+                      x
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
-        <Button className="btn-blue " onClick={addRow}>
-          + إضافة صنف
-        </Button>
-      </section>
+        {/* زر لإضافة صف جديد يدويًا */}
+        <div className="mt-3">
+          <Button
+            type="button"
+            onClick={() =>
+              setCartItems((prev) => [
+                ...prev,
+                { barcode: "", name: "", price: 0, qty: 0, discount: 0 },
+              ])
+            }
+            className="btn-blue text-white"
+          >
+            إضافة صنف جديد
+          </Button>
+        </div>
+      </div>
 
-      {/* Totals + Payment method */}
-      <section className="bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] p-4 mb-4 rounded-md">
-        <p>
-          الإجمالي : <strong>{formatCurrency(totals.subtotal)}</strong>
-        </p>
-        <p>
-          الخصم على الأصناف :{" "}
-          <strong>{formatCurrency(totals.discounts)}</strong>
-        </p>
+      {/* إجمالي الفاتورة */}
+      <div className="bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] p-4 rounded-md mt-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* العمود الأول */}
+          <div>
+            <p>
+              <strong>عدد الأصناف:</strong> {totalItems}
+            </p>
+            <p>
+              <strong>إجمالي المبلغ قبل الخصم:</strong> {subtotal.toFixed(2)}{" "}
+              ج.م
+            </p>
+            <p>
+              <strong>إجمالي الخصومات (لكل منتج):</strong>{" "}
+              {totalDiscount.toFixed(2)} ج.م
+            </p>
+          </div>
 
-        {/* 🔹 خصم على الإجمالي */}
-        <div className="space-y-2">
-          <label className="font-semibold">خصم :</label>
-          <div className="flex flex-wrap items-center gap-2">
-            <input
-              type="number"
-              min="0"
-              value={globalDiscountValue}
-              onChange={(e) => setGlobalDiscountValue(Number(e.target.value))}
-              className="border p-2 w-[100px] rounded"
-              placeholder="القيمة"
-            />
-            <select
-              value={globalDiscountType}
-              onChange={(e) => setGlobalDiscountType(e.target.value)}
-              className="border p-2 rounded"
-            >
-              <option value="amount">ج.م</option>
-              <option value="percent">%</option>
-            </select>
-            {/* 🔸 سبب الخصم */}
-            <input
-              type="text"
-              value={globalDiscountReason}
-              onChange={(e) => setGlobalDiscountReason(e.target.value)}
-              className="border p-2 flex-1 min-w-[200px] rounded"
-              placeholder="سبب الخصم (اختياري)"
-            />
+          {/* العمود الثاني (الخصم العام) */}
+          <div className="bg-white border rounded-md p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <label htmlFor="generalDiscount" className="font-semibold">
+                الخصم العام:
+              </label>
+              <input
+                type="number"
+                name="generalDiscount"
+                id="generalDiscount"
+                value={formData.generalDiscount || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    generalDiscount: Number(e.target.value),
+                  }))
+                }
+                className="border rounded px-2 py-1 w-24 text-center"
+              />
+              <select
+                id="generalDiscountType"
+                value={formData.generalDiscountType || "value"}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    generalDiscountType: e.target.value,
+                  }))
+                }
+                className="border rounded px-2 py-1"
+              >
+                <option value="value">مبلغ</option>
+                <option value="percent">نسبة %</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="discountReason" className="font-semibold">
+                سبب الخصم:
+              </label>
+              <input
+                type="text"
+                name="discountReason"
+                id="discountReason"
+                value={formData.discountReason || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    discountReason: e.target.value,
+                  }))
+                }
+                className="border rounded px-2 py-1 w-full"
+                placeholder="اكتب سبب الخصم..."
+              />
+            </div>
           </div>
         </div>
 
-        {/* حساب الصافي بعد الخصم */}
-        <p className="text-primary text-[18px]">
-          الصافي :
-          <strong>
-            {formatCurrency(
-              globalDiscountType === "percent"
-                ? totals.grandTotal -
-                    (totals.grandTotal * (globalDiscountValue || 0)) / 100
-                : totals.grandTotal - (globalDiscountValue || 0)
-            )}
-          </strong>
-        </p>
+        {/* الصافي */}
+        <div className="mt-4 bg-blue-50 border border-blue-200 p-3 rounded-md">
+          <p className="font-bold text-blue-800 text-lg">
+            الصافي المستحق للدفع: {netTotal.toFixed(2)} ج.م
+          </p>
+        </div>
 
         {/* طريقة الدفع */}
-        <div className="mt-3 space-y-3">
-          <div>
-            <label className="font-semibold">طريقة الدفع :</label>
+        <div className="mt-4 grid md:grid-cols-2 gap-4">
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold">طريقة الدفع:</h2>
             <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              className="border p-2 ml-2 rounded"
+              id="paymentMethod"
+              value={formData.paymentMethod || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  paymentMethod: e.target.value,
+                }))
+              }
+              className="border rounded px-2 py-1"
             >
-              <option value="cash">نقدي</option>
-              <option value="visa">فيزا</option>
-              <option value="credit">آجل</option>
+              <option value="نقدي">نقدي</option>
+              <option value="فيزا">فيزا</option>
+              <option value="آجل">آجل</option>
             </select>
           </div>
 
-          {/* المبلغ المدفوع */}
-          {paymentMethod === "credit" ? (
-            <div>
-              <label className="font-semibold">المبلغ المدفوع :</label>
+          {formData.paymentMethod === "آجل" && (
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold">المبلغ المدفوع الآن:</h2>
               <input
                 type="number"
-                min="0"
-                className="border p-2 ml-2 rounded w-[150px]"
-                value={paidAmount}
-                onChange={(e) => setPaidAmount(Number(e.target.value))}
+                name="paidAmount"
+                value={formData.paidAmount || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    paidAmount: Number(e.target.value),
+                  }))
+                }
+                className="border rounded px-2 py-1 w-32 text-center"
               />
-              <p className="mt-2">
-                المتبقي :
-                <strong>
-                  {formatCurrency(
-                    Math.max(
-                      0,
-                      (globalDiscountType === "percent"
-                        ? totals.grandTotal -
-                          (totals.grandTotal * (globalDiscountValue || 0)) / 100
-                        : totals.grandTotal - (globalDiscountValue || 0)) -
-                        paidAmount
-                    )
-                  )}
-                </strong>
-              </p>
-            </div>
-          ) : (
-            <div>
-              <p
-                className={`mt-2 flex gap-2 items-center ${
-                  paymentMethod === "cash" ? "text-green-600 font-bold" : ""
-                }`}
-              >
-                المبلغ المدفوع :
-                <strong>
-                  {formatCurrency(
-                    globalDiscountType === "percent"
-                      ? totals.grandTotal -
-                          (totals.grandTotal * (globalDiscountValue || 0)) / 100
-                      : totals.grandTotal - (globalDiscountValue || 0)
-                  )}
-                </strong>
-              </p>
+              <span className="text-gray-600">
+                المتبقي: {remaining.toFixed(2)} ج.م
+              </span>
             </div>
           )}
         </div>
-      </section>
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        <button
-          onClick={handleSave}
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          حفظ الفاتورة
-        </button>
-        <button
-          onClick={() => window.print()}
-          className="bg-gray-600 text-white px-4 py-2 rounded"
-        >
-          طباعة
-        </button>
       </div>
+
+      {/* ✅ أزرار الحفظ والطباعة */}
+      <div className="flex justify-end gap-3 mt-6 print:hidden mb-5">
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleSubmit}
+          className="!bg-green-600 !text-white !px-5"
+        >
+          حفظ وطباعة الفاتورة
+        </Button>
+
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={handleCancel}
+          className="!border-red-500 !text-red-500 !px-5"
+        >
+          إلغاء
+        </Button>
+      </div>
+
+      {/* نسخة الطباعة الحرارية  */}
+
+      {invoiceData.items.length > 0 && (
+        <PrintInvoice invoiceData={invoiceData} />
+      )}
+
+      {/* نموذج إضافة عميل جديد */}
+      <AddClient
+        open={openClientModal}
+        onClose={handleClose}
+        onSave={handleAddClient}
+      />
     </>
   );
-};
+}
 
-export default InvoicePage;
+export default AddInvoice;

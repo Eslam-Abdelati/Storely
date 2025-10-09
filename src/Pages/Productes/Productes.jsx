@@ -153,7 +153,7 @@ function Productes() {
     <>
       {/* Header */}
       <div className="flex items-center justify-between py-0">
-        <h2 className="text-[22px] font-[600] text-[rgb(30,64,175)]">
+        <h2 className="text-[22px] font-[600] text-[#1e40af]">
           إدارة المنتجات
         </h2>
 

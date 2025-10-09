@@ -15,7 +15,7 @@ const today = new Date().toLocaleDateString("ar-EG", {
 function Dashboard() {
   return (
     <>
-      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] flex items-center mb-5 justify-between rounded-md">
+      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] shadow-sm flex items-center mb-5 justify-between rounded-md">
         <div className="info w-full">
           <div className="flex items-center justify-between w-full">
             <h1 className="text-[18px] lg:text-[20px] font-bold leading-8 lg:leading-10">

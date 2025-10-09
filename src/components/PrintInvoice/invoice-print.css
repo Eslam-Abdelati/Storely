@@ -1,5 +1,4 @@
 @media print {
-  /* إخفاء كل العناصر خارج منطقة الطباعة */
   body * {
     visibility: hidden !important;
   }
@@ -14,11 +13,12 @@
     left: 0;
     top: 0;
     width: 100%;
+    padding: 10mm !important; /* يبعد النص قليلاً عن الأطراف */
     background: #ffffff !important;
     color: #000 !important;
+    box-sizing: border-box !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    z-index: 9999 !important;
   }
 
   html,
@@ -27,60 +27,28 @@
     color: #000 !important;
   }
 
-  /* ===== الجدول ===== */
   table {
     width: 100%;
     border-collapse: collapse !important;
-    border: 1px solid #000 !important; /* حد خارجي */
-    background: #ffffff !important;
+    border: 1px solid #000 !important;
+    background: #fff !important;
     page-break-inside: auto;
   }
 
-  /* ===== رأس الجدول ===== */
   thead {
     display: table-header-group;
     background: #e5e5e5 !important;
   }
 
-  /* جعل كل الخلايا بدون حدود داخلية */
   thead th {
     border: none !important;
     padding: 6px 8px !important;
   }
 
-  /* الحد الخارجي فقط للهيدر */
-  thead tr:first-child th:first-child {
-    border-top: 1px solid #000 !important;
-    /* border-left: 1px solid #000 !important; */
-  }
-
-  thead tr:first-child th:last-child {
-    border-top: 1px solid #000 !important;
-    /* border-right: 1px solid #000 !important; */
-  }
-
-  /* thead tr:last-child th:first-child {
-    border-left: 1px solid #000 !important;
-  }
-
-  thead tr:last-child th:last-child {
-    border-right: 1px solid #000 !important;
-  } */
-
-  /* الحد السفلي أسفل الهيدر */
-  thead tr:last-child th {
-    border-bottom: 1px solid #000 !important;
-  }
-
-  /* ===== جسم الجدول ===== */
   tbody td {
-    border: 1px solid #000 !important; /* حدود عادية */
+    border: 1px solid #000 !important;
     padding: 4px 6px !important;
     background: #fff !important;
-  }
-
-  tbody tr:last-child td {
-    border-bottom: 1px solid #000 !important;
   }
 
   tr {
@@ -88,7 +56,6 @@
     page-break-after: auto;
   }
 
-  /* إزالة أي خلفيات أو ظلال من الحاويات */
   .app,
   .page,
   .content,
@@ -98,7 +65,7 @@
   }
 
   @page {
-    size: auto;
-    margin: 10mm;
+    size: 80mm auto; /* لو تطبع تيكت حراري */
+    margin: 0; /* يمنع القص */
   }
 }

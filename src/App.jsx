@@ -17,9 +17,9 @@ import PosShifts from "./Pages/PosShifts/PosShifts";
 import Pos from "./Pages/Pos/Pos";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { useState } from "react";
-import AddInvoice from "./Pages/AddInvoice/AddInvoice";
-import AddInv from "./Pages/AddInvoice/AddInv";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
+import AddInvoice from "./Pages/AddInvoice/AddInvoice";
+import Invoices from "./Pages/Invoices/Invoices";
 
 const theme = createTheme({
   typography: {
@@ -69,8 +69,8 @@ function App() {
             <Route path="product/:id" element={<ProductDetails />} />
             <Route path="product/label" element={<ProductLabel />} />
             <Route path="category" element={<Category />} />
-            {/* <Route path="invoices/add-invoice" element={<AddInvoice />} /> */}
-            <Route path="invoices/add-invoice" element={<AddInv />} />
+            <Route path="invoices" element={<Invoices />} />
+            <Route path="invoices/add-invoice" element={<AddInvoice />} />
             <Route path="pos_shifts" element={<PosShifts />} />
             <Route path="pos" element={<Pos />} />
           </Route>
