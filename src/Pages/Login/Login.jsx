@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import bgImage from "../../assets/patern.webp";
-import logo from "../../assets/logo.jpg";
 import logo2 from "../../assets/icon.svg";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { MdLogin } from "react-icons/md";
-import { FaRegUser } from "react-icons/fa";
+
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -40,66 +38,40 @@ function Login() {
   };
 
   return (
-    <section className="bg-white w-full">
-      <header className="w-full static lg:fixed top-0 left-0 px-4 py-3 flex items-center justify-center sm:justify-between z-50">
-        <Link to="/">
-          <img src={logo} alt="logo" className="w-[200px]" />
-        </Link>
-
-        <div className="flex items-center gap-0">
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <Button className="!uppercase !rounded-full !text-[rgba(0,0,0,0.8)] !px-5 flex gap-1">
-              <MdLogin className="text-[18px]" />
-              تسجيل الدخول
-            </Button>
-          </NavLink>
-
-          <NavLink
-            to="/sign-up"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <Button className="!uppercase !rounded-full !text-[rgba(0,0,0,0.8)] !px-5 flex gap-1">
-              <FaRegUser className="text-[15px]" />
-              ابدأالاستخدام مجانا
-            </Button>
-          </NavLink>
-        </div>
-      </header>
-
+    <section className="w-full min-h-screen">
+      {/* خلفية */}
       <img
         src={bgImage}
         alt="background pattern"
-        className="w-full fixed top-0 left-0 opacity-5"
+        className="w-full fixed top-0 left-0 opacity-5 pointer-events-none"
       />
 
-      <div className="loginBox card w-full md:w-[600px] h-auto pb-20 mx-auto  lg:pt-20 relative z-50">
-        <div className="text-center">
-          <img src={logo2} alt="logo2" className="m-auto" />
+      {/* الصندوق الرئيسي */}
+      <div className="loginBox card w-[95%] sm:w-[90%] md:w-[600px] h-auto pb-10 sm:pb-16 mx-auto mt-5 mb-10 sm:mt-10 pt-6 sm:pt-10 relative bg-white rounded-2xl shadow-lg">
+        <div className="text-center px-3">
+          <img
+            src={logo2}
+            alt="logo2"
+            className="m-auto w-[70px] sm:w-[90px]"
+          />
+
           <h1 className="text-center text-[18px] sm:text-[35px] font-[600] my-4">
             مرحبًا بعودتك!
             <br />
             تسجيل الدخول.
           </h1>
 
-          <form className="w-full px-8 mt-10 mb-20" onSubmit={handleSubmit}>
+          <form className="w-full px-4 sm:px-8 mt-10" onSubmit={handleSubmit}>
             <div className="form-group mb-5 w-full">
               <label
                 htmlFor="email"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
                 البريد الالكتروني
                 <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-[rgba(0,0,0,0.7)] focus:outline-none px-3"
                 id="email"
                 name="email"
                 aria-label="Email"
@@ -107,33 +79,30 @@ function Login() {
                 onChange={handleChange}
                 autoComplete="email"
                 required
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
               />
             </div>
 
             <div className="form-group mb-5 w-full relative">
               <label
                 htmlFor="password"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
-                كلمة السر
-                <span className="text-red-500">*</span>
+                كلمة السر <span className="text-red-500">*</span>
               </label>
               <input
                 type={isShowPass ? "text" : "password"}
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-[rgba(0,0,0,0.7)] focus:outline-none px-3"
                 id="password"
                 name="password"
-                aria-label="Password"
                 value={formData.password}
                 onChange={handleChange}
                 autoComplete="new-password"
                 required
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
               />
-              <Button
+               <Button
                 className="!absolute top-[50%] left-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
-                onClick={() => {
-                  setIsShowPass(!isShowPass);
-                }}
+                onClick={() => setIsShowPass(!isShowPass)}
               >
                 {isShowPass ? (
                   <IoMdEyeOff className="text-[20px] opacity-75" />

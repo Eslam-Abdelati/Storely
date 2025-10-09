@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import bgImage from "../../assets/patern.webp";
-import logo from "../../assets/logo.jpg";
 import logo2 from "../../assets/icon.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { IoMdEye } from "react-icons/io";
-import { IoMdEyeOff } from "react-icons/io";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { MuiTelInput } from "mui-tel-input";
-import { GrFormNext } from "react-icons/gr";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 
@@ -15,8 +12,8 @@ function SignUp2() {
   const navigate = useNavigate();
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     FirstName: "",
     LastName: "",
@@ -26,7 +23,6 @@ function SignUp2() {
     confirmPassword: "",
   });
 
-  // تحديث أي input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -35,7 +31,6 @@ function SignUp2() {
     }));
   };
 
-  // تحديث التليفون من مكتبة MuiTelInput
   const handlePhoneChange = (newValue) => {
     setFormData((prev) => ({
       ...prev,
@@ -43,7 +38,6 @@ function SignUp2() {
     }));
   };
 
-  // عند عمل submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.phone) {
@@ -52,7 +46,6 @@ function SignUp2() {
     }
 
     setLoading(true);
-
     console.log("Form Submitted: ", formData);
 
     setTimeout(() => {
@@ -63,48 +56,43 @@ function SignUp2() {
   };
 
   return (
-    <section className="bg-white w-full">
-      <header className="w-full static lg:fixed top-0 left-0 px-4 py-3 flex items-center justify-center sm:justify-between z-50">
-        <Link to="/">
-          <img src={logo} alt="logo" className="w-[200px]" />
-        </Link>
-
-        <div className="flex items-center gap-0">
-          <Link to="/sign-up">
-            <Button className="!uppercase !rounded-full !text-[rgba(0,0,0,0.8)] !px-5 flex gap-1">
-              <GrFormNext className="text-[20px]" />
-              العودة
-            </Button>
-          </Link>
-        </div>
-      </header>
-
+    <section className="w-full min-h-screen">
+      {/* خلفية */}
       <img
         src={bgImage}
         alt="background pattern"
-        className="w-full fixed top-0 left-0 opacity-5"
+        className="w-full fixed top-0 left-0 opacity-5 pointer-events-none"
       />
 
-      <div className="loginBox card w-full md:w-[600px] h-auto pb-20 mx-auto pt-5 lg:pt-20 relative z-50">
-        <div className="text-center">
-          <img src={logo2} alt="logo2" className="m-auto" />
-          <h1 className="text-center text-[18px] sm:text-[35px] font-[600] mt-4">
+      {/* الصندوق الرئيسي */}
+      <div className="loginBox card w-[95%] sm:w-[90%] md:w-[600px] h-auto pb-10 sm:pb-16 mx-auto mt-5 mb-10 sm:mt-10 pt-6 sm:pt-10 relative bg-white rounded-2xl shadow-lg">
+        <div className="text-center px-3">
+          <img
+            src={logo2}
+            alt="logo2"
+            className="m-auto w-[70px] sm:w-[90px]"
+          />
+
+          <h1 className="text-center text-[20px] sm:text-[28px] md:text-[35px] font-semibold mt-4 leading-tight">
             معلومات
           </h1>
-          <span>من فضلك اكمل البيانات التالية لبدء استخدام النظام:</span>
-          <form className="w-full px-8 mt-10" onSubmit={handleSubmit}>
-            <div className="form-group w-full flex items-center justify-between gap-4">
-              <div className="form-group mb-4 w-[50%]">
+          <span className="text-sm sm:text-base">
+            من فضلك اكمل البيانات التالية لبدء استخدام النظام:
+          </span>
+
+          <form className="w-full px-4 sm:px-8 mt-10" onSubmit={handleSubmit}>
+            {/* الاسم الأول والأخير */}
+            <div className="form-group w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="form-group mb-4 w-full sm:w-[50%]">
                 <label
                   htmlFor="FirstName"
-                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
                 >
-                  الإسم الأول
-                  <span className="text-red-500">*</span>
+                  الإسم الأول <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-sm sm:text-base"
                   id="FirstName"
                   name="FirstName"
                   aria-label="FirstName"
@@ -115,13 +103,12 @@ function SignUp2() {
                 />
               </div>
 
-              <div className="form-group mb-4 w-[50%]">
+              <div className="form-group mb-4 w-full sm:w-[50%]">
                 <label
                   htmlFor="LastName"
-                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
                 >
-                  الإسم الأخير
-                  <span className="text-red-500">*</span>
+                  الإسم الأخير <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -131,18 +118,18 @@ function SignUp2() {
                   onChange={handleChange}
                   autoComplete="family-name"
                   required
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
                 />
               </div>
             </div>
 
+            {/* البريد الإلكتروني */}
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="email"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
-                البريد الالكتروني
-                <span className="text-red-500">*</span>
+                البريد الالكتروني <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -152,17 +139,17 @@ function SignUp2() {
                 onChange={handleChange}
                 autoComplete="email"
                 required
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
               />
             </div>
 
-            <div className="form-group mb-4 w-full ">
+            {/* رقم الهاتف */}
+            <div className="form-group mb-4 w-full">
               <label
                 htmlFor="phone"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
-                رقم الهاتف
-                <span className="text-red-500">*</span>
+                رقم الهاتف <span className="text-red-500">*</span>
               </label>
               <MuiTelInput
                 id="phone"
@@ -177,13 +164,13 @@ function SignUp2() {
               />
             </div>
 
+            {/* كلمة المرور */}
             <div className="form-group mb-4 w-full relative">
               <label
                 htmlFor="password"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
-                كلمة السر
-                <span className="text-red-500">*</span>
+                كلمة السر <span className="text-red-500">*</span>
               </label>
               <input
                 type={isShowPass ? "text" : "password"}
@@ -193,13 +180,11 @@ function SignUp2() {
                 onChange={handleChange}
                 autoComplete="new-password"
                 required
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
               />
               <Button
                 className="!absolute top-[50%] left-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
-                onClick={() => {
-                  setIsShowPass(!isShowPass);
-                }}
+                onClick={() => setIsShowPass(!isShowPass)}
               >
                 {isShowPass ? (
                   <IoMdEyeOff className="text-[20px] opacity-75" />
@@ -209,13 +194,13 @@ function SignUp2() {
               </Button>
             </div>
 
+            {/* تأكيد كلمة المرور */}
             <div className="form-group mb-4 w-full relative">
               <label
                 htmlFor="confirmPassword"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
+                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
               >
-                تأكيد كلمة السر
-                <span className="text-red-500">*</span>
+                تأكيد كلمة السر <span className="text-red-500">*</span>
               </label>
               <input
                 type={isShowConfirmPassword ? "text" : "password"}
@@ -225,13 +210,13 @@ function SignUp2() {
                 onChange={handleChange}
                 autoComplete="new-password"
                 required
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md px-3 focus:border-primary focus:outline-none text-sm sm:text-base"
               />
               <Button
                 className="!absolute top-[50%] left-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
-                onClick={() => {
-                  setIsShowConfirmPassword(!isShowConfirmPassword);
-                }}
+                onClick={() =>
+                  setIsShowConfirmPassword(!isShowConfirmPassword)
+                }
               >
                 {isShowConfirmPassword ? (
                   <IoMdEyeOff className="text-[20px] opacity-75" />
@@ -241,11 +226,12 @@ function SignUp2() {
               </Button>
             </div>
 
+            {/* زر التسجيل */}
             <div className="flex items-center w-full mt-3 mb-3">
               <Button
                 type="submit"
                 disabled={loading}
-                className="btn-blue btn-lg w-full"
+                className="btn-blue btn-lg w-full text-[16px] sm:text-[18px] h-[50px] sm:h-[55px]"
               >
                 {loading ? (
                   <CircularProgress size={28} color="inherit" />

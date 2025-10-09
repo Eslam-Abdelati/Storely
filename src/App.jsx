@@ -7,7 +7,6 @@ import Login from "./Pages/Login/Login";
 import Layot from "./Pages/Layot/Layot";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import SignUp2 from "./Pages/SignUp/SignUp2";
-import SignUp from "./Pages/SignUp/SignUp";
 import ForgotPassword from "./Pages/ForgotPassword/Forgotpassword";
 import VerifyOTP from "./Pages/VerifyOtp/VerifyOtp";
 import Productes from "./Pages/Productes/Productes";
@@ -19,6 +18,7 @@ import { useState } from "react";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
 import AddInvoice from "./Pages/AddInvoice/AddInvoice";
 import Invoices from "./Pages/Invoices/Invoices";
+import FirstSignUp from "./Pages/SignUp/FirstSignUp";
 
 const theme = createTheme({
   typography: {
@@ -55,7 +55,7 @@ function App() {
 
           {/* صفحات مستقلة */}
           <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up" element={<FirstSignUp />} />
           <Route path="/first_settings" element={<SignUp2 />} />
           <Route path="/verify" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

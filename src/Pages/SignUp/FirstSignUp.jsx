@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import bgImage from "../../assets/patern.webp";
-import logo from "../../assets/logo.jpg";
+// import logo from "../../assets/logo.jpg";
 import logo2 from "../../assets/icon.svg";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { MdLogin } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
-
 import CircularProgress from "@mui/material/CircularProgress";
 import UploadBox from "../../components/UploadBox/UploadBox";
 import { toast } from "react-toastify";
@@ -30,10 +29,9 @@ const countries = [
   { code: "YE", name: "اليمن" },
 ];
 
-function SignUp() {
+function FirstSignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  // state للفورم كله
   const [formData, setFormData] = useState({
     companyName: "",
     businessActivity: "",
@@ -55,7 +53,6 @@ function SignUp() {
     }));
   };
 
-  // function لتحديث الصورة
   const handleFileChange = (file) => {
     setFormData((prev) => ({
       ...prev,
@@ -74,68 +71,48 @@ function SignUp() {
       navigate("/first_settings");
     }, 2000);
   };
+
   return (
-    <section className="bg-white w-full">
-      <header className="w-full static lg:fixed top-0 left-0 px-4 py-3 flex items-center justify-center sm:justify-between z-50">
-        <Link to="/">
-          <img src={logo} alt="logo" className="w-[200px]" />
-        </Link>
+    <section className=" w-full min-h-screen ">
+     
 
-        <div className="flex items-center gap-0">
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <Button className="!uppercase !rounded-full !text-[rgba(0,0,0,0.8)] !px-5 flex gap-1">
-              <MdLogin className="text-[18px]" />
-              تسجيل الدخول
-            </Button>
-          </NavLink>
-
-          <NavLink
-            to="/sign-up"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <Button className="!uppercase !rounded-full !text-[rgba(0,0,0,0.8)] !px-5 flex gap-1">
-              <FaRegUser className="text-[15px]" />
-              ابدأالاستخدام مجانا
-            </Button>
-          </NavLink>
-        </div>
-      </header>
-
+      {/* Background pattern */}
       <img
         src={bgImage}
         alt="background pattern"
-        className="w-full fixed top-0 left-0 opacity-5"
+        className="w-full fixed top-0 left-0 opacity-5 pointer-events-none"
       />
 
-      <div className="loginBox card w-full md:w-[600px] h-auto pb-20 mx-auto pt-5 lg:pt-20 relative z-50">
-        <div className="text-center">
-          <img src={logo2} alt="logo2" className="m-auto" />
-          <h1 className="text-center text-[18px] sm:text-[35px] font-[600] mt-4">
+      {/* Main form box */}
+      <div className="loginBox card w-[95%] sm:w-[90%] md:w-[600px] h-auto pb-10 sm:pb-16 mx-auto mt-5 mb-10 sm:mt-10 pt-6 sm:pt-10 relative bg-white rounded-2xl shadow-lg">
+        <div className="text-center px-3">
+          <img
+            src={logo2}
+            alt="logo2"
+            className="m-auto w-[70px] sm:w-[90px]"
+          />
+          <h1 className="text-center text-[20px] sm:text-[28px] md:text-[35px] font-semibold mt-4 leading-relaxed">
             مرحبا بك في <br />
             <span className="text-primary">
-              النسخه التجريبي لبرنامج فوتر للمبيعات
+              النسخة التجريبية لبرنامج ستورلي للمبيعات
             </span>
           </h1>
 
-          <form className="w-full px-8 mt-10" onSubmit={handleSubmit}>
+          <form
+            className="w-full px-4 sm:px-6 md:px-8 mt-8 sm:mt-10"
+            onSubmit={handleSubmit}
+          >
+            {/* اسم الشركة */}
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="companyName"
                 className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
               >
-                اسم الشركة
-                <span className="text-red-500">*</span>
+                اسم الشركة <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                 id="companyName"
                 name="companyName"
                 aria-label="companyName"
@@ -157,7 +134,7 @@ function SignUp() {
               <select
                 id="businessActivity"
                 name="businessActivity"
-                className="w-full h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
                 value={formData.businessActivity}
                 onChange={handleChange}
                 required
@@ -168,16 +145,15 @@ function SignUp() {
                 <option value="Cafe">كافيه</option>
                 <option value="Clothing">ملابس</option>
                 <option value="Shoes & Bags">شنط وأحذية</option>
-                <option value="Mobile & Accessories"> موبايلات واكسسوار</option>
+                <option value="Mobile & Accessories">موبايلات واكسسوار</option>
                 <option value="Electronics">الكترونيات</option>
                 <option value="Home Appliances">أجهزة منزلية</option>
                 <option value="Furniture">أثاث</option>
                 <option value="Stationery">أدوات مكتبية</option>
-                <option value="Other">اخري</option>
+                <option value="Other">أخرى</option>
               </select>
             </div>
 
-            {/* إذا اختار "آخر" */}
             {formData.businessActivity === "Other" && (
               <div className="form-group mb-4">
                 <label
@@ -191,7 +167,7 @@ function SignUp() {
                   type="text"
                   id="customBusinessActivity"
                   name="customBusinessActivity"
-                  className="w-full h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
                   value={formData.customBusinessActivity}
                   onChange={handleChange}
                   required
@@ -199,18 +175,18 @@ function SignUp() {
               </div>
             )}
 
+            {/* الدولة */}
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="country"
                 className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
               >
-                الدولة
-                <span className="text-red-500">*</span>
+                الدولة <span className="text-red-500">*</span>
               </label>
               <select
                 id="country"
                 name="country"
-                className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                 value={formData.country}
                 onChange={handleChange}
                 required
@@ -225,18 +201,18 @@ function SignUp() {
               </select>
             </div>
 
-            <div className="form-group mb-4 w-full flex items-center justify-between gap-4">
-              <div className="form-group mb-4">
+            {/* المدينة والمنطقة والرمز */}
+            <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="form-group w-full sm:w-1/3">
                 <label
                   htmlFor="city"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
                 >
-                  المدينة
-                  <span className="text-red-500">*</span>
+                  المدينة <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                   id="city"
                   name="city"
                   aria-label="city"
@@ -246,27 +222,27 @@ function SignUp() {
                   autoComplete="address-level1"
                 />
               </div>
-              <div className="form-group mb-4">
+
+              <div className="form-group w-full sm:w-1/3">
                 <label
                   htmlFor="region"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
                 >
-                  المنطقة
-                  <span className="text-red-500">*</span>
+                  المنطقة <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                   id="region"
                   name="region"
                   aria-label="region"
                   value={formData.region}
                   onChange={handleChange}
                   required
-                  autoComplete="address-level1"
                 />
               </div>
-              <div className="form-group mb-4 ">
+
+              <div className="form-group w-full sm:w-1/3">
                 <label
                   htmlFor="zipcode"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
@@ -275,7 +251,7 @@ function SignUp() {
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                   id="zipcode"
                   name="zipcode"
                   aria-label="zipcode"
@@ -286,8 +262,9 @@ function SignUp() {
               </div>
             </div>
 
-            <div className="form-group mb-4 w-full flex items-center justify-between gap-4">
-              <div className="form-group mb-4 w-[50%]">
+            {/* السجل التجاري والبطاقة */}
+            <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="form-group w-full sm:w-1/2">
                 <label
                   htmlFor="tradeRecord"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
@@ -296,17 +273,15 @@ function SignUp() {
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                   id="tradeRecord"
                   name="tradeRecord"
-                  aria-label="tradeRecord"
                   value={formData.tradeRecord}
                   onChange={handleChange}
-                  autoComplete="off"
                 />
               </div>
 
-              <div className="form-group mb-4 w-[50%]">
+              <div className="form-group w-full sm:w-1/2">
                 <label
                   htmlFor="taxCard"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
@@ -315,22 +290,22 @@ function SignUp() {
                 </label>
                 <input
                   type="text"
-                  className="w-full h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                   id="taxCard"
                   name="taxCard"
-                  aria-label="taxCard"
                   value={formData.taxCard}
                   onChange={handleChange}
-                  autoComplete="off"
                 />
               </div>
             </div>
+
+            {/* اللوجو */}
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="logo"
                 className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1"
               >
-                لوجو الشركه
+                لوجو الشركة
               </label>
               <UploadBox
                 id="logo"
@@ -339,21 +314,23 @@ function SignUp() {
               />
             </div>
 
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[14px]"> هل لديك حساب بالفعل ؟</span>
+            {/* تسجيل الدخول */}
+            <div className="flex items-center justify-between mb-4 text-sm sm:text-base">
+              <span>هل لديك حساب بالفعل؟</span>
               <Link
-                className="!text-primary font-[700] text-[15px] hover:underline hover:!text-gray-700 cursor-pointer"
+                className="!text-primary font-[700] hover:underline hover:text-gray-700 cursor-pointer"
                 to="/login"
               >
                 تسجيل الدخول
               </Link>
             </div>
 
+            {/* زر التالي */}
             <div className="flex items-center w-full mt-3 mb-3">
               <Button
                 type="submit"
                 disabled={loading}
-                className="btn-blue btn-lg w-full"
+                className="btn-blue btn-lg w-full h-[45px] sm:h-[50px] text-[14px] sm:text-[16px]"
               >
                 {loading ? (
                   <CircularProgress size={28} color="inherit" />
@@ -369,4 +346,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default FirstSignUp;
