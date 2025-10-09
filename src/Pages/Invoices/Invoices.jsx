@@ -127,7 +127,7 @@ function Invoices() {
       </div>
 
       {/*  الفلاتر */}
-      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] shadow-sm rounded-md">
+      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] shadow-sm rounded-md mb-5">
         <div className="flex items-center gap-2 w-full text-[#1e40af] mb-4">
           <h2 className="text-[18px] lg:text-[20px] font-bold ">بحث</h2>
           <IoSearch />
