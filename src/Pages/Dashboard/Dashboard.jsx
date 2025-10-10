@@ -1,37 +1,32 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import { FaPlus } from "react-icons/fa6";
 import StatsCard from "../../components/StatsCard/StatsCard";
-import OrderCart from "../../components/OrderCart/OrderCart";
-import ProductCart2 from "../../components/ProductCart2/ProductCart2";
 import RechartsCard from "../../components/RechartsCard/RechartsCard";
 
 const today = new Date().toLocaleDateString("ar-EG", {
-  weekday: "long", // يوم الأسبوع
+  weekday: "long",
   year: "numeric",
   month: "long",
   day: "numeric",
 });
+
 function Dashboard() {
   return (
     <>
-      <div className="w-full py-4 px-5 bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)] shadow-sm flex items-center mb-5 justify-between rounded-md">
-        <div className="info w-full">
-          <div className="flex items-center justify-between w-full">
-            <h1 className="text-[18px] lg:text-[20px] font-bold leading-8 lg:leading-10">
-              مرحبا
-              <span className="text-primary capitalize px-2">Eslam Amaar</span>
-            </h1>
-            <p className="text-primary">{"جلاكسي فون MGAPH05002"}</p>
-          </div>
-          <p className="text-[rgb(75,85,99)] mt-2">{today}</p>
+      {/* العنوان والترحيب */}
+      <div className="w-full py-4 px-5 bg-white/80 border border-blue-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 rounded-md">
+        <div>
+          <h1 className="text-[18px] sm:text-[20px] font-bold">
+            مرحبا
+            <span className="text-primary capitalize px-2">Eslam Amaar</span>
+          </h1>
+          <p className="text-gray-600 mt-1 text-[14px] sm:text-[15px]">{today}</p>
         </div>
+        <p className="text-primary text-[14px] sm:text-[15px] mt-2 sm:mt-0">
+          {"جلاكسي فون MGAPH05002"}
+        </p>
       </div>
 
       <StatsCard />
-
-      {/* <ProductCart2 /> */}
-      {/* <OrderCart /> */}
       <RechartsCard />
     </>
   );

@@ -151,38 +151,41 @@ function Productes() {
 
   return (
     <>
-      {/* Header */}
-      <div className="flex items-center justify-between py-0">
-        <h2 className="text-[22px] font-[600] text-[#1e40af]">
+      {/* 🔹 Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 py-2 sm:py-3 md:py-4">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[26px] font-semibold text-[#1e40af]">
           إدارة المنتجات
         </h2>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link to={"/app/category"}>
-            <Button className="btn-blue !text-white btn-sm flex items-center gap-2">
+            <Button className="btn-blue !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 py-1 sm:py-2">
               الفئات
             </Button>
           </Link>
           <Link to={"/app/add-product"}>
-            <Button className="btn-green !text-white btn-sm flex items-center gap-2">
-              <FaPlus className="text-[16px]" />
+            <Button className="btn-green !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 py-1 sm:py-2">
+              <FaPlus className="text-[14px] sm:text-[16px]" />
               إضافة صنف
             </Button>
           </Link>
         </div>
       </div>
-
       {/* Filters */}
       <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
-        <div className="flex items-center bg-white p-2 text-[rgb(30,64,175)] gap-1 shadow-sm ">
-          <h4 className="text-[16px] font-[600] mb-2 lg:mb-0">بحث</h4>
+        {/* Header */}
+        <div className="flex items-center bg-white p-2 text-[rgb(30,64,175)] gap-1 shadow-sm">
+          <h4 className="text-[16px] font-[600] mb-1 sm:mb-0">بحث</h4>
           <IoSearch />
         </div>
-        <div className="flex items-center  px-5 py-4">
+
+        {/* Form */}
+        <div className="px-5 py-4">
           <form className="w-full" onSubmit={handleSearch}>
-            <div className="w-full flex items-center justify-between gap-3 mb-4">
+            {/* الصف الأول */}
+            <div className="w-full flex flex-col sm:flex-row flex-wrap items-stretch justify-between gap-4 mb-4">
               {/* البحث بالاسم */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="searchByName"
                   className="text-sm font-semibold text-gray-700"
@@ -203,7 +206,7 @@ function Productes() {
               </div>
 
               {/* الفئة */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="selectCategory"
                   className="text-sm font-semibold text-gray-700"
@@ -227,7 +230,7 @@ function Productes() {
               </div>
 
               {/* الفئة الفرعية */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="selectSubCategory"
                   className="text-sm font-semibold text-gray-700"
@@ -251,9 +254,10 @@ function Productes() {
               </div>
             </div>
 
-            <div className="w-full flex items-center justify-between gap-3 mb-4">
+            {/* الصف الثاني */}
+            <div className="w-full flex flex-col sm:flex-row flex-wrap items-stretch justify-between gap-4 mb-4">
               {/* SKU */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="searchBySKU"
                   className="text-sm font-semibold text-gray-700"
@@ -274,7 +278,7 @@ function Productes() {
               </div>
 
               {/* الموردين */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="selectSupplier"
                   className="text-sm font-semibold text-gray-700"
@@ -298,7 +302,7 @@ function Productes() {
               </div>
 
               {/* المستودع */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="form-group flex-1 min-w-[250px] flex flex-col gap-2">
                 <label
                   htmlFor="selectStore"
                   className="text-sm font-semibold text-gray-700"
@@ -313,154 +317,128 @@ function Productes() {
                   }
                   onChange={handleSelectChange}
                   options={stores}
-                  placeholder="اختر المورد"
+                  placeholder="اختر المستودع"
                   isSearchable
                   autoComplete="off"
                 />
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="btn-blue !text-white btn-sm flex items-center gap-2"
-            >
-              بحث
-            </Button>
+            {/* زر البحث */}
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                className="btn-blue !text-white btn-sm flex items-center gap-2 w-full sm:w-auto justify-center"
+              >
+                بحث
+              </Button>
+            </div>
           </form>
         </div>
       </div>
 
       {/* جدول عرض النتائج */}
-      <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
-        <div className="relative overflow-x-auto mt-5">
-          {filteredProducts.length > 0 ? (
-            <table className="w-full text-sm text-left rtl:text-right dark:text-gray-400">
-              <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                <tr className="">
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    رقم الصنف
-                  </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    اسم الصنف
-                  </th>
+<div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] px-2 sm:px-3 md:px-4">
+  <div className="relative overflow-x-auto mt-4">
+    {filteredProducts.length > 0 ? (
+      <table className="w-full text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-left rtl:text-right text-gray-600">
+        <thead className="text-[11px] sm:text-[12px] md:text-[13px] uppercase bg-[#eef2f7] border-b border-[#c7c7c7] text-gray-700">
+          <tr>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">رقم الصنف</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">اسم الصنف</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">الكمية</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">السعر</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">سعر الشراء</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">الفئة</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">المورد</th>
+            <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">الإجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.map((product, index) => (
+            <tr
+              key={index}
+              className="odd:bg-white even:bg-gray-50 border-b hover:bg-gray-100 transition-colors"
+            >
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
+                <Link
+                  to={`/app/product/${product.id}`}
+                  className="text-gray-700 hover:!text-[#1e40af] transition-colors duration-200"
+                >
+                  {product.code}
+                </Link>
+              </td>
 
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    الكمية
-                  </th>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
+                <Link
+                  to={`/app/product/${product.id}`}
+                  className="text-gray-700 hover:!text-[#1e40af] transition-colors duration-200"
+                >
+                  {product.name}
+                </Link>
+              </td>
 
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    السعر
-                  </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    سعر الشراء
-                  </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    الفئة
-                  </th>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap text-center">
+                <div className="flex flex-col items-center gap-1">
+                  <Badge status="في المخزون" />
+                  {product.quantity}
+                </div>
+              </td>
 
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    المورد
-                  </th>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">{product.salePrice} ج.م</td>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">{product.purchasePrice} ج.م</td>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">{product.category}</td>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">{product.supplier}</td>
 
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                    الإجراء
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((Producte, index) => (
-                  <tr
-                    key={index}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 "
-                  >
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <Link
-                        to={"/app/product/1"}
-                        className=" hover:!text-primary"
-                      >
-                        {Producte.code}
-                      </Link>
-                    </td>
+              <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Link to={`/app/product/${product.id}`}>
+                    <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                      <FaRegEye className="text-[#10b981] text-[16px] sm:text-[20px]" />
+                    </Button>
+                  </Link>
+                  <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                    <AiOutlineEdit className="text-primary text-[16px] sm:text-[20px]" />
+                  </Button>
+                  <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                    <HiOutlineTrash className="text-[#f22c61] text-[16px] sm:text-[20px]" />
+                  </Button>
+                </div>
+              </td>
+            </tr>
+          ))}
 
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <Link
-                        to={"/app/product/1"}
-                        className=" hover:!text-primary"
-                      >
-                        {Producte.name}
-                      </Link>
-                    </td>
+          <tr>
+            <td
+              colSpan="2"
+              className="font-semibold px-2 sm:px-4 md:px-6 py-2 text-[#1e40af]"
+            >
+              إجمالي المنتجات
+            </td>
+            <td className="text-center font-semibold px-2 sm:px-4 md:px-6 py-2">
+              {filteredProducts.length}
+            </td>
+            <td
+              colSpan="2"
+              className="font-semibold px-2 sm:px-4 md:px-6 py-2 text-[#1e40af]"
+            >
+              إجمالي الشراء
+            </td>
+            <td colSpan="2" className="font-semibold px-2 sm:px-4 md:px-6 py-2">
+              {filteredProducts
+                .reduce((acc, p) => acc + p.purchasePrice * p.quantity, 0)
+                .toFixed(2)}{" "}
+              ج.م
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    ) : (
+      <p className="text-red-500 text-sm sm:text-base mt-3">لا يوجد منتجات مطابقة للبحث</p>
+    )}
+  </div>
+</div>
 
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="flex flex-col items-center">
-                        <Badge status="في المخزون" />
-                        {Producte.quantity}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      {Producte.salePrice} ج.م
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      {Producte.purchasePrice} ج.م
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      {Producte.category}
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      {Producte.supplier}
-                    </td>
-
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="flex items-center gap-1">
-                        <Link to="/app/product/1">
-                          <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                            <FaRegEye className="text-[#10b981] text-[20px] " />
-                          </Button>
-                        </Link>
-                        <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                          <AiOutlineEdit className="text-primary text-[20px] " />
-                        </Button>
-                        <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                          <HiOutlineTrash className="text-[#f22c61] text-[20px] " />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                  <td
-                    colSpan="2"
-                    className="font-semibold px-6 py-2 whitespace-nowrap text-[rgb(30,64,175)]"
-                  >
-                    إجمالي المنتجات
-                  </td>
-                  <td className="text-center font-semibold px-6 py-2 whitespace-nowrap">
-                    {filteredProducts.length}
-                  </td>
-                  <td
-                    colSpan="1"
-                    className="font-semibold px-6 py-2 whitespace-nowrap text-[rgb(30,64,175)]"
-                  >
-                    إجمالي الشراء
-                  </td>
-                  <td className="font-semibold px-6 py-2 whitespace-nowrap">
-                    {filteredProducts
-                      .reduce(
-                        (acc, product) =>
-                          acc + product.purchasePrice * product.quantity,
-                        0
-                      )
-                      .toFixed(2)}{" "}
-                    ج.م
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-red-500">لا يوجد منتجات مطابقة للبحث</p>
-          )}
-        </div>
-      </div>
     </>
   );
 }

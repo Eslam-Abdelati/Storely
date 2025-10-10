@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { GrLineChart } from "react-icons/gr";
@@ -28,47 +27,44 @@ const data = [
 
 function RechartsCard() {
   return (
-    <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.8)] border border-[rgb(219,234,254)]">
-      <div className="flex items-center px-5 py-5 gap-2">
-        <GrLineChart className="text-[25px] text-[rgb(30,64,175)]" />
-        <h2 className="text-[18px] text-[rgb(30,64,175)] font-[600] mb-2 lg:mb-0">
-          المبيعات
-        </h2>
+    <div className="card my-4 shadow-sm rounded-md bg-white/80 border border-blue-100">
+      <div className="flex items-center gap-2 px-4 sm:px-5 py-3 sm:py-5">
+        <GrLineChart className="text-[22px] sm:text-[25px] text-blue-800" />
+        <h2 className="text-[16px] sm:text-[18px] text-blue-800 font-[600]">المبيعات</h2>
       </div>
-      
-      <div className="flex items-center gap-5 px-5 py-5 pt-1">
-        <span className="flex items-center gap-1 text-[15px] cursor-pointer">
-          <span className="block w-[8px] h-[8px] rounded-full bg-green-600  "></span>
-          Total Sales
+
+      <div className="flex items-center gap-3 sm:gap-5 px-4 sm:px-5 pb-3">
+        <span className="flex items-center gap-1 text-[13px] sm:text-[15px] cursor-pointer">
+          <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
+          إجمالي المبيعات
         </span>
       </div>
 
-      {/* هنا اديته ارتفاع */}
-      <div className="w-full px-5">
-        <LineChart
-          data={data}
-          width={850}
-          height={300}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="none" />
-          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip />
-          <Legend />
-
-          <Line
-            type="monotone"
-            dataKey="TotalSales"
-            stroke="#82ca9d"
-            strokeWidth={3}
-          />
-        </LineChart>
+      {/* ✅ الرسم البياني الريسبونسيف */}
+      <div className="w-full h-[250px] sm:h-[320px] px-3 sm:px-5 pb-5">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={data}
+            margin={{
+              top: 5,
+              right: 10,
+              left: -10,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="TotalSales"
+              stroke="#82ca9d"
+              strokeWidth={3}
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

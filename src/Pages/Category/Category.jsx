@@ -1,22 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { FaPlus } from "react-icons/fa6";
 import Select from "react-select";
+import { FaPlus } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
-import { FaRegEye } from "react-icons/fa";
 
 const status = [
-  {
-    value: "مفعل",
-    label: "مفعل",
-  },
-  {
-    value: "غير مفعل",
-    label: "غير مفعل",
-  },
+  { value: "مفعل", label: "مفعل" },
+  { value: "غير مفعل", label: "غير مفعل" },
 ];
 
 const categories = [
@@ -51,61 +43,53 @@ const categories = [
 ];
 
 function Category() {
-  const [formData, setFormData] = React.useState([
-    {
-      name: "",
-      decription: "",
-      status: null,
-    },
-  ]);
+  const [formData, setFormData] = React.useState({
+    name: "",
+    description: "",
+    status: null,
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 📌 لتحديث الـ Select
-  const handleSelectChange = (selectedOption, actionMeta) => {
-    const { name } = actionMeta; // name جاي من select
+  const handleSelectChange = (selectedOption, { name }) => {
     setFormData((prev) => ({ ...prev, [name]: selectedOption }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log("Form Data:", formData);
   };
+
   return (
     <section>
       {/* Header */}
-      <div className="flex items-center justify-between py-0">
-        <h2 className="text-[22px] font-[600] text-[rgb(30,64,175)]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 className="text-xl md:text-2xl font-semibold text-[rgb(30,64,175)]">
           إدارة الفئات
         </h2>
       </div>
 
-      {/* Add New Category */}
-      <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
-        <div className="flex items-center p-4 text-[rgb(30,64,175)] gap-1 ">
-          <h4 className="text-[16px] font-[600] mb-2 lg:mb-0 flex items-center gap-2">
-            <FaPlus />
-            إضافة فئة جديدة
-          </h4>
+      {/* Form */}
+      <div className="card my-4 shadow-sm rounded-md bg-white/70 border border-[rgb(219,234,254)]">
+        <div className="flex items-center p-4 text-[rgb(30,64,175)] gap-2 border-b border-[rgb(219,234,254)]">
+          <FaPlus />
+          <h4 className="text-base font-semibold">إضافة فئة جديدة</h4>
         </div>
-        <div className="flex items-center  px-5 py-4">
+
+        <div className="p-4">
           <form className="w-full" onSubmit={handleSubmit}>
-            <div className="w-full flex items-center justify-between gap-3 mb-4">
-              {/* البحث بالاسم */}
-              <div className="form-group w-full flex flex-col gap-2">
+            {/* الحقول */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* اسم الفئة */}
+              <div className="flex flex-col gap-2">
                 <label
                   htmlFor="name"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-1"
                 >
-                  اسم الفئة
-                  <span className="text-red-500">*</span>
+                  اسم الفئة <span className="text-red-500">*</span>
                 </label>
                 <TextField
                   type="text"
@@ -113,40 +97,41 @@ function Category() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  autoComplete="off"
                   variant="outlined"
                   size="small"
+                  autoComplete="off"
                   className="bg-white"
                 />
               </div>
-              <div className="form-group w-full flex flex-col gap-2">
+
+              {/* الوصف */}
+              <div className="flex flex-col gap-2">
                 <label
-                  htmlFor="decription"
+                  htmlFor="description"
                   className="text-sm font-semibold text-gray-700"
                 >
                   الوصف
                 </label>
                 <TextField
                   type="text"
-                  id="decription"
-                  name="decription"
-                  value={formData.decription}
+                  id="description"
+                  name="description"
+                  value={formData.description}
                   onChange={handleInputChange}
-                  autoComplete="off"
                   variant="outlined"
                   size="small"
+                  autoComplete="off"
                   className="bg-white"
                 />
               </div>
 
-              {/* الفئة */}
-              <div className="form-group w-full flex flex-col gap-2">
+              {/* الحالة */}
+              <div className="flex flex-col gap-2">
                 <label
                   htmlFor="status"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-1"
                 >
-                  الحالة
-                  <span className="text-red-500">*</span>
+                  الحالة <span className="text-red-500">*</span>
                 </label>
                 <Select
                   inputId="status"
@@ -154,55 +139,64 @@ function Category() {
                   options={status}
                   value={formData.status}
                   onChange={handleSelectChange}
-                  placeholder="مفعل"
+                  placeholder="اختر الحالة"
                   isSearchable={false}
-                  autoComplete="off"
                 />
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="btn-green !text-white btn-sm flex items-center gap-2"
-            >
-              حفظ
-            </Button>
+            {/* الأزرار */}
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-3 mt-5">
+              <Button
+                type="button"
+                onClick={() =>
+                  setFormData({ name: "", description: "", status: null })
+                }
+                className="!bg-gray-300 hover:!bg-gray-400 !text-gray-800 px-6 py-2 rounded-md w-full sm:w-auto"
+              >
+                إلغاء
+              </Button>
+
+              <Button
+                type="submit"
+                className="!bg-green-600 hover:!bg-green-700 !text-white px-6 py-2 rounded-md w-full sm:w-auto"
+              >
+                حفظ
+              </Button>
+            </div>
           </form>
         </div>
       </div>
 
       {/* Table */}
-      <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
-        <div className="flex items-center p-4 text-[rgb(30,64,175)] gap-1 ">
-          <h4 className="text-[16px] font-[600] mb-2 lg:mb-0 flex items-center gap-2">
-            قائمة الفئات
-          </h4>
+      <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] px-2 sm:px-3 md:px-4">
+        <div className="flex items-center p-4 text-[rgb(30,64,175)] gap-2 ">
+          <h4 className="text-base font-semibold">قائمة الفئات</h4>
         </div>
 
-        <div className="relative overflow-x-auto">
+        {/* جدول عرض النتائج */}
+        <div className="relative overflow-x-auto mt-4">
           {categories.length > 0 ? (
-            <table className="w-full text-sm text-left rtl:text-right dark:text-gray-400">
-              <thead className="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
-                <tr className="">
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+            <table className="w-full text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-left rtl:text-right text-gray-600">
+              <thead className="text-[11px] sm:text-[12px] md:text-[13px] uppercase bg-[#eef2f7] border-b border-[#c7c7c7] text-gray-700">
+                <tr>
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     #
                   </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     اسم الفئة
                   </th>
-
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     الوصف
                   </th>
-
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     الحالة
                   </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     عدد المنتجات
                   </th>
 
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                     الإجراء
                   </th>
                 </tr>
@@ -211,31 +205,30 @@ function Category() {
                 {categories.map((categorie, index) => (
                   <tr
                     key={index}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 "
+                    className="odd:bg-white even:bg-gray-50 border-b hover:bg-gray-100 transition-colors"
                   >
-                    <td className="px-6 py-2 whitespace-nowrap">{index + 1}</td>
-                    <td className="px-6 py-2 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
+                      {index + 1}
+                    </td>
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                       {categorie.name}
                     </td>
-
-                    <td className="px-6 py-2 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                       {categorie.description}
                     </td>
-                    <td className="px-6 py-2 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                       {categorie.status}
                     </td>
-
-                    <td className="px-6 py-2 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                       {categorie.productCount}
                     </td>
-
-                    <td className="px-6 py-2 whitespace-nowrap">
-                      <div className="flex items-center gap-1">
-                        <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                          <AiOutlineEdit className="text-primary text-[20px] " />
+                    <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                          <AiOutlineEdit className="text-primary text-[16px] sm:text-[20px]" />
                         </Button>
-                        <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                          <HiOutlineTrash className="text-[#f22c61] text-[20px] " />
+                        <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                          <HiOutlineTrash className="text-[#f22c61] text-[16px] sm:text-[20px]" />
                         </Button>
                       </div>
                     </td>
@@ -244,7 +237,9 @@ function Category() {
               </tbody>
             </table>
           ) : (
-            <p className="text-red-500">لا يوجد منتجات مطابقة للبحث</p>
+            <p className="text-center text-red-500 py-4">
+              لا توجد فئات مسجلة حاليًا
+            </p>
           )}
         </div>
       </div>

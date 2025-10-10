@@ -2,15 +2,11 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { FaRegImage, FaBarcode } from "react-icons/fa";
 import { MdOutlineCloudUpload, MdDelete, MdEdit } from "react-icons/md";
-
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-
-
-
 
 const supplier = [
   { value: "1", label: "المورد الاول" },
@@ -26,6 +22,7 @@ const typeDiscount = [
   { value: "%", label: "%" },
   { value: "EGP", label: "EGP" },
 ];
+
 function AddProduct() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,7 +44,8 @@ function AddProduct() {
     barcode: "",
     images: [],
   });
- const [categories, setCategories] = useState([
+
+  const [categories, setCategories] = useState([
     { value: "electronics", label: "الكترونيات" },
     { value: "clothes", label: "ملابس" },
   ]);
@@ -56,18 +54,16 @@ function AddProduct() {
     { value: "laptops", label: "لابتوبات" },
   ]);
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 📌 لتحديث الـ Select
   const handleSelectChange = (selectedOption, actionMeta) => {
-    const { name } = actionMeta; // name جاي من select
+    const { name } = actionMeta;
     setFormData((prev) => ({ ...prev, [name]: selectedOption }));
   };
-  // رفع الصور
+
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => ({
@@ -75,7 +71,6 @@ function AddProduct() {
       url: URL.createObjectURL(file),
       name: file.name,
     }));
-
     setFormData((prev) => ({
       ...prev,
       images: [...prev.images, ...newImages],
@@ -89,12 +84,9 @@ function AddProduct() {
     }));
   };
 
-  // توليد باركود من 11 رقم
   const generateBarcode = () => {
     let code = "";
-    for (let i = 0; i < 11; i++) {
-      code += Math.floor(Math.random() * 10);
-    }
+    for (let i = 0; i < 11; i++) code += Math.floor(Math.random() * 10);
     setFormData((prev) => ({
       ...prev,
       barcode: code,
@@ -102,7 +94,6 @@ function AddProduct() {
     }));
   };
 
-  // 📌 إضافة عنصر جديد
   const handleCreateCategory = (inputValue) => {
     const newOption = { value: inputValue, label: inputValue };
     setCategories((prev) => [...prev, newOption]);
@@ -123,46 +114,45 @@ function AddProduct() {
   };
 
   return (
-    <div>
+    <div className="pb-8">
       <h2 className="text-[22px] font-[600] text-[rgb(30,64,175)] mb-4">
         المنتجات / إضافة
       </h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex gap-2 mb-4">
+        {/* ✅ تقسيم مرن - عمودين على الشاشات الكبيرة وعمود واحد على الموبايل */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* العمود الأول */}
-          <div className="col1 w-[50%]">
-            <div className="card p-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
+          <div className="w-full lg:w-1/2">
+            <div className="card p-4 shadow-sm rounded-md bg-white/60 border border-[rgb(219,234,254)]">
               <h4 className="text-[16px] text-[rgb(30,64,175)] font-[600] mb-2">
                 تفاصيل الصنف
               </h4>
-              <hr />
+              <hr className="mb-3" />
 
               {/* الاسم و SKU */}
-              <div className="w-full flex items-center justify-between gap-3 mb-4 pt-3">
-                <div className="form-group w-full flex flex-col gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <div className="w-full flex flex-col gap-2">
                   <label
                     htmlFor="name"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
+                    className="text-sm font-semibold text-gray-700"
                   >
-                    الإسم
-                    <span className="text-red-500">*</span>
+                    الإسم <span className="text-red-500">*</span>
                   </label>
                   <TextField
                     type="text"
                     id="name"
                     name="name"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.name}
-                    className="bg-white"
                     onChange={handleChange}
+                    className="bg-white"
                     required
                   />
                 </div>
 
-                <div className="form-group w-full flex flex-col gap-2">
+                <div className="w-full flex flex-col gap-2">
                   <label
                     htmlFor="SKU"
                     className="text-sm font-semibold text-gray-700"
@@ -173,18 +163,17 @@ function AddProduct() {
                     type="text"
                     id="SKU"
                     name="SKU"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.SKU}
-                    className="bg-white"
                     onChange={handleChange}
+                    className="bg-white"
                   />
                 </div>
               </div>
 
               {/* الوصف */}
-              <div className="form-group w-full flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mb-4">
                 <label
                   htmlFor="description"
                   className="text-sm font-semibold text-gray-700"
@@ -194,41 +183,36 @@ function AddProduct() {
                 <TextField
                   id="description"
                   name="description"
-                  autoComplete="off"
                   variant="outlined"
+                  size="small"
                   value={formData.description}
-                  className="bg-white"
                   onChange={handleChange}
+                  className="bg-white"
                 />
               </div>
 
               {/* الصور */}
-              <div className="form-group w-full flex flex-col gap-2 mt-4">
+              <div className="flex flex-col gap-2 mb-4">
                 <label
                   htmlFor="images"
                   className="text-sm font-semibold text-gray-700"
                 >
                   الصور
                 </label>
-                <div className="uploadBox relative cursor-pointer p-3 rounded-md border-2 border-dashed border-gray-300 bg-white hover:border-gray-500 flex items-center gap-4">
-                  <FaRegImage className="text-[30px] opacity-15 pointer-events-none" />
-                  <MdOutlineCloudUpload className="text-[30px] mr-7 text-primary pointer-events-none" />
-                  <h4 className="text-gray-500 pointer-events-none">
-                    اختر من جهازك
-                  </h4>
+                <div className="relative p-3 rounded-md border-2 border-dashed border-gray-300 bg-white hover:border-gray-500 flex items-center justify-center gap-4">
+                  <MdOutlineCloudUpload className="text-[28px] text-blue-600" />
+                  <h4 className="text-gray-500">اختر من جهازك</h4>
                   <input
                     type="file"
                     id="images"
-                    name="images"
-                    autoComplete="off"
                     multiple
-                    className="absolute top-0 left-0 w-full h-full z-50 opacity-0 cursor-pointer"
+                    className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
                     onChange={handleFileChange}
                   />
                 </div>
 
                 {/* عرض الصور */}
-                <div className="flex flex-col gap-3 mt-4">
+                <div className="flex flex-col gap-3 mt-2">
                   {formData.images.map((img, index) => (
                     <div
                       key={index}
@@ -262,121 +246,88 @@ function AddProduct() {
                 </div>
               </div>
 
-              {/* الفئة - الفئة الفرعية */}
-              <div className="w-full flex items-center justify-between gap-3 mt-4">
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="category"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    الفئه
-                    <span className="text-red-500">*</span>
+              {/* الفئة والفئة الفرعية */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    الفئة <span className="text-red-500">*</span>
                   </label>
-
                   <CreatableSelect
-                    inputId="category"
                     name="category"
                     options={categories}
                     value={formData.category}
                     onChange={handleSelectChange}
                     onCreateOption={handleCreateCategory}
                     placeholder="الإفتراضي"
-                    isSearchable
-                    autoComplete="off"
                   />
                 </div>
 
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="subcategory"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    الفئة الفرعية
-                    <span className="text-red-500">*</span>
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    الفئة الفرعية <span className="text-red-500">*</span>
                   </label>
                   <CreatableSelect
-                    inputId="subcategory"
                     name="subcategory"
                     options={subcategories}
                     value={formData.subcategory}
                     onChange={handleSelectChange}
                     onCreateOption={handleCreateSubCategory}
                     placeholder="الإفتراضي"
-                    isSearchable
-                    autoComplete="off"
                   />
                 </div>
               </div>
 
               {/* المورد - الوحدة */}
-              <div className="w-full flex items-center justify-between gap-3 mt-4">
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="supplier"
-                    className="text-sm font-semibold text-gray-700"
-                  >
+              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
                     المورد
                   </label>
                   <Select
-                    inputId="supplier"
                     name="supplier"
                     options={supplier}
                     value={formData.supplier}
                     onChange={handleSelectChange}
                     placeholder="الموردين"
-                    isSearchable
-                    autoComplete="off"
                   />
                 </div>
 
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="unity"
-                    className="text-sm font-semibold text-gray-700"
-                  >
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
                     الوحدة
                   </label>
                   <Select
-                    inputId="unity"
                     name="unity"
                     options={unity}
                     value={formData.unity}
                     onChange={handleSelectChange}
                     placeholder="الوحدة"
-                    autoComplete="off"
                     isSearchable={false}
                   />
                 </div>
               </div>
 
               {/* رقم الصنف */}
-              <div className="form-group w-full flex flex-col gap-2 mt-4">
-                <label
-                  htmlFor="categoryNumber"
-                  className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                >
-                  رقم الصنف
-                  <span className="text-red-500">*</span>
+              <div className="flex flex-col gap-2 mt-4">
+                <label className="text-sm font-semibold text-gray-700">
+                  رقم الصنف <span className="text-red-500">*</span>
                 </label>
                 <div className="flex items-center gap-2">
                   <TextField
-                    id="categoryNumber"
                     name="categoryNumber"
-                    autoComplete="off"
                     value={formData.categoryNumber}
+                    onChange={handleChange}
                     variant="outlined"
                     size="small"
                     className="flex-1 bg-white"
-                    onChange={handleChange}
                     required
                   />
                   <Button
                     type="button"
                     variant="outlined"
-                    className="!text-gray-700"
                     onClick={generateBarcode}
                   >
-                    <FaBarcode className="text-[28px]" />
+                    <FaBarcode className="text-[24px]" />
                   </Button>
                 </div>
               </div>
@@ -384,27 +335,21 @@ function AddProduct() {
           </div>
 
           {/* العمود الثاني */}
-          <div className="col2 w-[50%]">
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
             {/* تفاصيل التسعير */}
-            <div className="card mb-4 p-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
+            <div className="card p-4 shadow-sm rounded-md bg-white/60 border border-[rgb(219,234,254)]">
               <h4 className="text-[16px] text-[rgb(30,64,175)] font-[600] mb-2">
                 تفاصيل التسعير
               </h4>
-              <hr />
+              <hr className="mb-3" />
 
-              <div className="w-full flex items-center justify-between gap-3 mb-4 pt-3">
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="purchasePrice"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    سعر الشراء
-                    <span className="text-red-500">*</span>
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    سعر الشراء <span className="text-red-500">*</span>
                   </label>
                   <TextField
-                    id="purchasePrice"
                     name="purchasePrice"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.purchasePrice}
@@ -414,19 +359,12 @@ function AddProduct() {
                   />
                 </div>
 
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="sellingPrice"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    سعر البيع
-                    <span className="text-red-500">*</span>
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    سعر البيع <span className="text-red-500">*</span>
                   </label>
                   <TextField
-                    type="text"
-                    id="sellingPrice"
                     name="sellingPrice"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.sellingPrice}
@@ -437,19 +375,13 @@ function AddProduct() {
                 </div>
               </div>
 
-              <div className="w-full flex items-center justify-between gap-3">
-                <div className="form-group w-[40%] flex flex-col gap-2">
-                  <label
-                    htmlFor="LowestPrice"
-                    className="text-sm font-semibold text-gray-700"
-                  >
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="w-full sm:w-1/3 flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
                     أقل سعر بيع
                   </label>
                   <TextField
-                    type="text"
-                    id="LowestPrice"
                     name="LowestPrice"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.LowestPrice}
@@ -458,18 +390,12 @@ function AddProduct() {
                   />
                 </div>
 
-                <div className="form-group w-[20%] flex flex-col gap-2">
-                  <label
-                    htmlFor="discount"
-                    className="text-sm font-semibold text-gray-700"
-                  >
+                <div className="w-full sm:w-1/3 flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
                     الخصم
                   </label>
                   <TextField
-                    type="text"
-                    id="discount"
                     name="discount"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.discount}
@@ -478,21 +404,16 @@ function AddProduct() {
                   />
                 </div>
 
-                <div className="form-group w-[40%] flex flex-col gap-2">
-                  <label
-                    htmlFor="typeDiscount"
-                    className="text-sm font-semibold text-gray-700"
-                  >
+                <div className="w-full sm:w-1/3 flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
                     نوع الخصم
                   </label>
                   <Select
-                    inputId="typeDiscount"
                     name="typeDiscount"
                     options={typeDiscount}
                     value={formData.typeDiscount}
                     onChange={handleSelectChange}
                     placeholder="%"
-                    autoComplete="off"
                     isSearchable={false}
                   />
                 </div>
@@ -500,24 +421,19 @@ function AddProduct() {
             </div>
 
             {/* إدارة المخزون */}
-            <div className="card p-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)]">
+            <div className="card p-4 shadow-sm rounded-md bg-white/60 border border-[rgb(219,234,254)]">
               <h4 className="text-[16px] text-[rgb(30,64,175)] font-[600] mb-2">
                 إدارة المخزون
               </h4>
-              <hr />
-              <div className="w-full flex items-center justify-between gap-3 pt-3">
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="quantity"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    الكمية
-                    <span className="text-red-500">*</span>
+              <hr className="mb-3" />
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    الكمية <span className="text-red-500">*</span>
                   </label>
                   <TextField
-                    id="quantity"
                     name="quantity"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.quantity}
@@ -527,18 +443,13 @@ function AddProduct() {
                   />
                 </div>
 
-                <div className="form-group w-full flex flex-col gap-2">
-                  <label
-                    htmlFor="alertQuantity"
-                    className="text-sm font-semibold text-gray-700 flex items-center gap-1"
-                  >
-                    تنبيه الوصول لاقل كمية
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    تنبيه الوصول لأقل كمية{" "}
                     <span className="text-red-500">*</span>
                   </label>
                   <TextField
-                    id="alertQuantity"
                     name="alertQuantity"
-                    autoComplete="off"
                     variant="outlined"
                     size="small"
                     value={formData.alertQuantity}
@@ -552,14 +463,24 @@ function AddProduct() {
           </div>
         </div>
 
-        <div className="flex items-center w-full mt-3 mb-3">
+        {/* أزرار الحفظ والإلغاء */}
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-3 mt-4">
           {/* زر الحفظ */}
           <Button
             type="submit"
             disabled={loading}
-            className="btn-green !text-white btn-sm flex items-center gap-2"
+            className="!bg-green-600 hover:!bg-green-700 !text-white px-6 py-2 rounded-md transition-all duration-200 w-full sm:w-auto"
           >
-            {loading ? <CircularProgress size={28} color="inherit" /> : "حفظ"}
+            {loading ? <CircularProgress size={24} color="inherit" /> : "حفظ"}
+          </Button>
+
+          {/* زر الإلغاء */}
+          <Button
+            type="button"
+            // onClick={handleCancel} // ← ضع هنا الدالة التي تُعيد المستخدم أو تُفرغ النموذج
+            className="!bg-gray-300 hover:!bg-gray-400 !text-gray-800 px-6 py-2 rounded-md transition-all duration-200 w-full sm:w-auto"
+          >
+            إلغاء
           </Button>
         </div>
       </form>

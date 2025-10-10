@@ -1,12 +1,26 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
-// 1. إنشاء الكونتكست
 const MyContext = createContext();
 
-// 2. إنشاء Provider
 const MyProvider = ({ children }) => {
-  const [isOpenSidbar, setIsOpenSidbar] = useState(true);
+  const [isOpenSidbar, setIsOpenSidbar] = useState(() => {
+    return window.innerWidth >= 1024; // مفتوح على الشاشات الكبيرة فقط
+  });
+
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsOpenSidbar(true);
+      } else {
+        setIsOpenSidbar(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const values = {
     isOpenSidbar,
