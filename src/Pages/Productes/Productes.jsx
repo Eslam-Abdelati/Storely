@@ -159,12 +159,12 @@ function Productes() {
 
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link to={"/app/category"}>
-            <Button className="btn-blue !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 py-1 sm:py-2">
+            <Button className="btn-blue !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base xl:text-lg px-2 sm:px-3 py-1 sm:py-2">
               الفئات
             </Button>
           </Link>
           <Link to={"/app/add-product"}>
-            <Button className="btn-green !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 py-1 sm:py-2">
+            <Button className="btn-green !text-white btn-sm flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base xl:text-lg px-2 sm:px-3 py-1 sm:py-2">
               <FaPlus className="text-[14px] sm:text-[16px]" />
               إضافة صنف
             </Button>
@@ -328,7 +328,7 @@ function Productes() {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                className="btn-blue !text-white btn-sm flex items-center gap-2 w-full sm:w-auto justify-center"
+                className="btn-blue !text-white btn-sm flex items-center gap-2 w-full xl:text-lg sm:w-auto justify-center"
               >
                 بحث
               </Button>
@@ -393,7 +393,7 @@ function Productes() {
               <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap">
                 <div className="flex items-center gap-1 sm:gap-2">
                   <Link to={`/app/product/${product.id}`}>
-                    <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                    <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px]  bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
                       <FaRegEye className="text-[#10b981] text-[16px] sm:text-[20px]" />
                     </Button>
                   </Link>

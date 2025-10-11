@@ -12,7 +12,7 @@ function Layot() {
       {/* Sidebar */}
       <div
         className={`${
-          isOpenSidbar ? "w-1/5 opacity-100" : "w-0 opacity-0"
+          isOpenSidbar ? "w-1/5 xl:w-[15%] opacity-100" : "w-0 opacity-0"
         } h-full transition-all duration-300 overflow-hidden`}
       >
         <Sidebar />
@@ -20,7 +20,7 @@ function Layot() {
 
       <div
         className={`${
-          isOpenSidbar ? "w-4/5" : "w-full"
+          isOpenSidbar ? "w-4/5 xl:w-[85%]" : "w-full"
         } flex flex-col h-full transition-all duration-300`}
       >
         <Navbar />

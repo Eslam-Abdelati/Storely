@@ -28,7 +28,7 @@ function StatsCard() {
             className: "text-[24px] sm:text-[28px] mb-2",
             style: { color: card.color },
           })}
-          <h3 className="text-[13px] sm:text-[14px] font-[500] text-center">
+          <h3 className="text-[13px] sm:text-[14px] xl:text-[18px] font-[500] text-center">
             {card.label}
           </h3>
         </div>
