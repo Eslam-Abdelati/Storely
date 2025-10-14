@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { MyContext } from "../../context/MyContext";
+import axios from "axios";
 import bgImage from "../../assets/patern.webp";
 import logo2 from "../../assets/icon.svg";
 import { useNavigate } from "react-router-dom";
@@ -9,51 +11,59 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 
 function SignUp2() {
+  const { signUpData, updateSignUpData } = useContext(MyContext);
   const navigate = useNavigate();
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    FirstName: "",
-    LastName: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
-
+  // ✅ تعديل التغيير ليحدث داخل signUpData.owner
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    updateSignUpData({
+      owner: {
+        ...signUpData.owner,
+        [name]: value,
+      },
+    });
   };
 
+  // ✅ تعديل رقم الهاتف
   const handlePhoneChange = (newValue) => {
-    setFormData((prev) => ({
-      ...prev,
-      phone: newValue,
-    }));
+    updateSignUpData({
+      owner: {
+        ...signUpData.owner,
+        phoneNumber: newValue,
+      },
+    });
   };
 
-  const handleSubmit = (e) => {
+  // ✅ إرسال البيانات للـ API
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.phone) {
-      toast.error("من فضلك أدخل رقم الهاتف");
-      return;
-    }
-
     setLoading(true);
-    console.log("Form Submitted: ", formData);
 
-    setTimeout(() => {
-      toast.success("تم التسجيل بنجاح");
-      setLoading(false);
+    try {
+      const response = await axios.post(
+        "https://storely-system.onrender.com/auth/register",
+        signUpData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      toast.success("تم التسجيل بنجاح ");
+      console.log(response);
       navigate("/login");
-    }, 2000);
+    } catch (err) {
+      console.log(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const owner = signUpData.owner || {};
 
   return (
     <section className="w-full min-h-screen flex justify-center items-center relative py-10 sm:py-16">
@@ -89,7 +99,7 @@ function SignUp2() {
               <div className="form-group w-full flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="form-group mb-4 w-full sm:w-[50%]">
                   <label
-                    htmlFor="FirstName"
+                    htmlFor="firstName"
                     className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
                   >
                     الإسم الأول <span className="text-red-500">*</span>
@@ -97,10 +107,10 @@ function SignUp2() {
                   <input
                     type="text"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-[rgba(0,0,0,0.1)] rounded-md focus:border-primary focus:outline-none px-3 text-sm sm:text-base"
-                    id="FirstName"
-                    name="FirstName"
-                    aria-label="FirstName"
-                    value={formData.FirstName}
+                    id="firstName"
+                    name="firstName"
+                    aria-label="firstName"
+                    value={owner.firstName}
                     onChange={handleChange}
                     required
                     autoComplete="given-name"
@@ -109,16 +119,16 @@ function SignUp2() {
 
                 <div className="form-group mb-4 w-full sm:w-[50%]">
                   <label
-                    htmlFor="LastName"
+                    htmlFor="lastName"
                     className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
                   >
                     الإسم الأخير <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    id="LastName"
-                    name="LastName"
-                    value={formData.LastName}
+                    id="lastName"
+                    name="lastName"
+                    value={owner.lastName}
                     onChange={handleChange}
                     autoComplete="family-name"
                     required
@@ -139,7 +149,7 @@ function SignUp2() {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
+                  value={owner.email}
                   onChange={handleChange}
                   autoComplete="email"
                   required
@@ -150,52 +160,52 @@ function SignUp2() {
               {/* رقم الهاتف */}
               <div className="form-group mb-4 w-full">
                 <label
-                  htmlFor="phone"
+                  htmlFor="phoneNumber"
                   className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
                 >
                   رقم الهاتف <span className="text-red-500">*</span>
                 </label>
-           <MuiTelInput
-      id="phone"
-      name="phone"
-      required
-      inputProps={{ required: true }}
-      value={formData.phone}
-      onChange={handlePhoneChange}
-      defaultCountry="EG"
-      fullWidth
-      autoComplete="tel"
-      variant="outlined"
-      sx={{
-        "& .MuiOutlinedInput-root": {
-          borderRadius: "8px",
-          height: "50px",
-          fontSize: "15px",
-          backgroundColor: "white",
-          "& fieldset": {
-            borderColor: "rgba(0,0,0,0.1)",
-          },
-          "&:hover fieldset": {
-            borderColor: "#1976d2", // نفس لون primary
-          },
-          "&.Mui-focused fieldset": {
-            borderColor: "#1976d2",
-            borderWidth: "2px",
-          },
-        },
-        "& .MuiInputBase-input": {
-          paddingLeft: "70px", // مسافة لترك مكان للعلم والكود
-        },
-        "& .MuiTelInput-Flag": {
-          marginLeft: "10px",
-        },
-        "& .MuiTelInput-Country": {
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        },
-      }}
-    />
+                <MuiTelInput
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  required
+                  inputProps={{ required: true }}
+                  value={owner.phoneNumber}
+                  onChange={handlePhoneChange}
+                  defaultCountry="EG"
+                  fullWidth
+                  autoComplete="tel"
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "8px",
+                      height: "50px",
+                      fontSize: "15px",
+                      backgroundColor: "white",
+                      "& fieldset": {
+                        borderColor: "rgba(0,0,0,0.1)",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#1976d2", // نفس لون primary
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1976d2",
+                        borderWidth: "2px",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      paddingLeft: "70px", // مسافة لترك مكان للعلم والكود
+                    },
+                    "& .MuiTelInput-Flag": {
+                      marginLeft: "10px",
+                    },
+                    "& .MuiTelInput-Country": {
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    },
+                  }}
+                />
               </div>
 
               {/* كلمة المرور */}
@@ -210,7 +220,7 @@ function SignUp2() {
                   type={isShowPass ? "text" : "password"}
                   id="password"
                   name="password"
-                  value={formData.password}
+                  value={owner.password}
                   onChange={handleChange}
                   autoComplete="new-password"
                   required
@@ -240,7 +250,7 @@ function SignUp2() {
                   type={isShowConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   name="confirmPassword"
-                  value={formData.confirmPassword}
+                  value={owner.confirmPassword}
                   onChange={handleChange}
                   autoComplete="new-password"
                   required

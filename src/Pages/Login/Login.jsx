@@ -8,6 +8,7 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,18 +24,28 @@ function Login() {
   };
 
   // عند عمل submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
-
-    console.log("Form Submitted: ", formData);
-
-    setTimeout(() => {
-      toast.success("تم الدخول بنجاح");
+    try {
+      const res = await axios.post(
+        "https://storely-system.onrender.com/auth/login",
+        formData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(res);
+      setTimeout(() => {
+        toast.success("تم الدخول بنجاح");
+        setLoading(false);
+        navigate("/app");
+      }, 2000);
+    } catch (error) {
+      console.log(error.response);
+      toast.error(error.response?.data?.message);
       setLoading(false);
-      navigate("/app");
-    }, 2000);
+    }
   };
 
   return (

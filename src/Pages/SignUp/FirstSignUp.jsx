@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { MyContext } from "../../context/MyContext";
 import bgImage from "../../assets/patern.webp";
 import logo2 from "../../assets/icon.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,45 +28,26 @@ const countries = [
 ];
 
 function FirstSignUp() {
+  const { signUpData, updateSignUpData } = useContext(MyContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    companyName: "",
-    businessActivity: "",
-    customBusinessActivity: "",
-    country: "",
-    city: "",
-    region: "",
-    zipcode: "",
-    tradeRecord: "",
-    taxCard: "",
-    logo: null,
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    updateSignUpData({ [name]: value });
   };
 
   const handleFileChange = (file) => {
-    setFormData((prev) => ({
-      ...prev,
-      logo: file,
-    }));
+    updateSignUpData({ logo: file });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData);
-
     setTimeout(() => {
+      toast.success("اكمل البيانات التاليه للتسجيل");
       setLoading(false);
-      toast.success("أكمل باقي البيانات");
-      navigate("/first_settings");
+      navigate("/sign-up2");
     }, 2000);
   };
 
@@ -108,7 +90,7 @@ function FirstSignUp() {
               {/* اسم الشركة */}
               <div className="form-group mb-4 w-full">
                 <label
-                  htmlFor="companyName"
+                  htmlFor="store_name"
                   className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                 >
                   اسم الشركة <span className="text-red-500">*</span>
@@ -116,9 +98,9 @@ function FirstSignUp() {
                 <input
                   type="text"
                   className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                  id="companyName"
-                  name="companyName"
-                  value={formData.companyName}
+                  id="store_name"
+                  name="store_name"
+                  value={signUpData.store_name}
                   onChange={handleChange}
                   required
                   autoComplete="organization"
@@ -128,16 +110,16 @@ function FirstSignUp() {
               {/* النشاط التجاري */}
               <div className="form-group mb-4">
                 <label
-                  htmlFor="businessActivity"
+                  htmlFor="businessType"
                   className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                 >
                   النشاط التجاري <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="businessActivity"
-                  name="businessActivity"
+                  id="businessType"
+                  name="businessType"
                   className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
-                  value={formData.businessActivity}
+                  value={signUpData.businessType}
                   onChange={handleChange}
                   required
                 >
@@ -147,7 +129,9 @@ function FirstSignUp() {
                   <option value="Cafe">كافيه</option>
                   <option value="Clothing">ملابس</option>
                   <option value="Shoes & Bags">شنط وأحذية</option>
-                  <option value="Mobile & Accessories">موبايلات واكسسوار</option>
+                  <option value="Mobile & Accessories">
+                    موبايلات واكسسوار
+                  </option>
                   <option value="Electronics">الكترونيات</option>
                   <option value="Home Appliances">أجهزة منزلية</option>
                   <option value="Furniture">أثاث</option>
@@ -156,10 +140,10 @@ function FirstSignUp() {
                 </select>
               </div>
 
-              {formData.businessActivity === "Other" && (
+              {signUpData.businessType === "Other" && (
                 <div className="form-group mb-4">
                   <label
-                    htmlFor="customBusinessActivity"
+                    htmlFor="otherBusinessType"
                     className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                   >
                     أدخل النشاط التجاري
@@ -167,10 +151,10 @@ function FirstSignUp() {
                   </label>
                   <input
                     type="text"
-                    id="customBusinessActivity"
-                    name="customBusinessActivity"
+                    id="otherBusinessType"
+                    name="otherBusinessType"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
-                    value={formData.customBusinessActivity}
+                    value={signUpData.otherBusinessType}
                     onChange={handleChange}
                     required
                   />
@@ -189,9 +173,10 @@ function FirstSignUp() {
                   id="country"
                   name="country"
                   className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                  value={formData.country}
+                  value={signUpData.country}
                   onChange={handleChange}
                   required
+                  autoComplete="country"
                 >
                   <option value="">اختر الدولة</option>
                   {countries.map((c) => (
@@ -216,7 +201,7 @@ function FirstSignUp() {
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
                     id="city"
                     name="city"
-                    value={formData.city}
+                    value={signUpData.city}
                     onChange={handleChange}
                     required
                   />
@@ -224,7 +209,7 @@ function FirstSignUp() {
 
                 <div className="form-group w-full sm:w-1/3">
                   <label
-                    htmlFor="region"
+                    htmlFor="address"
                     className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                   >
                     المنطقة <span className="text-red-500">*</span>
@@ -232,17 +217,18 @@ function FirstSignUp() {
                   <input
                     type="text"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="region"
-                    name="region"
-                    value={formData.region}
+                    id="address"
+                    name="address"
+                    value={signUpData.address}
                     onChange={handleChange}
                     required
+                    autoComplete="street-address"
                   />
                 </div>
 
                 <div className="form-group w-full sm:w-1/3">
                   <label
-                    htmlFor="zipcode"
+                    htmlFor="postalCode"
                     className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                   >
                     الرمز البريدي
@@ -250,9 +236,9 @@ function FirstSignUp() {
                   <input
                     type="text"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="zipcode"
-                    name="zipcode"
-                    value={formData.zipcode}
+                    id="postalCode"
+                    name="postalCode"
+                    value={signUpData.postalCode}
                     onChange={handleChange}
                   />
                 </div>
@@ -262,7 +248,7 @@ function FirstSignUp() {
               <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="form-group w-full sm:w-1/2">
                   <label
-                    htmlFor="tradeRecord"
+                    htmlFor="commercialRegistrationNumber"
                     className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                   >
                     سجل تجاري (اختياري)
@@ -270,16 +256,16 @@ function FirstSignUp() {
                   <input
                     type="text"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="tradeRecord"
-                    name="tradeRecord"
-                    value={formData.tradeRecord}
+                    id="commercialRegistrationNumber"
+                    name="commercialRegistrationNumber"
+                    value={signUpData.commercialRegistrationNumber}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="form-group w-full sm:w-1/2">
                   <label
-                    htmlFor="taxCard"
+                    htmlFor="taxID"
                     className="mb-2 font-medium text-gray-700 flex items-center gap-1"
                   >
                     بطاقة ضريبية (اختياري)
@@ -287,9 +273,9 @@ function FirstSignUp() {
                   <input
                     type="text"
                     className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="taxCard"
-                    name="taxCard"
-                    value={formData.taxCard}
+                    id="taxID"
+                    name="taxID"
+                    value={signUpData.taxID}
                     onChange={handleChange}
                   />
                 </div>
@@ -306,7 +292,7 @@ function FirstSignUp() {
                 <UploadBox
                   id="logo"
                   onFileSelect={handleFileChange}
-                  value={formData.logo}
+                  value={signUpData.logo}
                 />
               </div>
 

@@ -6,7 +6,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import { IoClose } from "react-icons/io5";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -28,7 +27,6 @@ function AddClient({ open, onClose, onSave }) {
     clientAddress: "",
   });
 
-  // نقل التركيز إلى أول حقل عند فتح المودال
   useEffect(() => {
     if (open && firstInputRef.current) {
       firstInputRef.current.focus({ preventScroll: true });
@@ -47,18 +45,15 @@ function AddClient({ open, onClose, onSave }) {
       return;
     }
 
-    // إرسال بيانات العميل إلى AddInv
     onSave({
-      value: Date.now(), // معرف فريد مؤقت
+      value: Date.now(),
       label: formData.clientName,
       phone: formData.clientPhone,
       address: formData.clientAddress,
       email: formData.clientEmail,
     });
 
-    // إغلاق المودال
     onClose();
-    // إعادة تعيين النموذج
     setFormData({
       clientName: "",
       clientPhone: "",
@@ -72,10 +67,29 @@ function AddClient({ open, onClose, onSave }) {
       onClose={onClose}
       open={open}
       aria-labelledby="add-client-dialog"
+      fullWidth
+      maxWidth="sm" // يجعل الحجم متوسطًا على الشاشات الكبيرة
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          width: "100%",
+          mx: 2, // مسافة جانبية على الموبايل
+        },
+      }}
     >
-      <DialogTitle sx={{ m: 0, p: 2 }} id="add-client-dialog">
+      <DialogTitle
+        sx={{
+          m: 0,
+          p: 2,
+          fontWeight: "bold",
+          textAlign: "center",
+          fontSize: "1.2rem",
+        }}
+        id="add-client-dialog"
+      >
         عميل جديد
       </DialogTitle>
+
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -88,10 +102,15 @@ function AddClient({ open, onClose, onSave }) {
       >
         <IoClose />
       </IconButton>
-      <DialogContent dividers className="!w-[600px]">
-        <form className="w-full flex flex-col gap-3" onSubmit={handleSubmit}>
+
+      <DialogContent dividers>
+        <form
+          className="w-full flex flex-col gap-3 sm:gap-4"
+          onSubmit={handleSubmit}
+        >
+          {/* اسم العميل */}
           <div className="flex flex-col gap-1">
-            <label className="font-medium" htmlFor="client-name">
+            <label className="font-medium text-sm sm:text-base" htmlFor="client-name">
               اسم العميل
             </label>
             <input
@@ -99,67 +118,101 @@ function AddClient({ open, onClose, onSave }) {
               type="text"
               id="client-name"
               name="clientName"
+              value={formData.clientName}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="ادخل اسم العميل"
               required
               autoComplete="name"
             />
           </div>
+
+          {/* رقم الهاتف */}
           <div className="flex flex-col gap-1">
-            <label className="font-medium" htmlFor="client-phone">
+            <label className="font-medium text-sm sm:text-base" htmlFor="client-phone">
               رقم الهاتف
             </label>
-
             <input
               type="tel"
               id="client-phone"
               name="clientPhone"
+              value={formData.clientPhone}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="ادخل رقم الهاتف"
               required
               autoComplete="tel"
             />
           </div>
+
+          {/* البريد الإلكتروني */}
           <div className="flex flex-col gap-1">
-            <label className="font-medium" htmlFor="client-email">
+            <label className="font-medium text-sm sm:text-base" htmlFor="client-email">
               البريد الإلكتروني
             </label>
             <input
               type="email"
               id="client-email"
               name="clientEmail"
+              value={formData.clientEmail}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="ادخل البريد الإلكتروني"
               autoComplete="email"
             />
           </div>
+
+          {/* العنوان */}
           <div className="flex flex-col gap-1">
-            <label className="font-medium" htmlFor="client-address">
+            <label className="font-medium text-sm sm:text-base" htmlFor="client-address">
               العنوان
             </label>
             <input
               type="text"
               id="client-address"
               name="clientAddress"
+              value={formData.clientAddress}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded px-2 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="ادخل العنوان"
             />
           </div>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button type="button" onClick={handleSubmit} className="btn-blue !ml-2">
+
+      <DialogActions
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "center",
+          gap: 1.5,
+          p: 2,
+        }}
+      >
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          fullWidth
+          sx={{
+            backgroundColor: "#1976d2",
+            color: "white",
+            fontWeight: "bold",
+            "&:hover": { backgroundColor: "#1565c0" },
+          }}
+        >
           حفظ
         </Button>
         <Button
           onClick={onClose}
-          className="!bg-[#b1b1b1] hover:!bg-[#9e9e9e] !text-[rgb(0,0,0,0.7)]"
+          fullWidth
+          sx={{
+            backgroundColor: "#bdbdbd",
+            color: "#000000b3",
+            fontWeight: "bold",
+            "&:hover": { backgroundColor: "#9e9e9e" },
+          }}
         >
-          الغاء
+          إلغاء
         </Button>
       </DialogActions>
     </BootstrapDialog>

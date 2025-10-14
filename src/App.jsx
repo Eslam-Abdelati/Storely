@@ -56,7 +56,7 @@ function App() {
           {/* صفحات مستقلة */}
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<FirstSignUp />} />
-          <Route path="/first_settings" element={<SignUp2 />} />
+          <Route path="/sign-up2" element={<SignUp2 />} />
           <Route path="/verify" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
