@@ -20,6 +20,7 @@ import { AiFillFilePdf } from "react-icons/ai";
 import { FaPrint } from "react-icons/fa6";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { IoSearch } from "react-icons/io5";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 // ✅ قائمة حالات الدفع
 const paymentStatusList = [
@@ -64,7 +65,7 @@ const paymentStatusList = [
 //   },
 // ];
 
-function Invoices() {
+function SalesInvoices() {
   // ✅ حالة النموذج
   const [formData, setFormData] = useState({
     clint: "",
@@ -138,7 +139,10 @@ function Invoices() {
             </Link>
 
             {/* زر فاتورة جديدة */}
-            <Link to={"/app/add-product"} className="w-full sm:w-auto">
+            <Link
+              to={"/app/sales_invoice/add-salesinvoice"}
+              className="w-full sm:w-auto"
+            >
               <Button
                 className="btn-green w-full sm:w-auto !text-white btn-sm !flex !items-center !justify-center !gap-2 
                            !text-sm md:!text-base xl:!text-lg !px-3 !py-2 transition-all duration-300"
@@ -256,7 +260,10 @@ function Invoices() {
                     flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5 rounded-md transition-all duration-300"
           >
             {/* بيانات العميل والفاتورة */}
-            <Link to={"/app"} className="w-full sm:w-auto flex-1">
+            <Link
+              to={"/app/sales_invoice/1"}
+              className="w-full sm:w-auto flex-1"
+            >
               <div className="col1 flex flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-primary border border-primary rounded-2xl py-1 px-2 text-[12px] sm:text-[13px] font-semibold">
@@ -305,9 +312,9 @@ function Invoices() {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
-                  className="!bg-gray-200 hover:!bg-gray-300 !rounded-2xl !p-1 sm:!p-2 transition-all duration-300"
+                  className="!w-[40px] !min-w-[40px] !h-[40px] !rounded-full !p-1 sm:!p-2 transition-all duration-300"
                 >
-                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer rotate-90" />
+                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer" />
                 </Button>
 
                 <Menu
@@ -339,6 +346,10 @@ function Invoices() {
                       text: "طباعة",
                     },
                     {
+                      icon: <RiArrowGoBackFill className="text-[#7d17b8]" />,
+                      text: "مرتجع",
+                    },
+                    {
                       icon: <HiOutlineTrash className="text-[#f22c61]" />,
                       text: "حذف",
                     },
@@ -361,7 +372,10 @@ function Invoices() {
                     flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5 rounded-md transition-all duration-300"
           >
             {/* بيانات العميل والفاتورة */}
-            <Link to={"/app"} className="w-full sm:w-auto flex-1">
+            <Link
+              to={"/app/sales_invoice/1"}
+              className="w-full sm:w-auto flex-1"
+            >
               <div className="col1 flex flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-primary border border-primary rounded-2xl py-1 px-2 text-[12px] sm:text-[13px] font-semibold">
@@ -392,13 +406,10 @@ function Invoices() {
                 <p className="text-[16px] sm:text-[18px] font-bold text-[#1e40af]">
                   1,200.00 ج.م
                 </p>
-                <p className="text-[12px] sm:text-[13px] text-red-500 font-medium">
-                  مرتجع: 500.00 ج.م
-                </p>
+
                 <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
                   <Badge status="مدفوعة" />
                   <Badge status="مرتجع" />
-                  
                 </div>
               </div>
 
@@ -410,9 +421,9 @@ function Invoices() {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
-                  className="!bg-gray-200 hover:!bg-gray-300 !rounded-2xl !p-1 sm:!p-2 transition-all duration-300"
+                  className="!w-[40px] !min-w-[40px] !h-[40px] !rounded-full !p-1 sm:!p-2 transition-all duration-300"
                 >
-                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer rotate-90" />
+                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer" />
                 </Button>
 
                 <Menu
@@ -444,6 +455,10 @@ function Invoices() {
                       text: "طباعة",
                     },
                     {
+                      icon: <RiArrowGoBackFill className="text-[#7d17b8]" />,
+                      text: "مرتجع",
+                    },
+                    {
                       icon: <HiOutlineTrash className="text-[#f22c61]" />,
                       text: "حذف",
                     },
@@ -467,4 +482,4 @@ function Invoices() {
   );
 }
 
-export default Invoices;
+export default SalesInvoices;

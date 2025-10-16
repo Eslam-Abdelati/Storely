@@ -20,6 +20,7 @@ function Badge(props) {
       (props.status === "مرتجع" || props.status === "مرتجع جزئي") &&
       "bg-[#555] text-white"
     }
+    ${props.status === "مدفوعة جزئياََ" && "bg-[#ff7f00] text-white"}
     `}
     >
       {props.status}

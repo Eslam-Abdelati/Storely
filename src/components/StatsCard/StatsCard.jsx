@@ -1,5 +1,12 @@
 import React from "react";
-import { LuComputer, LuChartColumn, LuPackage, LuReceipt, LuUsers } from "react-icons/lu";
+import {
+  LuComputer,
+  LuChartColumn,
+  LuPackage,
+  LuReceipt,
+  LuUsers,
+} from "react-icons/lu";
+import { TbFileInvoice } from "react-icons/tb";
 import { RiFileTextLine } from "react-icons/ri";
 import { TbUsersPlus } from "react-icons/tb";
 import { HiOutlineReceiptRefund } from "react-icons/hi2";
@@ -7,17 +14,47 @@ import { Link } from "react-router-dom";
 
 function StatsCard() {
   const cardsTop = [
-    { to: "pos_shifts", icon: <LuComputer />, label: "بدأ البيع", color: "#13b272" },
-    { to: "product", icon: <RiFileTextLine />, label: "فواتير الشراء", color: "#d87a7f" },
-    { to: "product", icon: <LuReceipt />, label: "فواتير المبيعات", color: "#6f42c1" },
+    {
+      to: "/app/sales_invoice/add-salesinvoice",
+      icon: <TbFileInvoice />,
+      label: "إنشاء فاتورة",
+      color: "#13b272",
+    },
+    {
+      to: "product",
+      icon: <RiFileTextLine />,
+      label: "فواتير الشراء",
+      color: "#d87a7f",
+    },
+    {
+      to: "/app/sales_invoice",
+      icon: <LuReceipt />,
+      label: "فواتير المبيعات",
+      color: "#6f42c1",
+    },
     { to: "product", icon: <LuPackage />, label: "المنتجات", color: "#2563eb" },
     { to: "product", icon: <LuUsers />, label: "العملاء", color: "#27c24c" },
   ];
 
   const cardsBottom = [
-    { to: "product", icon: <TbUsersPlus />, label: "إضافة مورد", color: "#17a2b8" },
-    { to: "product", icon: <HiOutlineReceiptRefund />, label: "المرتجعات", color: "#7d8fe9" },
-    { to: "product", icon: <LuChartColumn />, label: "التقارير", color: "#17a2b8" },
+    {
+      to: "product",
+      icon: <TbUsersPlus />,
+      label: "إضافة مورد",
+      color: "#17a2b8",
+    },
+    {
+      to: "product",
+      icon: <HiOutlineReceiptRefund />,
+      label: "المرتجعات",
+      color: "#7d8fe9",
+    },
+    {
+      to: "product",
+      icon: <LuChartColumn />,
+      label: "التقارير",
+      color: "#17a2b8",
+    },
   ];
 
   const renderCards = (cards) =>

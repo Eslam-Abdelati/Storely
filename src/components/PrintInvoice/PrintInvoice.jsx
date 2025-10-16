@@ -104,19 +104,10 @@ function PrintInvoice({ invoiceData }) {
             <span className="pl-5">{totals.paidNow.toFixed(2)} ج.م</span>
           </div>
 
-          <div className="border-b border-gray-950 py-1 flex justify-between px-2">
-            <span className="font-semibold text-[14px]">طريقة الدفع</span>
-            <span className="pl-5">{paymentMethod}</span>
-          </div>
-
           {paymentMethod === "آجل" && (
             <>
               <div className="flex justify-between border-b border-gray-950 py-1 px-2">
-                <span className="font-semibold text-[14px]">المدفوع الآن</span>
-                <span className="pl-5">{totals.paidNow.toFixed(2)} ج.م</span>
-              </div>
-              <div className="flex justify-between border-b border-gray-950 py-1 px-2">
-                <span className="font-semibold text-[14px]">المتبقي</span>
+                <span className="font-semibold text-[14px]">المستحق</span>
                 <span className="pl-5">{totals.remaining.toFixed(2)} ج.م</span>
               </div>
             </>

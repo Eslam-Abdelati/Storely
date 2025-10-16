@@ -6,52 +6,34 @@ import PrintInvoice from "../../components/PrintInvoice/PrintInvoice";
 import AddClient from "../../components/AddClient/AddClient";
 import "../../components/PrintInvoice/invoice-print.css";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import {
+  customersList, // العميل
+  productsList, // المنتجات
+  employeesList, // الموظفين
+  invoicesList, // الفواتير
+} from "../../data/data";
 
-const customersList = [
-  
-  {
-    value: 1,
-    label: "أحمد عمار",
-    phone: "01012345678",
-    address: "الوادي الجديد - بلاط",
-  },
-  {
-    value: 2,
-    label: "إسلام عمار",
-    phone: "01098765432",
-    address: "الوادي الجديد - الداخلة",
-  },
-  {
-    value: 3,
-    label: "محمد حمدي",
-    phone: "01122223333",
-    address: "الوادي الجديد - الخارجة",
-  },
-];
-
-const salesmanList = [
-  { value: 1, label: "أحمد محمد" },
-  { value: 2, label: "إسلام عمار" },
-  { value: 3, label: "يوسف خالد" },
-];
-
-// قائمة المنتجات للتجربة
-const productsList = [
-  { barcode: "111", name: "موبايل سامسونج", price: 5000 },
-  { barcode: "222", name: "شاحن اصلي", price: 250 },
-  { barcode: "333", name: "كابل USB", price: 100 },
-  { barcode: "444", name: "opoo reno 5", price: 5000 },
-  { barcode: "555", name: "سماعه ايربود ", price: 250 },
-  { barcode: "6956611053192", name: "شاحن  USB", price: 100 },
-];
 const discountOptions = [
-  { value: "value", label: "EG" },
+  { value: "ج.م", label: "EGP" },
   { value: "percent", label: "%" },
 ];
+// 🧮 دالة توليد رقم الفاتورة
+const generateInvoiceNumber = () => {
+  const today = new Date();
+  const datePart = today.toISOString().split("T")[0].replace(/-/g, ""); // 20251016
+  const todayInvoices = invoicesList.filter((inv) =>
+    inv.invoiceNumber.includes(datePart)
+  );
 
-function AddInvoice() {
+  const nextNumber = todayInvoices.length + 1;
+  const formattedNumber = String(nextNumber).padStart(3, "0");
+  return `INV-${datePart}-${formattedNumber}`;
+};
+
+function AddSalesInvoice() {
   const [formData, setFormData] = useState({
-    invoiceNumber: "INV-2025107-001",
+    invoiceNumber: generateInvoiceNumber(),
     selectedCustomer: null,
     salesman: null,
     date: new Date().toISOString().split("T")[0],
@@ -62,16 +44,14 @@ function AddInvoice() {
     {
       barcode: "",
       name: "",
-      price: 0,
       qty: 0,
+      price: 0,
       discount: 0,
       discountType: "value",
     },
   ]);
-
   const [barcodeInput, setBarcodeInput] = useState("");
   const barcodeInputRef = useRef(null);
-
   const [openClientModal, setOpenClientModal] = useState(false);
 
   const handleClickOpen = () => {
@@ -124,8 +104,8 @@ function AddInvoice() {
         updated.push({
           barcode: "",
           name: "",
-          price: 0,
           qty: 0,
+          price: 0,
           discount: 0,
           discountType: "value",
         });
@@ -173,8 +153,8 @@ function AddInvoice() {
           updated.push({
             barcode: "",
             name: "",
-            price: 0,
             qty: 0,
+            price: 0,
             discount: 0,
             discountType: "value",
           });
@@ -210,36 +190,36 @@ function AddInvoice() {
     );
   };
 
-  const handleCancel = () => {
-    if (
-      window.confirm(
-        "هل أنت متأكد من إلغاء الفاتورة؟ سيتم فقدان جميع البيانات."
-      )
-    ) {
-      // إعادة تعيين جميع الحقول إلى القيم الافتراضية
-      setFormData({
-        invoiceNumber: "INV-2025107-001",
-        selectedCustomer: null,
-        salesman: null,
-        date: new Date().toISOString().split("T")[0],
-        invoiceDate: new Date().toISOString().split("T")[0],
-        releaseDate: new Date().toISOString().split("T")[0],
-        paymentMethod: "نقدي",
-      });
-      setCartItems([
-        {
-          barcode: "",
-          name: "",
-          price: 0,
-          qty: 0,
-          discount: 0,
-          discountType: "value",
-        },
-      ]);
-      setBarcodeInput("");
-      barcodeInputRef.current.focus();
-    }
-  };
+  // const handleCancel = () => {
+  //   if (
+  //     window.confirm(
+  //       "هل أنت متأكد من إلغاء الفاتورة؟ سيتم فقدان جميع البيانات."
+  //     )
+  //   ) {
+  //     // إعادة تعيين جميع الحقول إلى القيم الافتراضية
+  //     setFormData({
+  //       invoiceNumber: "INV-2025107-001",
+  //       selectedCustomer: null,
+  //       salesman: null,
+  //       date: new Date().toISOString().split("T")[0],
+  //       invoiceDate: new Date().toISOString().split("T")[0],
+  //       releaseDate: new Date().toISOString().split("T")[0],
+  //       paymentMethod: "نقدي",
+  //     });
+  //     setCartItems([
+  //       {
+  //         barcode: "",
+  //         name: "",
+  //         price: 0,
+  //         qty: 0,
+  //         discount: 0,
+  //         discountType: "value",
+  //       },
+  //     ]);
+  //     setBarcodeInput("");
+  //     barcodeInputRef.current.focus();
+  //   }
+  // };
 
   const handlePrint = () => {
     window.print();
@@ -255,6 +235,31 @@ function AddInvoice() {
       selectedCustomer: newClient,
     }));
   };
+
+   // حسابات الفاتورة
+
+  const validItems = cartItems.filter((i) => i.barcode);
+  const totalItems = validItems.length;
+  const subtotal = validItems.reduce((sum, i) => sum + i.qty * i.price, 0);
+  const totalDiscount = validItems.reduce((sum, i) => {
+    const itemDiscount =
+      i.discountType === "percent"
+        ? (i.price * i.qty * (i.discount || 0)) / 100
+        : i.discount || 0;
+    return sum + itemDiscount;
+  }, 0);
+
+  const generalDiscountValue =
+    formData.generalDiscountType === "percent"
+      ? (subtotal - totalDiscount) * ((formData.generalDiscount || 0) / 100)
+      : formData.generalDiscount || 0;
+
+  const netTotal = subtotal - totalDiscount - generalDiscountValue;
+
+  const paidNow =
+    formData.paymentMethod === "آجل" ? formData.paidAmount || 0 : netTotal;
+
+  const remaining = formData.paymentMethod === "آجل" ? netTotal - paidNow : 0;
   // =================== دالة الحفظ والطباعة ===================
   const handleSubmit = () => {
     const validItems = cartItems.filter((item) => item.barcode);
@@ -304,18 +309,16 @@ function AddInvoice() {
     console.log("🚀 بيانات الفاتورة:", invoiceData);
 
     // ✅ رسالة نجاح
-    alert("✅ تم حفظ الفاتورة بنجاح!");
-
+    toast.success(`تم حفظ الفاتورة بنجاح`);
     // استدعاء الطباعة
-    handlePrint();
+    // handlePrint();
 
     // إعادة التعيين بعد الحفظ
     setFormData({
-      invoiceNumber: "INV-2025107-001",
+      invoiceNumber: generateInvoiceNumber(),
       selectedCustomer: null,
       salesman: null,
-      today: new Date().toISOString().split("T")[0],
-      invoiceDate: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString().split("T")[0],
       releaseDate: new Date().toISOString().split("T")[0],
       paymentMethod: "نقدي",
     });
@@ -331,30 +334,7 @@ function AddInvoice() {
     ]);
   };
 
-  // حسابات الفاتورة
-
-  const validItems = cartItems.filter((i) => i.barcode);
-  const totalItems = validItems.length;
-  const subtotal = validItems.reduce((sum, i) => sum + i.qty * i.price, 0);
-  const totalDiscount = validItems.reduce((sum, i) => {
-    const itemDiscount =
-      i.discountType === "percent"
-        ? (i.price * i.qty * (i.discount || 0)) / 100
-        : i.discount || 0;
-    return sum + itemDiscount;
-  }, 0);
-
-  const generalDiscountValue =
-    formData.generalDiscountType === "percent"
-      ? (subtotal - totalDiscount) * ((formData.generalDiscount || 0) / 100)
-      : formData.generalDiscount || 0;
-
-  const netTotal = subtotal - totalDiscount - generalDiscountValue;
-
-  const paidNow =
-    formData.paymentMethod === "آجل" ? formData.paidAmount || 0 : netTotal;
-
-  const remaining = formData.paymentMethod === "آجل" ? netTotal - paidNow : 0;
+ 
   const invoiceData = {
     customer: formData.selectedCustomer,
     invoiceNumber: formData.invoiceNumber,
@@ -447,9 +427,10 @@ function AddInvoice() {
               inputId="customer"
               name="selectedCustomer"
               options={customersList.map((c) => ({
-                value: c.value,
-                label: c.label, // ✅ نعرض الاسم فقط
-                phone: c.phone, // 📱 نستخدمه داخليًا للبحث
+                value: c.id,
+                label: c.name,
+                phone: c.phone,
+                address: c.address,
               }))}
               value={formData.selectedCustomer}
               onChange={handleSelectChange}
@@ -488,7 +469,7 @@ function AddInvoice() {
           </div>
 
           {formData.selectedCustomer && (
-            <div className="mt-4 bg-white border border-[rgb(219,234,254)] p-3 rounded-md text-sm sm:text-base">
+            <div className="mt-4 bg-white border p-3 rounded-md">
               <p>
                 <strong>الإسم:</strong> {formData.selectedCustomer.label}
               </p>
@@ -514,7 +495,11 @@ function AddInvoice() {
             <Select
               inputId="salesman"
               name="salesman"
-              options={salesmanList}
+              options={employeesList.map((e) => ({
+                value: e.id,
+                label: e.name,
+                role: e.role,
+              }))}
               value={formData.salesman}
               onChange={handleSelectChange}
               placeholder="اختر"
@@ -668,7 +653,7 @@ function AddInvoice() {
                         type="number"
                         id={`price-${index}`}
                         min="1"
-                        value={item.price || 0}
+                        value={item.price || ""}
                         onChange={(e) =>
                           handleItemChange(
                             item.barcode,
@@ -688,7 +673,7 @@ function AddInvoice() {
                           type="number"
                           id={`discount-${index}`}
                           min="0"
-                          value={item.discount || 0}
+                          value={item.discount || ""}
                           onChange={(e) =>
                             handleItemChange(
                               item.barcode,
@@ -904,9 +889,10 @@ function AddInvoice() {
               />
             </div>
           </div>
-
-          {formData.paymentMethod === "آجل" && (
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        </div>
+        {formData.paymentMethod === "آجل" && (
+          <div className="flex items-center gap-10">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4">
               <h2 className="font-semibold whitespace-nowrap">
                 المبلغ المدفوع الآن:
               </h2>
@@ -926,8 +912,17 @@ function AddInvoice() {
                 المتبقي: {remaining.toFixed(2)} ج.م
               </span>
             </div>
-          )}
-        </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4">
+              <h2 className="font-semibold whitespace-nowrap">عدد الأشهر</h2>
+              <input
+                type="number"
+                name="paidMonth"
+                className="border rounded px-2 py-1 w-full sm:w-32 text-center focus:ring-2 focus:ring-blue-300 outline-none"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ✅ أزرار الحفظ والطباعة */}
@@ -939,13 +934,13 @@ function AddInvoice() {
         >
           حفظ وطباعة
         </Button>
-        <Button
+        {/* <Button
           type="button"
           onClick={handleCancel}
           className="!bg-gray-300 hover:!bg-gray-400 !text-gray-800 btn-sm !flex !items-center !gap-1 sm:!gap-2 !text-xs sm:!text-sm md:!text-base xl:!text-lg !px-2 sm:!px-3 !py-1 sm:!py-2"
         >
           إلغاء
-        </Button>
+        </Button> */}
       </div>
 
       {/* نسخة الطباعة الحرارية  */}
@@ -964,4 +959,4 @@ function AddInvoice() {
   );
 }
 
-export default AddInvoice;
+export default AddSalesInvoice;

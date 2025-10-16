@@ -90,7 +90,7 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 1}>
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
-                  <Link to={"/app/invoices"}>
+                  <Link to={"/app/sales_invoice"}>
                     <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
                       <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
                       إداره الفواتير
@@ -98,7 +98,7 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/app/invoices/add-invoice"}>
+                  <Link to={"/app/sales_invoice/add-salesinvoice"}>
                     <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
                       <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
                       إنشاء فاتورة
@@ -166,8 +166,57 @@ const Sidebar = () => {
             </Collapse>
           </li>
 
-          {/* نقاط البيع */}
+          {/* المشتريات */}
           <li>
+            <Button
+              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
+              onClick={() => toggleSubmenu(3)}
+            >
+              <div className="flex items-center gap-2">
+                <LuPackage className="text-[17px] xl:text-[18px]" />
+                <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
+                  المشتريات
+                </span>
+              </div>
+              <FaAngleDown
+                className={`transition-transform duration-300 ${
+                  submenuIndex === 3 ? "rotate-180" : ""
+                }`}
+              />
+            </Button>
+
+            <Collapse isOpened={submenuIndex === 3}>
+              <ul className="pl-6 mt-1 space-y-1">
+                <li>
+                  <Link to={"/app/product"}>
+                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
+                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                      فواتير الشراء
+                    </Button>
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/app/add-product"}>
+                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
+                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                      الموردين
+                    </Button>
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/app/category"}>
+                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
+                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                      إضافة مورد
+                    </Button>
+                  </Link>
+                </li>
+              </ul>
+            </Collapse>
+          </li>
+
+          {/* نقاط البيع */}
+          {/* <li>
             <Button
               className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
               onClick={() => toggleSubmenu(3)}
@@ -205,7 +254,7 @@ const Sidebar = () => {
                 </li>
               </ul>
             </Collapse>
-          </li>
+          </li> */}
 
           {/* تسجيل الخروج */}
           <li>

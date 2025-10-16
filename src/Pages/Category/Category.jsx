@@ -151,7 +151,7 @@ function Category() {
             <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 mt-5">
               <Button
                 type="submit"
-                className="!bg-green-600 hover:!bg-green-700 !text-white px-6 py-2 rounded-md w-full sm:w-auto"
+                className="!bg-green-600 hover:!bg-green-700 !text-white btn-sm !flex !items-center !gap-1 sm:!gap-2 !text-xs sm:!text-sm md:!text-base xl:!text-lg !px-2 sm:!px-3 !py-1 sm:!py-2"
               >
                 حفظ
               </Button>
@@ -160,7 +160,7 @@ function Category() {
                 onClick={() =>
                   setFormData({ name: "", description: "", status: null })
                 }
-                className="!bg-gray-300 hover:!bg-gray-400 !text-gray-800 px-6 py-2 rounded-md w-full sm:w-auto"
+                className="!bg-gray-300 hover:!bg-gray-400 !text-gray-800 btn-sm !flex !items-center !gap-1 sm:!gap-2 !text-xs sm:!text-sm md:!text-base xl:!text-lg !px-2 sm:!px-3 !py-1 sm:!py-2"
               >
                 إلغاء
               </Button>

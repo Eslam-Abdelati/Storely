@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
+
 import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./Pages/Login/Login";
@@ -16,9 +18,11 @@ import PosShifts from "./Pages/PosShifts/PosShifts";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { useState } from "react";
 import ProductLabel from "./components/ProductLabel/ProductLabel";
-import AddInvoice from "./Pages/AddInvoice/AddInvoice";
-import Invoices from "./Pages/Invoices/Invoices";
 import FirstSignUp from "./Pages/SignUp/FirstSignUp";
+import SalesInvoiceDetails from "./Pages/SalesInvoiceDetails/SalesInvoiceDetails";
+import SalesInvoices from "./Pages/SalesInvoices/SalesInvoices";
+import AddSalesInvoice from "./Pages/AddSalesInvoice/AddSalesInvoice";
+import AddPaymentPage from "./Pages/AddPaymentPage/AddPaymentPage";
 
 const theme = createTheme({
   typography: {
@@ -68,15 +72,24 @@ function App() {
             <Route path="product/:id" element={<ProductDetails />} />
             <Route path="product/label" element={<ProductLabel />} />
             <Route path="category" element={<Category />} />
-            <Route path="invoices" element={<Invoices />} />
-            <Route path="invoices/add-invoice" element={<AddInvoice />} />
+            <Route path="sales_invoice" element={<SalesInvoices />} />
+            <Route
+              path="sales_invoice/add-salesinvoice"
+              element={<AddSalesInvoice />}
+            />
+            <Route path="sales_invoice/:id" element={<SalesInvoiceDetails />} />
+            <Route
+              path="payments/add/:invoiceNumber"
+              element={<AddPaymentPage />}
+            />
             <Route path="pos_shifts" element={<PosShifts />} />
             {/* <Route path="pos" element={<Pos />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
+      <Toaster position="top-center" reverseOrder={false} />
     </ThemeProvider>
   );
 }

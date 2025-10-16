@@ -55,9 +55,9 @@ function SignUp2() {
       toast.success("تم التسجيل بنجاح ");
       console.log(response);
       navigate("/login");
-    } catch (err) {
-      console.log(err.response?.data?.message);
-      toast.error(err.response?.data?.message);
+    } catch (error) {
+      console.log(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     } finally {
       setLoading(false);
     }
