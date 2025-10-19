@@ -40,7 +40,7 @@ export const suppliersList = [
 ];
 
 export const employeesList = [
-  { id: 1, name: "محمد أحمد", role: "محاسب"},
+  { id: 1, name: "محمد أحمد", role: "محاسب" },
   { id: 2, name: "إسلام عمار", role: "مدير مبيعات" },
   { id: 3, name: "علي محمود", role: "بائع" },
 ];

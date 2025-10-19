@@ -4,14 +4,26 @@ function PrintInvoice({ invoiceData }) {
   if (!invoiceData) return null;
 
   const {
-    customer,
-    invoiceNumber,
-    date,
-    salesman,
-    items,
-    totals,
-    paymentMethod,
-  } = invoiceData;
+  customer = {},
+  invoiceNumber = "",
+  date = "",
+  employee = {},
+  items = [],
+  discountReason = "",
+  generalDiscount = 0,
+  generalDiscountType = "EGP",
+  generalDiscountValue = 0,
+  netTotal = 0,
+  paidNow = 0,
+  paidAmount = 0,
+  paidMonth = 0,
+  paymentMethod = "",
+  releaseDate = "",
+  remaining = 0,
+  subtotal = 0,
+  totalDiscount = 0,
+} = invoiceData;
+
 
   return (
     <div id="print-area" className="hidden print:block bg-white">
@@ -40,7 +52,7 @@ function PrintInvoice({ invoiceData }) {
             <strong>التاريخ:</strong> {date}
           </p>
           <p>
-            <strong> موظف:</strong> {salesman?.label || "-"}
+            <strong> موظف:</strong> {employee?.label || "-"}
           </p>
         </div>
 
@@ -84,31 +96,31 @@ function PrintInvoice({ invoiceData }) {
 
         {/* ===== الإجماليات ===== */}
         <div className="text-[13px]">
-          {totals.generalDiscountValue > 0 && (
+          {generalDiscountValue > 0 && (
             <div className="border-b border-gray-950 py-1 px-2 flex justify-between">
               <span className="font-semibold text-[14px]">خصم عام</span>
               <span className="pl-5">
-                {totals.generalDiscountValue.toFixed(2)} ج.م{" "}
-                {totals.generalDiscountType === "percent" ? "(%)" : ""}
+                {generalDiscountValue.toFixed(2)} ج.م{" "}
+                {generalDiscountType === "percent" ? "(%)" : ""}
               </span>
             </div>
           )}
 
           <div className="bg-[#e5e5e5] border-b border-gray-950 py-1 flex justify-between font-semibold text-[14px] px-2">
             <span>الإجمالي</span>
-            <span className="pl-5">{totals.netTotal.toFixed(2)} ج.م</span>
+            <span className="pl-5">{netTotal.toFixed(2)} ج.م</span>
           </div>
 
           <div className="border-b border-gray-950 py-1 flex justify-between px-2">
             <span className="font-semibold text-[14px]">المدفوع</span>
-            <span className="pl-5">{totals.paidNow.toFixed(2)} ج.م</span>
+            <span className="pl-5">{paidNow.toFixed(2)} ج.م</span>
           </div>
 
           {paymentMethod === "آجل" && (
             <>
               <div className="flex justify-between border-b border-gray-950 py-1 px-2">
                 <span className="font-semibold text-[14px]">المستحق</span>
-                <span className="pl-5">{totals.remaining.toFixed(2)} ج.م</span>
+                <span className="pl-5">{remaining.toFixed(2)} ج.م</span>
               </div>
             </>
           )}

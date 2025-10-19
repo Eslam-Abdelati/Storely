@@ -79,7 +79,7 @@ function App() {
             />
             <Route path="sales_invoice/:id" element={<SalesInvoiceDetails />} />
             <Route
-              path="payments/add/:invoiceNumber"
+              path="/app/sales_invoice/:id/payments/add"
               element={<AddPaymentPage />}
             />
             <Route path="pos_shifts" element={<PosShifts />} />

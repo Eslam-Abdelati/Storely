@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Badge from "../../components/Badge/Badge";
 import Menu from "@mui/material/Menu";
@@ -32,40 +32,8 @@ const paymentStatusList = [
   { value: "partial_returned", label: "مرتجع جزئي" },
 ];
 
-// // ✅ بيانات تجريبية للفواتير
-// const invoicesData = [
-//   {
-//     id: 1,
-//     code: "INV-2025109-001",
-//     customer: "أحمد محمد",
-//     total: 1200,
-//     date: "2024-10-07 03:45 م",
-//     status: "مدفوع",
-//     items: 2,
-//   },
-//   {
-//     id: 2,
-//     code: "INV-2025109-002",
-//     customer: "أحمد محمد",
-//     total: 1200,
-//     returned: 500,
-//     date: "2024-10-07 03:45 م",
-//     status: "غير مدفوع",
-//     extraStatus: ["مرتجع جزئي", "تحت التسليم"],
-//     items: 2,
-//   },
-//   {
-//     id: 3,
-//     code: "INV-2025109-003",
-//     customer: "أحمد محمد",
-//     total: 1200,
-//     date: "2024-10-07 03:45 م",
-//     status: "غير مدفوع",
-//     items: 2,
-//   },
-// ];
-
 function SalesInvoices() {
+  const [invoices, setInvoices] = useState([]);
   // ✅ حالة النموذج
   const [formData, setFormData] = useState({
     clint: "",
@@ -96,10 +64,17 @@ function SalesInvoices() {
     console.log("🔍 بيانات البحث:", formData);
   };
 
+  // ✅ قراءة الفواتير من localStorage عند التحميل
+  useEffect(() => {
+    const storedInvoices =
+      JSON.parse(localStorage.getItem("salesInvoices")) || [];
+    setInvoices(storedInvoices);
+  }, []);
+
   return (
     <>
       {/* عنوان الصفحة وازرار */}
-      <div className="card my-4 shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+      <div className="card shadow-sm rounded-md bg-[rgba(255,255,255,0.6)] border border-[rgb(219,234,254)] px-3 sm:px-4 md:px-6 py-3 sm:py-4">
         {/* رأس الصفحة */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {/* العنوان والمعلومات */}
@@ -109,7 +84,8 @@ function SalesInvoices() {
               فواتير المبيعات
             </h2>
             <span className="block text-[rgba(0,0,0,.7)] text-sm sm:text-base mt-1">
-              إجمالي الفواتير: <span className="font-medium">2 فاتورة</span>
+              إجمالي الفواتير:{" "}
+              <span className="font-medium">{invoices.length} فاتورة</span>
             </span>
           </div>
 
@@ -248,234 +224,132 @@ function SalesInvoices() {
         <div className="flex items-center p-2 text-[rgb(30,64,175)] gap-1 border-b border-[rgba(0,0,0,0.1)]">
           <TbFileInvoice />
           <h4 className="text-[16px] font-[600] mb-1 sm:mb-0">
-            قائمة الفواتير (2)
+            قائمة الفواتير ({invoices.length})
           </h4>
         </div>
 
         {/* بطاقة الفاتورة */}
 
         <div className="w-full px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4">
-          <div
-            className="w-full mb-2 py-3 px-3 sm:px-4 bg-white border border-[rgb(219,234,254)] shadow-sm hover:shadow-md 
+          {invoices.map((invoice, index) => (
+            <div
+              key={index}
+              className="w-full mb-2 py-3 px-3 sm:px-4 bg-white border border-[rgb(219,234,254)] shadow-sm hover:shadow-md 
                     flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5 rounded-md transition-all duration-300"
-          >
-            {/* بيانات العميل والفاتورة */}
-            <Link
-              to={"/app/sales_invoice/1"}
-              className="w-full sm:w-auto flex-1"
             >
-              <div className="col1 flex flex-col gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-primary border border-primary rounded-2xl py-1 px-2 text-[12px] sm:text-[13px] font-semibold">
-                    INV-2025109-001
-                  </span>
-                  <span className="text-[rgba(0,0,0,0.7)] text-[13px] sm:text-[14px]">
-                    2 منتج
-                  </span>
+              {/* بيانات العميل والفاتورة */}
+              <Link
+                to={`/app/sales_invoice/${invoice.id}`}
+                className="w-full sm:w-auto flex-1"
+              >
+                <div className="col1 flex flex-col gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-primary border border-primary rounded-2xl py-1 px-2 text-[12px] sm:text-[13px] font-semibold">
+                      {invoice.invoiceNumber}
+                    </span>
+                    <span className="text-[rgba(0,0,0,0.7)] text-[13px] sm:text-[14px]">
+                      {invoice.items.length} منتج
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 text-[12px] sm:text-[14px]">
+                    <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
+                      <CiCalendar className="text-[16px]" />
+                      {invoice.releaseDate} 03:45 م
+                    </span>
+                    <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
+                      <FiUser className="text-[16px]" />
+                      {invoice.employee?.label || "البائع الرئيسي"}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* السعر والحالة + الإجراءات */}
+              <div className="col2 flex flex-col sm:flex-row sm:items-center justify-between sm:justify-end gap-3 sm:gap-5 w-full sm:w-auto">
+                {/* السعر + الحالة */}
+                <div className="flex flex-col items-start sm:items-end gap-1">
+                  <p className="text-[16px] sm:text-[18px] font-bold text-[#1e40af]">
+                    {invoice.netTotal?.toLocaleString()} ج.م
+                  </p>
+                  {/* عرض المرتجع إذا موجود */}
+                  {invoice.returned > 0 && (
+                    <p className="text-[12px] sm:text-[13px] text-red-500 font-medium">
+                      مرتجع: {invoice.returned.toLocaleString()} ج.م
+                    </p>
+                  )}
+                  <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
+                    <Badge status={invoice.paymentStatus} />
+                    {invoice.returned !== "none" && (
+                      <Badge status="مرتجع جزئي" />
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 text-[12px] sm:text-[14px]">
-                  <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
-                    <CiCalendar className="text-[16px]" />
-                    2024-10-07 03:45 م
-                  </span>
-                  <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
-                    <FiUser className="text-[16px]" />
-                    أحمد محمد
-                  </span>
+                {/* زر الإجراءات */}
+                <div className="flex justify-end">
+                  <Button
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    className="!w-[40px] !min-w-[40px] !h-[40px] !rounded-full !p-1 sm:!p-2 transition-all duration-300"
+                  >
+                    <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer" />
+                  </Button>
+
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    slotProps={{
+                      list: {
+                        "aria-labelledby": "basic-button",
+                      },
+                    }}
+                  >
+                    {[
+                      {
+                        icon: <FaRegEye className="text-[#10b981]" />,
+                        text: "عرض",
+                      },
+                      {
+                        icon: <AiOutlineEdit className="text-primary" />,
+                        text: "تعديل",
+                      },
+                      {
+                        icon: <AiFillFilePdf className="text-[#f22c61]" />,
+                        text: "PDF",
+                      },
+                      {
+                        icon: <FaPrint className="text-[#17a2b8]" />,
+                        text: "طباعة",
+                      },
+                      {
+                        icon: <RiArrowGoBackFill className="text-[#7d17b8]" />,
+                        text: "مرتجع",
+                      },
+                      {
+                        icon: <HiOutlineTrash className="text-[#f22c61]" />,
+                        text: "حذف",
+                      },
+                    ].map((item, index) => (
+                      <MenuItem
+                        key={index}
+                        onClick={handleClose}
+                        className="flex items-center gap-3 !pl-10 !py-2 sm:!py-3 !text-[14px] sm:!text-[16px]"
+                      >
+                        {item.icon}
+                        {item.text}
+                      </MenuItem>
+                    ))}
+                  </Menu>
                 </div>
-              </div>
-            </Link>
-
-            {/* السعر والحالة + الإجراءات */}
-            <div className="col2 flex flex-col sm:flex-row sm:items-center justify-between sm:justify-end gap-3 sm:gap-5 w-full sm:w-auto">
-              {/* السعر + الحالة */}
-              <div className="flex flex-col items-start sm:items-end gap-1">
-                <p className="text-[16px] sm:text-[18px] font-bold text-[#1e40af]">
-                  1,200.00 ج.م
-                </p>
-                <p className="text-[12px] sm:text-[13px] text-red-500 font-medium">
-                  مرتجع: 500.00 ج.م
-                </p>
-                <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
-                  <Badge status="غير مدفوعة" />
-                  <Badge status="مرتجع جزئي" />
-                  <Badge status="تحت التسليم" />
-                </div>
-              </div>
-
-              {/* زر الإجراءات */}
-              <div className="flex justify-end">
-                <Button
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
-                  className="!w-[40px] !min-w-[40px] !h-[40px] !rounded-full !p-1 sm:!p-2 transition-all duration-300"
-                >
-                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer" />
-                </Button>
-
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  slotProps={{
-                    list: {
-                      "aria-labelledby": "basic-button",
-                    },
-                  }}
-                >
-                  {[
-                    {
-                      icon: <FaRegEye className="text-[#10b981]" />,
-                      text: "عرض",
-                    },
-                    {
-                      icon: <AiOutlineEdit className="text-primary" />,
-                      text: "تعديل",
-                    },
-                    {
-                      icon: <AiFillFilePdf className="text-[#f22c61]" />,
-                      text: "PDF",
-                    },
-                    {
-                      icon: <FaPrint className="text-[#17a2b8]" />,
-                      text: "طباعة",
-                    },
-                    {
-                      icon: <RiArrowGoBackFill className="text-[#7d17b8]" />,
-                      text: "مرتجع",
-                    },
-                    {
-                      icon: <HiOutlineTrash className="text-[#f22c61]" />,
-                      text: "حذف",
-                    },
-                  ].map((item, index) => (
-                    <MenuItem
-                      key={index}
-                      onClick={handleClose}
-                      className="flex items-center gap-3 !pl-10 !py-2 sm:!py-3 !text-[14px] sm:!text-[16px]"
-                    >
-                      {item.icon}
-                      {item.text}
-                    </MenuItem>
-                  ))}
-                </Menu>
               </div>
             </div>
-          </div>
-          <div
-            className="w-full mb-2 py-3 px-3 sm:px-4 bg-white border border-[rgb(219,234,254)] shadow-sm hover:shadow-md 
-                    flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5 rounded-md transition-all duration-300"
-          >
-            {/* بيانات العميل والفاتورة */}
-            <Link
-              to={"/app/sales_invoice/1"}
-              className="w-full sm:w-auto flex-1"
-            >
-              <div className="col1 flex flex-col gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-primary border border-primary rounded-2xl py-1 px-2 text-[12px] sm:text-[13px] font-semibold">
-                    INV-2025109-001
-                  </span>
-                  <span className="text-[rgba(0,0,0,0.7)] text-[13px] sm:text-[14px]">
-                    2 منتج
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 text-[12px] sm:text-[14px]">
-                  <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
-                    <CiCalendar className="text-[16px]" />
-                    2024-10-07 03:45 م
-                  </span>
-                  <span className="text-[rgba(0,0,0,0.7)] flex items-center gap-1">
-                    <FiUser className="text-[16px]" />
-                    أحمد محمد
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-            {/* السعر والحالة + الإجراءات */}
-            <div className="col2 flex flex-col sm:flex-row sm:items-center justify-between sm:justify-end gap-3 sm:gap-5 w-full sm:w-auto">
-              {/* السعر + الحالة */}
-              <div className="flex flex-col items-start sm:items-end gap-1">
-                <p className="text-[16px] sm:text-[18px] font-bold text-[#1e40af]">
-                  1,200.00 ج.م
-                </p>
-
-                <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
-                  <Badge status="مدفوعة" />
-                  <Badge status="مرتجع" />
-                </div>
-              </div>
-
-              {/* زر الإجراءات */}
-              <div className="flex justify-end">
-                <Button
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
-                  className="!w-[40px] !min-w-[40px] !h-[40px] !rounded-full !p-1 sm:!p-2 transition-all duration-300"
-                >
-                  <CiMenuKebab className="text-[24px] sm:text-[28px] text-[rgba(0,0,0,0.7)] cursor-pointer" />
-                </Button>
-
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  slotProps={{
-                    list: {
-                      "aria-labelledby": "basic-button",
-                    },
-                  }}
-                >
-                  {[
-                    {
-                      icon: <FaRegEye className="text-[#10b981]" />,
-                      text: "عرض",
-                    },
-                    {
-                      icon: <AiOutlineEdit className="text-primary" />,
-                      text: "تعديل",
-                    },
-                    {
-                      icon: <AiFillFilePdf className="text-[#f22c61]" />,
-                      text: "PDF",
-                    },
-                    {
-                      icon: <FaPrint className="text-[#17a2b8]" />,
-                      text: "طباعة",
-                    },
-                    {
-                      icon: <RiArrowGoBackFill className="text-[#7d17b8]" />,
-                      text: "مرتجع",
-                    },
-                    {
-                      icon: <HiOutlineTrash className="text-[#f22c61]" />,
-                      text: "حذف",
-                    },
-                  ].map((item, index) => (
-                    <MenuItem
-                      key={index}
-                      onClick={handleClose}
-                      className="flex items-center gap-3 !pl-10 !py-2 sm:!py-3 !text-[14px] sm:!text-[16px]"
-                    >
-                      {item.icon}
-                      {item.text}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>
