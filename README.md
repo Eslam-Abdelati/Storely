@@ -16,7 +16,7 @@ This project focuses on clean architecture, reusable components, and seamless us
 - 📦 Product & Inventory Management  
 - 🧾 Purchase & Sales Invoice System  
 - 📊 Real-time Analytics and Reports  
-- 🎨 Responsive and Modern UI using **Material UI** and **Bootstrap 5**  
+- 🎨 Responsive and Modern UI using **Material UI** and **Tailwind CSS**  
 - ⚙️ Modular and Scalable Project Architecture
 
 ---
@@ -26,7 +26,7 @@ This project focuses on clean architecture, reusable components, and seamless us
 | Category | Technology |
 |-----------|-------------|
 | Frontend | React.js, JavaScript (ES6+) |
-| UI Library | Material UI, Bootstrap 5 |
+| UI Library | Material UI, Tailwind CSS |
 | Routing | React Router DOM |
 | Date Picker | Flatpickr |
 | State Management | useState, useEffect |
