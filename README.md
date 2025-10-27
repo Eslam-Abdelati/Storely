@@ -4,7 +4,7 @@ A modern and responsive **management system** built with **React.js** and **Java
 This project focuses on clean architecture, reusable components, and seamless user experience.
 
 ## 🚀 Live Demo
-🔗 [View](storlay.netlify.app)
+🔗 [View](https://storlay.netlify.app)
 
 ---
 
@@ -66,7 +66,7 @@ This project focuses on clean architecture, reusable components, and seamless us
 
 **Eslam Ammar**
 Frontend Developer skilled in building interactive and responsive web applications using React.js and modern frontend technologies.
-💼 [LinkedIn](https://www.linkedin.com/in/eslam-ammar) 
+💼 [LinkedIn](https://www.linkedin.com/in/eslam-amar) 
 
 
 
