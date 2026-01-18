@@ -23,6 +23,9 @@ import SalesInvoiceDetails from "./Pages/SalesInvoiceDetails/SalesInvoiceDetails
 import SalesInvoices from "./Pages/SalesInvoices/SalesInvoices";
 import AddSalesInvoice from "./Pages/AddSalesInvoice/AddSalesInvoice";
 import AddPaymentPage from "./Pages/AddPaymentPage/AddPaymentPage";
+import Purchases from "./Pages/Purchases/Purchases";
+import Suppliers from "./Pages/Suppliers/Suppliers";
+import AddSupplier from "./Pages/AddSupplier/AddSupplier";
 
 const theme = createTheme({
   typography: {
@@ -79,10 +82,15 @@ function App() {
             />
             <Route path="sales_invoice/:id" element={<SalesInvoiceDetails />} />
             <Route
-              path="/app/sales_invoice/:id/payments/add"
+              path="sales_invoice/:id/payments/add"
               element={<AddPaymentPage />}
             />
-            <Route path="pos_shifts" element={<PosShifts />} />
+            <Route path="purchases" element={<Purchases />} />
+
+            {/* Supliers */}
+            <Route path="supliers" element={<Suppliers />} />
+            <Route path="add-suplier" element={<AddSupplier />} />
+            {/* <Route path="pos_shifts" element={<PosShifts />} /> */}
             {/* <Route path="pos" element={<Pos />} /> */}
           </Route>
         </Routes>

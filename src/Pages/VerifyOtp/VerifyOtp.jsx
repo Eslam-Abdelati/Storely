@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import verifyImg from "../../assets/shield.png";
 import OtpBox from "../../components/OtpBox/OtpBox";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import bgImage from "../../assets/patern.webp";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 function VerifyOTP() {
+  const location = useLocation();
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+
+  // جاي من Register.jsx
+  const email = location.state?.email;
+  const type = location.state?.type;
+
+  useEffect(() => {
+    if (!email || !type) {
+      toast.error("Invalid access, please register again");
+      navigate("/");
+    }
+  }, [email, type, navigate]);
 
   const handleOtpChange = (value) => {
     setOtp(value);
@@ -16,8 +29,39 @@ function VerifyOTP() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success("ok");
-    navigate("/forgot-password");
+    if (!otp) {
+      toast.error("Please enter the OTP");
+    }
+
+    try {
+      if (type === "register") {
+        const res = await axios.post(
+          "https://storely-system.onrender.com/auth/verify-email",
+          { email, otp },
+          { withCredentials: true }
+        );
+        if (res.data.success) {
+          toast.success("Email verified successfully 🎉");
+          navigate("/login"); // ✅ يروح للوجين بعد الفيريفاي
+        } else {
+          toast.error(res.data.message || "OTP verification failed");
+        }
+      } else if (type === "login") {
+        const res = await axios.post(
+          "https://storely-system.onrender.com/auth/verify-login-otp",
+          { email, otp },
+          { withCredentials: true }
+        );
+        if (res.data.success) {
+          toast.success("Email verified successfully 🎉");
+          navigate("/app"); // ✅ يروح للوجين بعد الفيريفاي
+        } else {
+          toast.error(res.data.message || "OTP verification failed");
+        }
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -44,12 +88,12 @@ function VerifyOTP() {
         </h3>
         <p className="text-center mt-0 text-[14px] sm:text-[15px]">
           OTP send to
-          <span className="text-primary font-[500]"> eslam@yhoo.com</span>
+          <span className="text-primary font-[500]"> {email} </span>
         </p>
 
         {/* النموذج */}
         <form onSubmit={handleSubmit} className="mt-6 sm:mt-8">
-          <OtpBox length={6} onChange={handleOtpChange} />
+          <OtpBox length={4} onChange={handleOtpChange} />
 
           <div className="flex flex-col items-center justify-center mt-6 sm:mt-8">
             <a className="cursor-pointer text-[13px] sm:text-[14px] font-[600] mb-3 sm:mb-2 text-blue-600 hover:text-blue-800 transition">

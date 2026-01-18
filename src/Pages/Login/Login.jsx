@@ -6,9 +6,9 @@ import Button from "@mui/material/Button";
 
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
-import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -39,11 +39,15 @@ function Login() {
       setTimeout(() => {
         toast.success("تم الدخول بنجاح");
         setLoading(false);
-        navigate("/app");
+        navigate("/verify", {
+          state: { email: formData.email, type: "login" },
+        });
       }, 2000);
     } catch (error) {
       console.log(error.response);
-      toast.error(error.response?.data?.message);
+      if (error.response?.data?.statusCode === 500) {
+        toast.error("الإيميل غير مسجل بعد");
+      }
       setLoading(false);
     }
   };
@@ -60,20 +64,20 @@ function Login() {
       <div className="w-[95%] sm:w-[90%] md:w-[600px] mx-auto">
         {/* ✅ الهيدر */}
         <header className="flex items-center gap-3 mb-6 sm:mb-10 justify-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+            Storely
+          </h1>
           <img
             src={logo2}
             alt="Storely logo"
             className="w-10 h-10 sm:w-12 sm:h-12"
           />
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
-            ستورلي
-          </h1>
         </header>
 
         {/* الصندوق الرئيسي */}
         <div className="loginBox card w-[95%] sm:w-[90%] md:w-[600px] h-auto pb-10 sm:pb-16 mx-auto mt-1 mb-10 sm:mt-5 pt-6 sm:pt-10 relative bg-white rounded-2xl shadow-lg">
           <div className="text-center px-3">
-            <h2 className="text-center text-[18px] sm:text-[35px] font-[600] my-4">
+            <h2 className="text-center text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-[600] my-4">
               تسجيل الدخول
             </h2>
 

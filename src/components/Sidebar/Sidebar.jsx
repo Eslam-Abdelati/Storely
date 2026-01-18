@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import logo from "../../assets/logo.jpg";
+import logo2 from "../../assets/icon.svg";
 import { Collapse } from "react-collapse";
 import { RxDashboard } from "react-icons/rx";
 import { FaRegImage } from "react-icons/fa";
@@ -39,11 +39,19 @@ const Sidebar = () => {
       >
         {/* الشعار */}
         <div className="py-3 w-full mb-6 flex justify-center">
-          <Link to="/app">
-            <img
+          <Link to="/app" className="flex items-center gap-2">
+            {/* <img
               src={logo}
               alt="logo"
               className="w-[120px] sm:w-[140px] md:w-[160px] object-contain"
+            /> */}
+            <h1 className="text-[18px] sm:text-[20px] font-bold text-primary">
+              Storely
+            </h1>
+            <img
+              src={logo2}
+              alt="Storely logo"
+              className="w-7 h-7 sm:w-10 sm:h-10"
             />
           </Link>
         </div>
@@ -188,7 +196,7 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 3}>
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
-                  <Link to={"/app/product"}>
+                  <Link to={"/app/purchases"}>
                     <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
                       <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
                       فواتير الشراء
@@ -196,15 +204,15 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/app/add-product"}>
+                  <Link to={"/app/supliers"}>
                     <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
                       <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      الموردين
+                      إدارة الموردين
                     </Button>
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/app/category"}>
+                  <Link to={"/app/add-suplier"}>
                     <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
                       <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
                       إضافة مورد

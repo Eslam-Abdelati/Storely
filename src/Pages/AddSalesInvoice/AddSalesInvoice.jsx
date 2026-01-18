@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import Button from "@mui/material/Button";
 import Select from "react-select";
 import { TbFileInvoice } from "react-icons/tb";
+import { HiOutlineTrash } from "react-icons/hi2";
+
 import PrintInvoice from "../../components/PrintInvoice/PrintInvoice";
 import AddClient from "../../components/AddClient/AddClient";
 import "../../components/PrintInvoice/invoice-print.css";
@@ -542,7 +544,7 @@ function AddSalesInvoice() {
                   الإجمالي
                 </th>
                 <th className="py-2 px-4 border-b text-right text-sm font-semibold text-gray-700">
-                  إجراء
+                  حذف
                 </th>
               </tr>
             </thead>
@@ -560,7 +562,7 @@ function AddSalesInvoice() {
                     {/* خانة الصنف */}
                     <td className="p-2 border min-w-[220px]">
                       <div className="relative z-[1000]">
-                        {" "}
+                        
                         {/* ✅ هذا السطر يحل المشكلة */}
                         <Select
                           options={productsList.map((p) => ({
@@ -579,7 +581,7 @@ function AddSalesInvoice() {
                           className="w-full"
                           menuPortalTarget={
                             window.innerWidth > 768 ? document.body : null
-                          } // ✅ في الموبايل: القايمة تبقى داخل الجدول
+                          } 
                           styles={{
                             menuPortal: (base) => ({
                               ...base,
@@ -587,7 +589,7 @@ function AddSalesInvoice() {
                             }),
                             menu: (base) => ({
                               ...base,
-                              zIndex: 50, // لا تتعدى عناصر الموبايل overlay
+                              zIndex: 50, 
                             }),
                           }}
                         />
@@ -683,10 +685,13 @@ function AddSalesInvoice() {
                       <Button
                         type="button"
                         onClick={() => handleDeleteItem(item.barcode)}
-                        className="!w-[30px] !h-[30px] !rounded-full !min-w-[30px] !text-[rgba(0,0,0,0.8)] btn-red"
+                        className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]"
                       >
-                        x
+                        <HiOutlineTrash className="text-[#f22c61] text-[16px] sm:text-[20px]" />
                       </Button>
+                      {/* <Button className="!w-[30px] sm:!w-[35px] !h-[30px] sm:!h-[35px] bg-[#f1f1f1] !border !border-gray-400 !rounded-full hover:!bg-gray-200 !min-w-[30px] sm:!min-w-[35px]">
+                        <HiOutlineTrash className="text-[#f22c61] text-[16px] sm:text-[20px]" />
+                      </Button> */}
                     </td>
                   </tr>
                 );

@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { MuiTelInput } from "mui-tel-input";
 import CircularProgress from "@mui/material/CircularProgress";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function SignUp2() {
   const { signUpData, updateSignUpData } = useContext(MyContext);
@@ -45,7 +45,7 @@ function SignUp2() {
 
     try {
       const response = await axios.post(
-        "https://storely-system.onrender.com/auth/register",
+        "https://storely-system.fly.dev/auth/register",
         signUpData,
         {
           headers: { "Content-Type": "application/json" },
@@ -54,7 +54,9 @@ function SignUp2() {
 
       toast.success("تم التسجيل بنجاح ");
       console.log(response);
-      navigate("/login");
+      navigate("/verify", {
+        state: { email: signUpData.owner.email, type: "register" },
+      });
     } catch (error) {
       console.log(error.response?.data?.message);
       toast.error(error.response?.data?.message);
@@ -78,14 +80,14 @@ function SignUp2() {
       <div className="w-[95%] sm:w-[90%] md:w-[600px] mx-auto">
         {/* ✅ الهيدر */}
         <header className="flex items-center gap-3 mb-6 sm:mb-10 justify-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+            Storely
+          </h1>
           <img
             src={logo2}
             alt="Storely logo"
             className="w-10 h-10 sm:w-12 sm:h-12"
           />
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
-            ستورلي
-          </h1>
         </header>
         {/* الصندوق الرئيسي */}
         <div className="loginBox card w-full h-auto pb-10 sm:pb-16 bg-white rounded-2xl shadow-lg pt-6 sm:pt-10">

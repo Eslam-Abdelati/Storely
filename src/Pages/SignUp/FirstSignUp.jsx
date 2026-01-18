@@ -52,277 +52,546 @@ function FirstSignUp() {
   };
 
   return (
-    <section className="w-full min-h-screen flex justify-center items-center relative py-10 sm:py-16">
-      {/* خلفية باهتة */}
-      <img
-        src={bgImage}
-        alt="background pattern"
-        className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
-      />
+    // <section className="w-full min-h-screen flex justify-center items-center relative py-10 sm:py-16">
+    //   {/* خلفية باهتة */}
+    //   <img
+    //     src={bgImage}
+    //     alt="background pattern"
+    //     className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
+    //   />
 
-      <div className="w-[95%] sm:w-[90%] md:w-[600px] mx-auto">
-        {/* ✅ الهيدر */}
-        <header className="flex items-center gap-3 mb-6 sm:mb-10 justify-center">
-          <img
-            src={logo2}
-            alt="Storely logo"
-            className="w-10 h-10 sm:w-12 sm:h-12"
-          />
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
-            ستورلي
+    //   <div className="w-[95%] sm:w-[90%] md:w-[600px] mx-auto">
+    //     {/* ✅ الهيدر */}
+    //     <header className="flex items-center gap-3 mb-6 sm:mb-10 justify-center">
+    //       <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+    //         Storely
+    //       </h1>
+    //       <img
+    //         src={logo2}
+    //         alt="Storely logo"
+    //         className="w-10 h-10 sm:w-12 sm:h-12"
+    //       />
+    //     </header>
+
+    //     {/* ✅ الصندوق الرئيسي */}
+    //     <div className="loginBox card w-full h-auto pb-10 sm:pb-16 bg-white rounded-2xl shadow-lg pt-6 sm:pt-10">
+    //       <div className="text-center px-3">
+    //         <h2 className="text-center text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-semibold mt-4 leading-relaxed">
+    //           مرحبا بك في <br />
+    //           <span className="text-primary">
+    //             النسخة التجريبية لبرنامج Storely للمبيعات
+    //           </span>
+    //         </h2>
+
+    //         <form
+    //           className="w-full px-4 sm:px-6 md:px-8 mt-8 sm:mt-10"
+    //           onSubmit={handleSubmit}
+    //         >
+    //           {/* اسم الشركة */}
+    //           <div className="form-group mb-4 w-full">
+    //             <label
+    //               htmlFor="store_name"
+    //               className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //             >
+    //               اسم الشركة <span className="text-red-500">*</span>
+    //             </label>
+    //             <input
+    //               type="text"
+    //               className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //               id="store_name"
+    //               name="store_name"
+    //               value={signUpData.store_name}
+    //               onChange={handleChange}
+    //               required
+    //               autoComplete="organization"
+    //             />
+    //           </div>
+
+    //           {/* النشاط التجاري */}
+    //           <div className="form-group mb-4">
+    //             <label
+    //               htmlFor="businessType"
+    //               className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //             >
+    //               النشاط التجاري <span className="text-red-500">*</span>
+    //             </label>
+    //             <select
+    //               id="businessType"
+    //               name="businessType"
+    //               className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
+    //               value={signUpData.businessType}
+    //               onChange={handleChange}
+    //               required
+    //             >
+    //               <option value="">اختر النشاط</option>
+    //               <option value="Supermarket">سوبر ماركت</option>
+    //               <option value="Restaurant">مطعم</option>
+    //               <option value="Cafe">كافيه</option>
+    //               <option value="Clothing">ملابس</option>
+    //               <option value="Shoes & Bags">شنط وأحذية</option>
+    //               <option value="Mobile & Accessories">
+    //                 موبايلات واكسسوار
+    //               </option>
+    //               <option value="Electronics">الكترونيات</option>
+    //               <option value="Home Appliances">أجهزة منزلية</option>
+    //               <option value="Furniture">أثاث</option>
+    //               <option value="Stationery">أدوات مكتبية</option>
+    //               <option value="Other">أخرى</option>
+    //             </select>
+    //           </div>
+
+    //           {signUpData.businessType === "Other" && (
+    //             <div className="form-group mb-4">
+    //               <label
+    //                 htmlFor="otherBusinessType"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 أدخل النشاط التجاري
+    //                 <span className="text-red-500">*</span>
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 id="otherBusinessType"
+    //                 name="otherBusinessType"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
+    //                 value={signUpData.otherBusinessType}
+    //                 onChange={handleChange}
+    //                 required
+    //               />
+    //             </div>
+    //           )}
+
+    //           {/* الدولة */}
+    //           <div className="form-group mb-4 w-full">
+    //             <label
+    //               htmlFor="country"
+    //               className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //             >
+    //               الدولة <span className="text-red-500">*</span>
+    //             </label>
+    //             <select
+    //               id="country"
+    //               name="country"
+    //               className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //               value={signUpData.country}
+    //               onChange={handleChange}
+    //               required
+    //               autoComplete="country"
+    //             >
+    //               <option value="">اختر الدولة</option>
+    //               {countries.map((c) => (
+    //                 <option key={c.code} value={c.code}>
+    //                   {c.name}
+    //                 </option>
+    //               ))}
+    //             </select>
+    //           </div>
+
+    //           {/* المدينة والمنطقة والرمز */}
+    //           <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+    //             <div className="form-group w-full sm:w-1/3">
+    //               <label
+    //                 htmlFor="city"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 المدينة <span className="text-red-500">*</span>
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //                 id="city"
+    //                 name="city"
+    //                 value={signUpData.city}
+    //                 onChange={handleChange}
+    //                 required
+    //               />
+    //             </div>
+
+    //             <div className="form-group w-full sm:w-1/3">
+    //               <label
+    //                 htmlFor="address"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 المنطقة <span className="text-red-500">*</span>
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //                 id="address"
+    //                 name="address"
+    //                 value={signUpData.address}
+    //                 onChange={handleChange}
+    //                 required
+    //                 autoComplete="street-address"
+    //               />
+    //             </div>
+
+    //             <div className="form-group w-full sm:w-1/3">
+    //               <label
+    //                 htmlFor="postalCode"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 الرمز البريدي
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //                 id="postalCode"
+    //                 name="postalCode"
+    //                 value={signUpData.postalCode}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //           </div>
+
+    //           {/* السجل التجاري والبطاقة */}
+    //           <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+    //             <div className="form-group w-full sm:w-1/2">
+    //               <label
+    //                 htmlFor="commercialRegistrationNumber"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 سجل تجاري (اختياري)
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //                 id="commercialRegistrationNumber"
+    //                 name="commercialRegistrationNumber"
+    //                 value={signUpData.commercialRegistrationNumber}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+
+    //             <div className="form-group w-full sm:w-1/2">
+    //               <label
+    //                 htmlFor="taxID"
+    //                 className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //               >
+    //                 بطاقة ضريبية (اختياري)
+    //               </label>
+    //               <input
+    //                 type="text"
+    //                 className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+    //                 id="taxID"
+    //                 name="taxID"
+    //                 value={signUpData.taxID}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //           </div>
+
+    //           {/* اللوجو */}
+    //           <div className="form-group mb-4 w-full">
+    //             <label
+    //               htmlFor="logo"
+    //               className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+    //             >
+    //               لوجو الشركة
+    //             </label>
+    //             <UploadBox
+    //               id="logo"
+    //               onFileSelect={handleFileChange}
+    //               value={signUpData.logo}
+    //             />
+    //           </div>
+
+    //           {/* تسجيل الدخول */}
+    //           <div className="flex items-center justify-between mb-4 text-sm sm:text-base">
+    //             <span>هل لديك حساب بالفعل؟</span>
+    //             <Link
+    //               className="!text-primary font-[700] text-[15px] hover:underline hover:!text-gray-700 cursor-pointer"
+    //               to="/login"
+    //             >
+    //               تسجيل الدخول
+    //             </Link>
+    //           </div>
+
+    //           {/* زر التالي */}
+    //           <div className="flex items-center w-full mt-3 mb-3">
+    //             <Button
+    //               type="submit"
+    //               disabled={loading}
+    //               className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+    //             >
+    //               {loading ? (
+    //                 <CircularProgress size={28} color="inherit" />
+    //               ) : (
+    //                 "التالي"
+    //               )}
+    //             </Button>
+    //           </div>
+    //         </form>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </section>
+
+    <section className="w-full min-h-screen flex items-center justify-center bg-blue-100 py-10 sm:py-16">
+      <div className="w-[95%] sm:w-[90%] md:w-[600px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+        {/* الهيدر */}
+        <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+          {/* اللوجو */}
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+            <img
+              src={logo2}
+              alt="Storely logo"
+              className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
+            />
+          </div>
+
+          {/* العنوان */}
+          <h1 className="text-xl sm:text-2xl font-bold text-blue-500">
+            Storely ERP
           </h1>
+
+          {/* الوصف */}
+          <p className="text-[12px] sm:text-[14px] md:text-[16px] text-gray-700 font-medium leading-relaxed max-w-[420px]">
+            مرحبا! هذه أول مرة تستخدم فيها النظام
+            <br />
+            <span className="text-[8px] sm:text-[10px] md:text-[12px] text-gray-600">لنبدأ بإعداد حساب مؤسستك للبدء.</span>
+          </p>
         </header>
 
-        {/* ✅ الصندوق الرئيسي */}
-        <div className="loginBox card w-full h-auto pb-10 sm:pb-16 bg-white rounded-2xl shadow-lg pt-6 sm:pt-10">
-          <div className="text-center px-3">
-            <h2 className="text-center text-[18px] sm:text-[25px] md:text-[32px] lg:text-[36px] font-semibold mt-4 leading-relaxed">
-              مرحبا بك في <br />
-              <span className="text-primary">
-                النسخة التجريبية لبرنامج ستورلي للمبيعات
-              </span>
-            </h2>
+        {/* المحتوى */}
+        <div className="text-center">
+          <form
+            className="w-full mt-8 sm:mt-10 text-start"
+            onSubmit={handleSubmit}
+          >
+            {/* اسم الشركة */}
+            <div className="form-group mb-4 w-full">
+              <label
+                htmlFor="store_name"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+              >
+                اسم الشركة <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                id="store_name"
+                name="store_name"
+                value={signUpData.store_name}
+                onChange={handleChange}
+                required
+                autoComplete="organization"
+              />
+            </div>
 
-            <form
-              className="w-full px-4 sm:px-6 md:px-8 mt-8 sm:mt-10"
-              onSubmit={handleSubmit}
-            >
-              {/* اسم الشركة */}
-              <div className="form-group mb-4 w-full">
+            {/* النشاط التجاري */}
+            <div className="form-group mb-4">
+              <label
+                htmlFor="businessType"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+              >
+                النشاط التجاري <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="businessType"
+                name="businessType"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
+                value={signUpData.businessType}
+                onChange={handleChange}
+                required
+              >
+                <option value="">اختر النشاط</option>
+                <option value="Supermarket">سوبر ماركت</option>
+                <option value="Restaurant">مطعم</option>
+                <option value="Cafe">كافيه</option>
+                <option value="Clothing">ملابس</option>
+                <option value="Shoes & Bags">شنط وأحذية</option>
+                <option value="Mobile & Accessories">موبايلات واكسسوار</option>
+                <option value="Electronics">الكترونيات</option>
+                <option value="Home Appliances">أجهزة منزلية</option>
+                <option value="Furniture">أثاث</option>
+                <option value="Stationery">أدوات مكتبية</option>
+                <option value="Other">أخرى</option>
+              </select>
+            </div>
+
+            {signUpData.businessType === "Other" && (
+              <div className="form-group mb-4">
                 <label
-                  htmlFor="store_name"
-                  className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+                  htmlFor="otherBusinessType"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
-                  اسم الشركة <span className="text-red-500">*</span>
+                  أدخل النشاط التجاري
+                  <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="otherBusinessType"
+                  name="otherBusinessType"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
+                  value={signUpData.otherBusinessType}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
+
+            {/* الدولة */}
+            <div className="form-group mb-4 w-full">
+              <label
+                htmlFor="country"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+              >
+                الدولة <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="country"
+                name="country"
+                className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                value={signUpData.country}
+                onChange={handleChange}
+                required
+                autoComplete="country"
+              >
+                <option value="">اختر الدولة</option>
+                {countries.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* المدينة والمنطقة والرمز */}
+            <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="form-group w-full sm:w-1/3">
+                <label
+                  htmlFor="city"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+                >
+                  المدينة <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                  id="store_name"
-                  name="store_name"
-                  value={signUpData.store_name}
+                  id="city"
+                  name="city"
+                  value={signUpData.city}
                   onChange={handleChange}
                   required
-                  autoComplete="organization"
                 />
               </div>
 
-              {/* النشاط التجاري */}
-              <div className="form-group mb-4">
+              <div className="form-group w-full sm:w-1/3">
                 <label
-                  htmlFor="businessType"
-                  className="mb-2 font-medium text-gray-700 flex items-center gap-1"
+                  htmlFor="address"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
-                  النشاط التجاري <span className="text-red-500">*</span>
+                  المنطقة <span className="text-red-500">*</span>
                 </label>
-                <select
-                  id="businessType"
-                  name="businessType"
-                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
-                  value={signUpData.businessType}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">اختر النشاط</option>
-                  <option value="Supermarket">سوبر ماركت</option>
-                  <option value="Restaurant">مطعم</option>
-                  <option value="Cafe">كافيه</option>
-                  <option value="Clothing">ملابس</option>
-                  <option value="Shoes & Bags">شنط وأحذية</option>
-                  <option value="Mobile & Accessories">
-                    موبايلات واكسسوار
-                  </option>
-                  <option value="Electronics">الكترونيات</option>
-                  <option value="Home Appliances">أجهزة منزلية</option>
-                  <option value="Furniture">أثاث</option>
-                  <option value="Stationery">أدوات مكتبية</option>
-                  <option value="Other">أخرى</option>
-                </select>
-              </div>
-
-              {signUpData.businessType === "Other" && (
-                <div className="form-group mb-4">
-                  <label
-                    htmlFor="otherBusinessType"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    أدخل النشاط التجاري
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="otherBusinessType"
-                    name="otherBusinessType"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary px-3 text-[14px] sm:text-[15px]"
-                    value={signUpData.otherBusinessType}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              )}
-
-              {/* الدولة */}
-              <div className="form-group mb-4 w-full">
-                <label
-                  htmlFor="country"
-                  className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                >
-                  الدولة <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="country"
-                  name="country"
+                <input
+                  type="text"
                   className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                  value={signUpData.country}
+                  id="address"
+                  name="address"
+                  value={signUpData.address}
                   onChange={handleChange}
                   required
-                  autoComplete="country"
-                >
-                  <option value="">اختر الدولة</option>
-                  {countries.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* المدينة والمنطقة والرمز */}
-              <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="form-group w-full sm:w-1/3">
-                  <label
-                    htmlFor="city"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    المدينة <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="city"
-                    name="city"
-                    value={signUpData.city}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group w-full sm:w-1/3">
-                  <label
-                    htmlFor="address"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    المنطقة <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="address"
-                    name="address"
-                    value={signUpData.address}
-                    onChange={handleChange}
-                    required
-                    autoComplete="street-address"
-                  />
-                </div>
-
-                <div className="form-group w-full sm:w-1/3">
-                  <label
-                    htmlFor="postalCode"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    الرمز البريدي
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="postalCode"
-                    name="postalCode"
-                    value={signUpData.postalCode}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              {/* السجل التجاري والبطاقة */}
-              <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="form-group w-full sm:w-1/2">
-                  <label
-                    htmlFor="commercialRegistrationNumber"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    سجل تجاري (اختياري)
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="commercialRegistrationNumber"
-                    name="commercialRegistrationNumber"
-                    value={signUpData.commercialRegistrationNumber}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="form-group w-full sm:w-1/2">
-                  <label
-                    htmlFor="taxID"
-                    className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                  >
-                    بطاقة ضريبية (اختياري)
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
-                    id="taxID"
-                    name="taxID"
-                    value={signUpData.taxID}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              {/* اللوجو */}
-              <div className="form-group mb-4 w-full">
-                <label
-                  htmlFor="logo"
-                  className="mb-2 font-medium text-gray-700 flex items-center gap-1"
-                >
-                  لوجو الشركة
-                </label>
-                <UploadBox
-                  id="logo"
-                  onFileSelect={handleFileChange}
-                  value={signUpData.logo}
+                  autoComplete="street-address"
                 />
               </div>
 
-              {/* تسجيل الدخول */}
-              <div className="flex items-center justify-between mb-4 text-sm sm:text-base">
-                <span>هل لديك حساب بالفعل؟</span>
-                <Link
-                  className="!text-primary font-[700] text-[15px] hover:underline hover:!text-gray-700 cursor-pointer"
-                  to="/login"
+              <div className="form-group w-full sm:w-1/3">
+                <label
+                  htmlFor="postalCode"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
-                  تسجيل الدخول
-                </Link>
+                  الرمز البريدي
+                </label>
+                <input
+                  type="text"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                  id="postalCode"
+                  name="postalCode"
+                  value={signUpData.postalCode}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            {/* السجل التجاري والبطاقة */}
+            <div className="form-group mb-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="form-group w-full sm:w-1/2">
+                <label
+                  htmlFor="commercialRegistrationNumber"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+                >
+                  سجل تجاري (اختياري)
+                </label>
+                <input
+                  type="text"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                  id="commercialRegistrationNumber"
+                  name="commercialRegistrationNumber"
+                  value={signUpData.commercialRegistrationNumber}
+                  onChange={handleChange}
+                />
               </div>
 
-              {/* زر التالي */}
-              <div className="flex items-center w-full mt-3 mb-3">
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+              <div className="form-group w-full sm:w-1/2">
+                <label
+                  htmlFor="taxID"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
-                  {loading ? (
-                    <CircularProgress size={28} color="inherit" />
-                  ) : (
-                    "التالي"
-                  )}
-                </Button>
+                  بطاقة ضريبية (اختياري)
+                </label>
+                <input
+                  type="text"
+                  className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                  id="taxID"
+                  name="taxID"
+                  value={signUpData.taxID}
+                  onChange={handleChange}
+                />
               </div>
-            </form>
-          </div>
+            </div>
+
+            {/* اللوجو */}
+            <div className="form-group mb-4 w-full">
+              <label
+                htmlFor="logo"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
+              >
+                لوجو الشركة
+              </label>
+              <UploadBox
+                id="logo"
+                onFileSelect={handleFileChange}
+                value={signUpData.logo}
+              />
+            </div>
+
+            {/* تسجيل الدخول */}
+            <div className="flex items-center justify-between mb-4 text-sm sm:text-base">
+              <span>هل لديك حساب بالفعل؟</span>
+              <Link
+                className="!text-primary font-[700] text-[15px] hover:underline hover:!text-gray-700 cursor-pointer"
+                to="/login"
+              >
+                تسجيل الدخول
+              </Link>
+            </div>
+
+            {/* زر التالي */}
+            <div className="flex items-center w-full mt-3 mb-3">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+              >
+                {loading ? (
+                  <CircularProgress size={28} color="inherit" />
+                ) : (
+                  "التالي"
+                )}
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
     </section>
