@@ -4,24 +4,51 @@ import OtpBox from "../../components/OtpBox/OtpBox";
 import Button from "@mui/material/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import bgImage from "../../assets/patern.webp";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function VerifyOTP() {
   const location = useLocation();
   const [otp, setOtp] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState({
+    type: "", // "success" أو "error"
+    message: "",
+  });
   // جاي من Register.jsx
   const email = location.state?.email;
   const type = location.state?.type;
+  const AR_MESSAGES = {
+    "code must be a number conforming to the specified constraints": "الكود غير صحيح ادخل الكود المرسل لك عبر البريد الالكتروني",
+    "Invalid OTP": "الكود غير صحيح",
+    "OTP expired": "الكود انتهت صلاحيته",
+    "Invalid access": "الدخول غير صحيح",
+  };
+
+  const getArabicMessage = (msg) => {
+    return AR_MESSAGES[msg] || msg || "حدث خطأ ما، حاول مرة أخرى";
+  };
 
   useEffect(() => {
     if (!email || !type) {
-      toast.error("Invalid access, please register again");
+      setAlert({
+        type: "error",
+        message: "الدخول غير صحيح، قم بالتسجيل مرة أخرى",
+      });
       navigate("/");
     }
-  }, [email, type, navigate]);
+
+    if (alert.message) {
+      const timer = setTimeout(() => {
+        setAlert({ type: "", message: "" });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [email, type, navigate, alert.message]);
 
   const handleOtpChange = (value) => {
     setOtp(value);
@@ -29,38 +56,67 @@ function VerifyOTP() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     if (!otp) {
-      toast.error("Please enter the OTP");
+      setAlert({ type: "error", message: "من فضلك ادخل الكود" });
+      setLoading(false);
+      return;
     }
 
     try {
       if (type === "register") {
         const res = await axios.post(
-          "https://storely-system.onrender.com/auth/verify-email",
+          "https://storely-system.fly.dev/auth/verify-email",
           { email, otp },
-          { withCredentials: true }
+          { withCredentials: true },
         );
+
         if (res.data.success) {
-          toast.success("Email verified successfully 🎉");
-          navigate("/login"); // ✅ يروح للوجين بعد الفيريفاي
+          setAlert({
+            type: "success",
+            message: "تم التحقق من البريد بنجاح 🎉",
+          });
+          setTimeout(() => {
+            navigate("/login");
+          }, 800);
         } else {
-          toast.error(res.data.message || "OTP verification failed");
+          setAlert({
+            type: "error",
+            message: getArabicMessage(res.data.message),
+          });
         }
       } else if (type === "login") {
         const res = await axios.post(
-          "https://storely-system.onrender.com/auth/verify-login-otp",
+          "https://storely-system.fly.dev/auth/verify-login-otp",
           { email, otp },
-          { withCredentials: true }
+          { withCredentials: true },
         );
+
         if (res.data.success) {
-          toast.success("Email verified successfully 🎉");
-          navigate("/app"); // ✅ يروح للوجين بعد الفيريفاي
+          setAlert({
+            type: "success",
+            message: "تم التحقق من البريد بنجاح 🎉",
+          });
+          setTimeout(() => {
+            navigate("/app");
+          }, 800);
         } else {
-          toast.error(res.data.message || "OTP verification failed");
+          setAlert({
+            type: "error",
+            message: getArabicMessage(res.data.message),
+          });
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
+      console.log(error);
+
+      setAlert({
+        type: "error",
+        message: getArabicMessage(error.response?.data?.message),
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,16 +152,32 @@ function VerifyOTP() {
           <OtpBox length={4} onChange={handleOtpChange} />
 
           <div className="flex flex-col items-center justify-center mt-6 sm:mt-8">
-            <a className="cursor-pointer text-[13px] sm:text-[14px] font-[600] mb-3 sm:mb-2 text-blue-600 hover:text-blue-800 transition">
+            <a className="cursor-pointer text-[13px] sm:text-[14px] font-[600] mb-3 sm:mb-2 !text-blue-600 !hover:text-blue-800 transition">
               ? Resend OTP
             </a>
 
-            <Button
-              type="submit"
-              className="btn-blue btn-lg w-full !text-[15px] sm:!text-[16px]"
-            >
-              Verify OTP
-            </Button>
+            {/* زر Verify */}
+            <div className="flex items-center w-full mt-3 mb-3">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+              >
+                {loading ? (
+                  <CircularProgress size={28} color="inherit" />
+                ) : (
+                  "Verify OTP"
+                )}
+              </Button>
+            </div>
+
+            <div className="w-full">
+              {alert.message && (
+                <div>
+                  <Alert severity={alert.type}>{alert.message}</Alert>
+                </div>
+              )}
+            </div>
           </div>
         </form>
       </div>
