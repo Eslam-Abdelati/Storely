@@ -23,10 +23,12 @@ function VerifyOTP() {
   const email = location.state?.email;
   const type = location.state?.type;
   const AR_MESSAGES = {
-    "code must be a number conforming to the specified constraints": "الكود غير صحيح ادخل الكود المرسل لك عبر البريد الالكتروني",
-    "Invalid OTP": "الكود غير صحيح",
-    "OTP expired": "الكود انتهت صلاحيته",
+    "code must be a number conforming to the specified constraints":
+      "الكود غير صحيح ادخل الكود المرسل لك عبر البريد الالكتروني",
+    "This account is already verified": "الحساب مفعل بالفعل، قم بتسجيل الدخول",
+    "Invalid verification code": "كود التحقق غير صحيح",
     "Invalid access": "الدخول غير صحيح",
+    "Confirm Verify Successfully": "تم التحقق بنجاح",
   };
 
   const getArabicMessage = (msg) => {
@@ -67,50 +69,53 @@ function VerifyOTP() {
     try {
       if (type === "register") {
         const res = await axios.post(
-          "https://storely-system.fly.dev/auth/verify-email",
-          { email, otp },
+          "https://48af6b89dc4d.ngrok-free.app/auth/verify-email",
+          { email, code: Number(otp) },
           { withCredentials: true },
         );
 
-        if (res.data.success) {
+        console.log(res);
+        
+        if (res.data.status === true) {
           setAlert({
             type: "success",
-            message: "تم التحقق من البريد بنجاح 🎉",
+            message: "تم التحقق من البريد بنجاح ",
           });
           setTimeout(() => {
             navigate("/login");
-          }, 800);
+          }, 1000);
         } else {
           setAlert({
             type: "error",
             message: getArabicMessage(res.data.message),
           });
         }
+       
       } else if (type === "login") {
         const res = await axios.post(
-          "https://storely-system.fly.dev/auth/verify-login-otp",
-          { email, otp },
+          "https://48af6b89dc4d.ngrok-free.app/auth/verify-login-otp",
+          { email, code: Number(otp) },
           { withCredentials: true },
         );
 
-        if (res.data.success) {
+        if (res.data.status === true) {
           setAlert({
             type: "success",
-            message: "تم التحقق من البريد بنجاح 🎉",
+            message: "تم التحقق من البريد بنجاح ",
           });
           setTimeout(() => {
             navigate("/app");
-          }, 800);
+          }, 1000);
         } else {
           setAlert({
             type: "error",
             message: getArabicMessage(res.data.message),
           });
         }
+       
+        
       }
     } catch (error) {
-      console.log(error);
-
       setAlert({
         type: "error",
         message: getArabicMessage(error.response?.data?.message),
@@ -161,7 +166,7 @@ function VerifyOTP() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+                className="btn-blue btn-lg w-full px-4 py-2 text-[14px] sm:text-[16px]"
               >
                 {loading ? (
                   <CircularProgress size={28} color="inherit" />
@@ -170,15 +175,12 @@ function VerifyOTP() {
                 )}
               </Button>
             </div>
-
-            <div className="w-full">
-              {alert.message && (
-                <div>
-                  <Alert severity={alert.type}>{alert.message}</Alert>
-                </div>
-              )}
-            </div>
           </div>
+          {alert.message && (
+            <div>
+              <Alert severity={alert.type}>{alert.message}</Alert>
+            </div>
+          )}
         </form>
       </div>
     </section>

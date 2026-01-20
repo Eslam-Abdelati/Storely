@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import logo2 from "../../assets/icon.svg";
+import bgImage from "../../assets/patern.webp";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -53,7 +54,13 @@ function FirstSignUp() {
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-blue-100 py-10 sm:py-16">
-      <div className="w-[95%] sm:w-[90%] md:w-[600px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+      {/* خلفية */}
+      <img
+        src={bgImage}
+        alt="background pattern"
+        className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
+      />
+      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
         {/* الهيدر */}
         <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           {/* اللوجو */}
@@ -79,7 +86,6 @@ function FirstSignUp() {
             </span>
           </p>
         </header>
-
         {/* المحتوى */}
         <div className="text-center">
           <form
@@ -309,7 +315,7 @@ function FirstSignUp() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+                className="btn-blue btn-lg w-full px-4 py-2 text-[14px] sm:text-[16px]"
               >
                 {loading ? (
                   <CircularProgress size={28} color="inherit" />

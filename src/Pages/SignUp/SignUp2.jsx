@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import axios from "axios";
 import logo2 from "../../assets/icon.svg";
-import { useNavigate } from "react-router-dom";
+import bgImage from "../../assets/patern.webp";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { MuiTelInput } from "mui-tel-input";
 import CircularProgress from "@mui/material/CircularProgress";
+import { IoReturnDownBack } from "react-icons/io5";
+
 // import toast from "react-hot-toast";
 import Alert from "@mui/material/Alert";
 
@@ -21,6 +24,17 @@ function SignUp2() {
     message: "",
   });
 
+  const AR_MESSAGES = {
+    "Email already exists": "هذا البريد الإلكتروني مستخدم بالفعل",
+    "Password Not Match": "كلمة المرور غير متطابقة",
+    "Weak Password! Please make sure it contains at least one letter":
+      "كلمة المرور ضعيفة! يرجى التأكد من أنها تحتوي على حرف واحد على الأقل",
+    "Phone number already exists": "رقم الهاتف مستخدم بالفعل ادخل رقم اخر",
+  };
+
+  const getArabicMessage = (msg) => {
+    return AR_MESSAGES[msg] || "حدث خطأ ما، حاول مرة أخرى";
+  };
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => {
@@ -56,20 +70,9 @@ function SignUp2() {
     e.preventDefault();
     setLoading(true);
 
-    const AR_MESSAGES = {
-      "Email already exists": "هذا البريد الإلكتروني مستخدم بالفعل",
-      "Password Not Match": "كلمة المرور غير متطابقة",
-      "Weak Password! Please make sure it contains at least one letter":
-        "كلمة المرور ضعيفة! يرجى التأكد من أنها تحتوي على حرف واحد على الأقل",
-        "Phone number already exists": "رقم الهاتف مستخدم بالفعل ادخل رقم اخر", 
-    };
-
-    const getArabicMessage = (msg) => {
-      return AR_MESSAGES[msg] || "حدث خطأ ما، حاول مرة أخرى";
-    };
     try {
       const response = await axios.post(
-        "https://storely-system.fly.dev/auth/register",
+        "https://48af6b89dc4d.ngrok-free.app/auth/register",
         signUpData,
         {
           headers: { "Content-Type": "application/json" },
@@ -79,7 +82,6 @@ function SignUp2() {
         type: "success",
         message: "تم التسجيل بنجاح",
       });
-      // toast.success("تم التسجيل بنجاح ");
       console.log(response);
       navigate("/verify", {
         state: { email: signUpData.owner.email, type: "register" },
@@ -87,7 +89,6 @@ function SignUp2() {
     } catch (error) {
       console.log(error.response);
       const msg = error.response?.data?.message;
-      // toast.error(getArabicMessage(msg));
       setAlert({
         type: "error",
         message: getArabicMessage(msg),
@@ -101,7 +102,14 @@ function SignUp2() {
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-blue-100 py-10 sm:py-16">
-      <div className="w-[95%] sm:w-[90%] md:w-[600px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+      {/* خلفية */}
+      <img
+        src={bgImage}
+        alt="background pattern"
+        className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
+      />
+
+      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
         {/* الهيدر */}
         <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           {/* اللوجو */}
@@ -135,7 +143,7 @@ function SignUp2() {
               <div className="form-group mb-4 w-full sm:w-[50%]">
                 <label
                   htmlFor="firstName"
-                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
                   الإسم الأول <span className="text-red-500">*</span>
                 </label>
@@ -155,7 +163,7 @@ function SignUp2() {
               <div className="form-group mb-4 w-full sm:w-[50%]">
                 <label
                   htmlFor="lastName"
-                  className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                  className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
                 >
                   الإسم الأخير <span className="text-red-500">*</span>
                 </label>
@@ -176,7 +184,7 @@ function SignUp2() {
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="email"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
               >
                 البريد الالكتروني <span className="text-red-500">*</span>
               </label>
@@ -196,18 +204,19 @@ function SignUp2() {
             <div className="form-group mb-4 w-full">
               <label
                 htmlFor="phoneNumber"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                className="mb-2 font-medium text-[12px] sm:text-[13px] md:text-[14px] text-gray-700 flex items-center gap-1"
               >
                 رقم الهاتف <span className="text-red-500">*</span>
               </label>
+
               <MuiTelInput
                 id="phoneNumber"
                 name="phoneNumber"
-                required
-                inputProps={{ required: true }}
                 value={owner.phoneNumber}
                 onChange={handlePhoneChange}
                 defaultCountry="EG"
+                required
+                inputProps={{ required: true, "aria-required": true }}
                 fullWidth
                 autoComplete="tel"
                 variant="outlined"
@@ -216,12 +225,12 @@ function SignUp2() {
                     borderRadius: "8px",
                     height: "50px",
                     fontSize: "15px",
-                    backgroundColor: "white",
+                    backgroundColor: "#fff",
                     "& fieldset": {
                       borderColor: "rgba(0,0,0,0.1)",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#1976d2", // نفس لون primary
+                      borderColor: "#1976d2",
                     },
                     "&.Mui-focused fieldset": {
                       borderColor: "#1976d2",
@@ -229,15 +238,7 @@ function SignUp2() {
                     },
                   },
                   "& .MuiInputBase-input": {
-                    paddingLeft: "70px", // مسافة لترك مكان للعلم والكود
-                  },
-                  "& .MuiTelInput-Flag": {
-                    marginLeft: "10px",
-                  },
-                  "& .MuiTelInput-Country": {
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
+                    paddingLeft: "4.2rem",
                   },
                 }}
               />
@@ -247,7 +248,7 @@ function SignUp2() {
             <div className="form-group mb-4 w-full relative">
               <label
                 htmlFor="password"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
               >
                 كلمة السر <span className="text-red-500">*</span>
               </label>
@@ -277,7 +278,7 @@ function SignUp2() {
             <div className="form-group mb-4 w-full relative">
               <label
                 htmlFor="confirmPassword"
-                className="mb-2 font-medium text-[rgb(75,85,99)] flex items-center gap-1 text-sm sm:text-base"
+                className="mb-2 font-medium text-[10px] sm:text-[12px] md:text-[14px] text-gray-700 flex items-center gap-1"
               >
                 تأكيد كلمة السر <span className="text-red-500">*</span>
               </label>
@@ -304,11 +305,11 @@ function SignUp2() {
             </div>
 
             {/* زر التسجيل */}
-            <div className="flex items-center w-full mt-3 mb-3">
+            <div className="flex items-center w-full mt-3 mb-3 gap-2">
               <Button
                 type="submit"
                 disabled={loading}
-                className="btn-blue btn-lg w-full h-[48px] sm:h-[52px] md:h-[55px] text-[14px] sm:text-[16px]"
+                className="btn-blue btn-lg w-1/2 px-4 py2 text-[14px] sm:text-[16px]"
               >
                 {loading ? (
                   <CircularProgress size={28} color="inherit" />
@@ -316,6 +317,13 @@ function SignUp2() {
                   "تسجيل"
                 )}
               </Button>
+              <Link
+                to={-1}
+                className="w-1/2flex bg-blue-50gap-2border border-gray-600 px-4 py-2 rounded-md font-medium !text-gray-700 hover:bg-blue-100 transition"
+              >
+                <IoReturnDownBack className="text-[26px]" />
+                <span>رجوع للخلف</span>
+              </Link>
             </div>
 
             {alert.message && (
