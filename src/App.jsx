@@ -46,9 +46,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-
           {/* Default route */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/sign-up" replace />} />
 
           {/* Public routes */}
           <Route element={<PublicRoute />}>
@@ -73,7 +72,10 @@ function App() {
                 path="sales_invoice/add-salesinvoice"
                 element={<AddSalesInvoice />}
               />
-              <Route path="sales_invoice/:id" element={<SalesInvoiceDetails />} />
+              <Route
+                path="sales_invoice/:id"
+                element={<SalesInvoiceDetails />}
+              />
               <Route
                 path="sales_invoice/:id/payments/add"
                 element={<AddPaymentPage />}
