@@ -8,6 +8,7 @@ import bgImage from "../../assets/patern.webp";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
+import Cookies from "js-cookie";
 
 function VerifyOTP() {
   const location = useLocation();
@@ -24,11 +25,13 @@ function VerifyOTP() {
   const type = location.state?.type;
   const AR_MESSAGES = {
     "code must be a number conforming to the specified constraints":
-      "الكود غير صحيح ادخل الكود المرسل لك عبر البريد الالكتروني",
+      "الكود غير صحيح يرجى التحقق من الكود الخاص بك",
     "This account is already verified": "الحساب مفعل بالفعل، قم بتسجيل الدخول",
     "Invalid verification code": "كود التحقق غير صحيح",
     "Invalid access": "الدخول غير صحيح",
     "Confirm Verify Successfully": "تم التحقق بنجاح",
+    "Please check your code": "الكود غير صحيح يرجى التحقق من الكود الخاص بك",
+    "OTP code has expired": "انتهت صلاحية كود التحقق",
   };
 
   const getArabicMessage = (msg) => {
@@ -59,13 +62,11 @@ function VerifyOTP() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     if (!otp) {
       setAlert({ type: "error", message: "من فضلك ادخل الكود" });
       setLoading(false);
       return;
     }
-
     try {
       if (type === "register") {
         const res = await axios.post(
@@ -74,8 +75,6 @@ function VerifyOTP() {
           { withCredentials: true },
         );
 
-        console.log(res);
-        
         if (res.data.status === true) {
           setAlert({
             type: "success",
@@ -90,21 +89,25 @@ function VerifyOTP() {
             message: getArabicMessage(res.data.message),
           });
         }
-       
       } else if (type === "login") {
         const res = await axios.post(
           "https://48af6b89dc4d.ngrok-free.app/auth/verify-login-otp",
           { email, code: Number(otp) },
           { withCredentials: true },
         );
+        const token = res.data.data.access_token;
+        const userType = res.data.data.userType;
+        // حفظ التوكن في الكوكيز
+        Cookies.set("token", token);
+        Cookies.set("userType", userType);
 
-        if (res.data.status === true) {
+        if (res.data.data) {
           setAlert({
             type: "success",
             message: "تم التحقق من البريد بنجاح ",
           });
           setTimeout(() => {
-            navigate("/app");
+            navigate("/app", { replace: true });
           }, 1000);
         } else {
           setAlert({
@@ -112,8 +115,6 @@ function VerifyOTP() {
             message: getArabicMessage(res.data.message),
           });
         }
-       
-        
       }
     } catch (error) {
       setAlert({
@@ -133,7 +134,7 @@ function VerifyOTP() {
         alt="background pattern"
         className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
       />
-      <div className="w-[95%] sm:w-[90%] md:w-[450px] lg:w-[400px] bg-white rounded-md shadow-md p-5 sm:p-8">
+      <div className="w-[95%] sm:w-[90%] md:w-[450px] lg:w-[400px] bg-white rounded-md shadow-md p-5 sm:p-8 relative z-10">
         {/* صورة الدرع */}
         <div className="text-center flex items-center justify-center">
           <img

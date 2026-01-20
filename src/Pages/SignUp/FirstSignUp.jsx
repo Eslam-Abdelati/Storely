@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import logo2 from "../../assets/icon.svg";
 import bgImage from "../../assets/patern.webp";
@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import UploadBox from "../../components/UploadBox/UploadBox";
-import { toast } from "react-toastify";
+import Alert from "@mui/material/Alert";
 
 const countries = [
   { code: "EG", name: "مصر" },
@@ -32,6 +32,20 @@ function FirstSignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const isCountryLocked = countries.length === 1;
+  const [alert, setAlert] = useState({
+    type: "", // "success" أو "error"
+    message: "",
+  });
+
+  useEffect(() => {
+  if (alert.message) {
+    const timer = setTimeout(() => {
+      navigate("/sign-up2");
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }
+}, [alert.message, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,15 +56,17 @@ function FirstSignUp() {
     updateSignUpData({ logo: file });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      toast.success("اكمل البيانات التاليه للتسجيل");
-      setLoading(false);
-      navigate("/sign-up2");
-    }, 2000);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setTimeout(() => {
+    setLoading(false);
+    setAlert({
+      type: "success",
+      message: "اكمل البيانات التاليه للتسجيل",
+    });
+  }, 2000);
+};
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-blue-100 py-10 sm:py-16">
@@ -60,7 +76,7 @@ function FirstSignUp() {
         alt="background pattern"
         className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
       />
-      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10 relative z-10">
         {/* الهيدر */}
         <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           {/* اللوجو */}
@@ -324,6 +340,11 @@ function FirstSignUp() {
                 )}
               </Button>
             </div>
+            {alert.message && (
+              <div>
+                <Alert severity={alert.type}>{alert.message}</Alert>
+              </div>
+            )}
           </form>
         </div>
       </div>

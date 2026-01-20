@@ -30,6 +30,7 @@ function SignUp2() {
     "Weak Password! Please make sure it contains at least one letter":
       "كلمة المرور ضعيفة! يرجى التأكد من أنها تحتوي على حرف واحد على الأقل",
     "Phone number already exists": "رقم الهاتف مستخدم بالفعل ادخل رقم اخر",
+    "OTP code has expired": "انتهت صلاحية كود التحقق",
   };
 
   const getArabicMessage = (msg) => {
@@ -109,7 +110,7 @@ function SignUp2() {
         className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
       />
 
-      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10 relative z-10">
         {/* الهيدر */}
         <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           {/* اللوجو */}

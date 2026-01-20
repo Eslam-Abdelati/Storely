@@ -24,11 +24,10 @@ function Login() {
   });
 
   const AR_MESSAGES = {
-    "Invalid email or password":"البريد الالكتروني أو كلمة السر غير صحيحة",
+    "Invalid email or password": "البريد الالكتروني أو كلمة السر غير صحيحة",
     "Code Sent Successfully": "تم ارسال الكود بنجاح",
-    "Invalid verification code": "كود التحقق غير صحيح",
+    "Please verify your email first": "يرجى تفعيل بريدك الالكتروني أولاً",
     "Invalid access": "الدخول غير صحيح",
-    "Confirm Verify Successfully": "تم التحقق بنجاح",
   };
 
   const getArabicMessage = (msg) => {
@@ -60,20 +59,20 @@ function Login() {
           headers: { "Content-Type": "application/json" },
         },
       );
-      console.log(res);
+      
+
       if (res.data.status === true) {
         setAlert({
-          type: "success", 
+          type: "success",
           message: "تم ارسال الكود بنجاح",
         });
-           setTimeout(() => {
-        setLoading(false);
-        navigate("/verify", {
-          state: { email: formData.email, type: "login" },
-        });
-      }, 2000);
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/verify", {
+            state: { email: formData.email, type: "login" },
+          });
+        }, 2000);
       }
-   
     } catch (error) {
       console.log(error.response);
       const msg = error.response?.data?.message;
@@ -94,7 +93,7 @@ function Login() {
         alt="background pattern"
         className="fixed inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
       />
-      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10">
+      <div className="w-[95%] sm:w-[90%] md:w-[500px] bg-white rounded-2xl shadow-lg px-4 sm:px-6 md:px-8 py-6 sm:py-10 relative z-10">
         {/* الهيدر */}
         <header className="flex flex-col items-center text-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           {/* اللوجو */}
