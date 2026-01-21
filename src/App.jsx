@@ -67,22 +67,27 @@ function App() {
               <Route path="product/:id" element={<ProductDetails />} />
               <Route path="product/label" element={<ProductLabel />} />
               <Route path="category" element={<Category />} />
-              <Route path="sales_invoice" element={<SalesInvoices />} />
-              <Route
-                path="sales_invoice/add-salesinvoice"
-                element={<AddSalesInvoice />}
-              />
-              <Route
-                path="sales_invoice/:id"
-                element={<SalesInvoiceDetails />}
-              />
-              <Route
-                path="sales_invoice/:id/payments/add"
-                element={<AddPaymentPage />}
-              />
-              <Route path="purchases" element={<Purchases />} />
-              <Route path="supliers" element={<Suppliers />} />
-              <Route path="add-suplier" element={<AddSupplier />} />
+
+              {/* فواتير المبيعات */}
+              <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+                <Route path="sales_invoice" element={<SalesInvoices />} />
+                <Route path="add-salesinvoice" element={<AddSalesInvoice />} />
+                <Route
+                  path="sales_invoice/:id"
+                  element={<SalesInvoiceDetails />}
+                />
+                <Route
+                  path="sales_invoice/:id/payments/add"
+                  element={<AddPaymentPage />}
+                />
+              </Route>
+
+              {/* المشتريات */}
+              <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+                <Route path="purchases" element={<Purchases />} />
+                <Route path="supliers" element={<Suppliers />} />
+                <Route path="add-suplier" element={<AddSupplier />} />
+              </Route>
             </Route>
           </Route>
 

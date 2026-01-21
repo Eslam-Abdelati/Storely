@@ -5,7 +5,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const token = Cookies.get("token");
   const userType = Cookies.get("userType");
 
-  // لو مش متسجل دخول
+  // لو مفيش توكن او مش مسجل دخول مش هيدخل علي اي راوت يرجع علي صفحة اللوجن
   if (!token) {
     return <Navigate to="/login" replace />;
   }

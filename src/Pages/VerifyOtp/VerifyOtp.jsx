@@ -70,7 +70,7 @@ function VerifyOTP() {
     try {
       if (type === "register") {
         const res = await axios.post(
-          "https://48af6b89dc4d.ngrok-free.app/auth/verify-email",
+          "https://fb8bcfa8b0c8.ngrok-free.app/auth/verify-email",
           { email, code: Number(otp) },
           { withCredentials: true },
         );
@@ -91,7 +91,7 @@ function VerifyOTP() {
         }
       } else if (type === "login") {
         const res = await axios.post(
-          "https://48af6b89dc4d.ngrok-free.app/auth/verify-login-otp",
+          "https://fb8bcfa8b0c8.ngrok-free.app/auth/verify-login-otp",
           { email, code: Number(otp) },
           { withCredentials: true },
         );

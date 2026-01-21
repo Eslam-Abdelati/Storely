@@ -53,13 +53,12 @@ function Login() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://48af6b89dc4d.ngrok-free.app/auth/login",
+        "https://fb8bcfa8b0c8.ngrok-free.app/auth/login",
         formData,
         {
           headers: { "Content-Type": "application/json" },
         },
       );
-      
 
       if (res.data.status === true) {
         setAlert({

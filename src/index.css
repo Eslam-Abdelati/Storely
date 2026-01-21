@@ -53,10 +53,11 @@
 body {
   /* font-family: Montserrat, serif !important; */
   /* font-family: "Cairo", sans-serif !important; */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji" !important;
   font-optical-sizing: auto !important;
-  background-color: #eff6ff !important;
+  background-color: #f9fafb !important;
   overflow-x: hidden;
 }
 a {
@@ -65,8 +66,9 @@ a {
 }
 
 button {
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji" !important;
   font-optical-sizing: auto !important;
   text-transform: capitalize !important;
   color: rgba(241, 245, 249, 0.5);
@@ -76,7 +78,9 @@ button {
   background: #3872fa !important;
   color: #fff !important;
   padding: 8px 20px !important;
-  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+  box-shadow:
+    0 1px 3px #0000001a,
+    0 1px 2px -1px #0000001a;
 }
 .btn-blue:hover {
   background-color: #3067e5 !important;
@@ -85,7 +89,9 @@ button {
   background: #10b981 !important;
   color: #fff !important;
   padding: 8px 20px !important;
-  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+  box-shadow:
+    0 1px 3px #0000001a,
+    0 1px 2px -1px #0000001a;
 }
 
 .btn-green:hover {
@@ -95,7 +101,9 @@ button {
   background: #fc5f7d !important;
   color: #fff !important;
   padding: 8px 20px !important;
-  box-shadow: 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+  box-shadow:
+    0 1px 3px #0000001a,
+    0 1px 2px -1px #0000001a;
 }
 .btn-red:hover {
   background: #e65771 !important;
@@ -128,7 +136,6 @@ th.MuiTableCell-root {
   background-color: #f1f1f1;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
-  
 }
 
 .MuiOutlinedInput-root.Mui-focused fieldset {

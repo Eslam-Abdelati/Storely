@@ -1,24 +1,29 @@
 import { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
-import { Link } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import logo2 from "../../assets/icon.svg";
 import { Collapse } from "react-collapse";
 import { RxDashboard } from "react-icons/rx";
-import { FaRegImage } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { LuPackage } from "react-icons/lu";
 import { TbReportMoney } from "react-icons/tb";
-import { PiCashRegisterBold } from "react-icons/pi";
+import Cookies from "js-cookie";
 
 const Sidebar = () => {
   const [submenuIndex, setSubmenuIndex] = useState(null);
   const { isOpenSidbar, setIsOpenSidbar } = useContext(MyContext);
+  const location = useLocation();
+  const isDashboardActive = location.pathname === "/app";
+  const userType = Cookies.get("userType");
 
   const toggleSubmenu = (index) => {
     setSubmenuIndex(submenuIndex === index ? null : index);
   };
+
+  // class for active link
+  const activeClass = "!bg-primary/10 !text-primary !font-bold !rounded-lg";
 
   return (
     <>
@@ -31,55 +36,56 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`fixed top-0 right-0 z-[52] bg-white/95 backdrop-blur-md h-full border-l border-blue-100 py-3 px-4 
+        className={`fixed top-0 right-0 z-[52]  backdrop-blur-md h-full border-l border-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-[#1f2327] py-3 px-4 
         w-[75%] sm:w-[55%] md:w-[35%] lg:w-[20%] xl:w-[15%] 
         transform transition-transform duration-300 
         ${isOpenSidbar ? "translate-x-0" : "translate-x-full"} 
         lg:translate-x-0`}
       >
         {/* الشعار */}
-        <div className="py-3 w-full mb-6 flex justify-center">
-          <Link to="/app" className="flex items-center gap-2">
-            {/* <img
-              src={logo}
-              alt="logo"
-              className="w-[120px] sm:w-[140px] md:w-[160px] object-contain"
-            /> */}
-            <h1 className="text-[18px] sm:text-[20px] font-bold text-primary">
-              Storely
-            </h1>
-            <img
-              src={logo2}
-              alt="Storely logo"
-              className="w-7 h-7 sm:w-10 sm:h-10"
-            />
-          </Link>
+        <div className="w-full flex">
+          <NavLink to="/app" className="flex items-center gap-2">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary rounded-md flex items-center justify-center">
+              <img
+                src={logo2}
+                alt="Storely logo"
+                className="w-6 h-6 sm:w-6 sm:h-6 object-contain"
+              />
+            </div>
+            <div className="flex flex-col gap-1 ">
+              <h1 className="text-[14px] sm:text-[16px] font-bold text-primary">
+                Storely
+              </h1>
+              <p className="font-medium text-[8px] sm:text-[10px] -mt-1 text-gray-500">
+                نظام إدارة متكامل
+              </p>
+            </div>
+          </NavLink>
         </div>
 
         {/* عناصر القائمة */}
         <ul className="mt-4 max-h-[80vh] overflow-y-auto space-y-1">
           {/* لوحة التحكم */}
           <li>
-            <Link to={"/app"}>
-              <Button className="w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg">
-                {/* الأيقونة + النص */}
-                <div className="flex items-center gap-2">
-                  <RxDashboard className="text-[18px] sm:text-[20px] xl:text-[18px]" />
-                  <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
-                    لوحة التحكم
-                  </span>
-                </div>
-                {/* السهم */}
-                <FaAngleDown className="opacity-0" />{" "}
-                {/* لإبقاء الترتيب ثابت */}
-              </Button>
-            </Link>
+            <NavLink
+              to="/app"
+              className={`w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !font-medium !text-gray-700 hover:!bg-gray-50 rounded-lg ${
+                isDashboardActive ? activeClass : ""
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <RxDashboard className="text-[18px] sm:text-[20px] xl:text-[18px]" />
+                <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
+                  لوحة التحكم
+                </span>
+              </div>
+            </NavLink>
           </li>
 
           {/* المبيعات */}
           <li>
             <Button
-              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
+              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-50 rounded-lg"
               onClick={() => toggleSubmenu(1)}
             >
               <div className="flex items-center gap-2">
@@ -98,20 +104,30 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 1}>
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
-                  <Link to={"/app/sales_invoice"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      إداره الفواتير
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/sales_invoice"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    إداره الفواتير
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={"/app/sales_invoice/add-salesinvoice"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      إنشاء فاتورة
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/add-salesinvoice"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    إنشاء فاتورة
+                  </NavLink>
                 </li>
               </ul>
             </Collapse>
@@ -120,7 +136,7 @@ const Sidebar = () => {
           {/* المنتجات */}
           <li>
             <Button
-              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
+              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-50 rounded-lg"
               onClick={() => toggleSubmenu(2)}
             >
               <div className="flex items-center gap-2">
@@ -139,36 +155,43 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 2}>
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
-                  <Link to={"/app/product"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      الكميات المتاحة
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/product"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    الكميات المتاحة
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={"/app/add-product"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      إضافة صنف
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/add-product"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    إضافة صنف
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={"/app/category"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      الفئات
-                    </Button>
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/app/category"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      طباعة تكت
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/category"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    الفئات
+                  </NavLink>
                 </li>
               </ul>
             </Collapse>
@@ -177,7 +200,7 @@ const Sidebar = () => {
           {/* المشتريات */}
           <li>
             <Button
-              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
+              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-50 rounded-lg"
               onClick={() => toggleSubmenu(3)}
             >
               <div className="flex items-center gap-2">
@@ -196,77 +219,38 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 3}>
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
-                  <Link to={"/app/purchases"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      فواتير الشراء
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/purchases"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    فواتير الشراء
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={"/app/supliers"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      إدارة الموردين
-                    </Button>
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/app/add-suplier"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      إضافة مورد
-                    </Button>
-                  </Link>
+                  <NavLink
+                    to="/app/supliers"
+                    className={({ isActive }) =>
+                      `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
+                        isActive ? activeClass : ""
+                      }`
+                    }
+                  >
+                    <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
+                    إدارة الموردين
+                  </NavLink>
                 </li>
               </ul>
             </Collapse>
           </li>
 
-          {/* نقاط البيع */}
-          {/* <li>
-            <Button
-              className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg"
-              onClick={() => toggleSubmenu(3)}
-            >
-              <div className="flex items-center gap-2">
-                <PiCashRegisterBold className="text-[17px] xl:text-[18px]" />
-                <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
-                  نقاط البيع
-                </span>
-              </div>
-              <FaAngleDown
-                className={`transition-transform duration-300 ${
-                  submenuIndex === 3 ? "rotate-180" : ""
-                }`}
-              />
-            </Button>
-
-            <Collapse isOpened={submenuIndex === 3}>
-              <ul className="pl-6 mt-1 space-y-1">
-                <li>
-                  <Link to={"/app/pos_shifts"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      بدأ البيع
-                    </Button>
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/app/pos"}>
-                    <Button className="!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2">
-                      <span className="w-[5px] h-[5px] rounded-full bg-gray-400"></span>
-                      الجلسات
-                    </Button>
-                  </Link>
-                </li>
-              </ul>
-            </Collapse>
-          </li> */}
-
           {/* تسجيل الخروج */}
           <li>
-            <Button className="!w-full !flex !items-center !justify-between !py-2 sm:!py-3 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg">
+            <Button className="!w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !text-gray-700 !font-medium hover:!bg-gray-100 rounded-lg">
               <div className="flex items-center gap-2">
                 <IoMdLogOut className="text-[18px] xl:text-[18px]" />
                 <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
