@@ -92,7 +92,7 @@ const Navbar = () => {
 
       <div className="flex items-center gap-2 sm:gap-3">
         {/* 🔔 الإشعارات */}
-        <div className="relative hidden sm:block" ref={notificationRef}>
+        <div className="relative sm:block" ref={notificationRef}>
           <IconButton
             aria-label="notifications"
             onClick={() => {
@@ -108,7 +108,7 @@ const Navbar = () => {
 
           {/* مربع الإشعارات */}
           {openNotifications && (
-            <div className="absolute top-full left-0 mt-3 w-80 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden">
+            <div className="absolute top-full mt-3 w-80 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0">
               {/* الهيدر */}
               <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                 <h3 className="font-bold text-sm">الإشعارات</h3>
@@ -158,7 +158,7 @@ const Navbar = () => {
         </div>
 
         {/* ⚙️ الإعدادات */}
-        <div className="relative hidden sm:block" ref={settingRef}>
+        <div className="relative sm:block" ref={settingRef}>
           <IconButton
             aria-label="settings"
             onClick={() => {
@@ -171,16 +171,16 @@ const Navbar = () => {
           </IconButton>
 
           {openSetting && (
-            <div className="absolute left-0 top-full mt-3 w-64 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-2xl z-50 overflow-hidden">
-              <div className="p-4 border-b border-gray-50 dark:border-gray-800">
+            <div className="absolute left-0 top-full mt-3 w-64 bg-white rounded-xl border border-gray-100 shadow-2xl z-50 overflow-hidden">
+              <div className="p-4 border-b border-gray-50 ">
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">
                   إعدادات النظام
                 </h3>
               </div>
 
               <div className="py-2">
-                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-right group">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-right group">
+                  <span className="text-sm font-medium text-gray-700">
                     تفضيلات النظام
                   </span>
                   <span className="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">
@@ -188,8 +188,8 @@ const Navbar = () => {
                   </span>
                 </button>
 
-                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-right group">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-right group">
+                  <span className="text-sm font-medium text-gray-700 ">
                     اللغة والمظهر
                   </span>
                   <span className="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">
@@ -197,8 +197,8 @@ const Navbar = () => {
                   </span>
                 </button>
 
-                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-right group">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-right group">
+                  <span className="text-sm font-medium text-gray-700 ">
                     إعدادات العملة
                   </span>
                   <span className="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">
@@ -206,8 +206,8 @@ const Navbar = () => {
                   </span>
                 </button>
 
-                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-right group">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <button className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50  transition-colors text-right group">
+                  <span className="text-sm font-medium text-gray-700 ">
                     إدارة المستخدمين
                   </span>
                   <span className="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">
@@ -216,8 +216,8 @@ const Navbar = () => {
                 </button>
               </div>
 
-              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800">
-                <button className="w-full py-2 bg-white dark:bg-gray-700 text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 ">
+                <button className="w-full py-2 bg-white  text-xs font-bold text-gray-600  border border-gray-200  rounded-lg hover:bg-gray-50 transition-colors">
                   إظهار كافة الإعدادات
                 </button>
               </div>

@@ -60,33 +60,36 @@ function App() {
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/app" element={<Layot />}>
-              <Route index element={<Dashboard />} />
-              <Route path="product" element={<Productes />} />
-              <Route path="add-product" element={<AddProduct />} />
-              <Route path="product/:id" element={<ProductDetails />} />
-              <Route path="product/label" element={<ProductLabel />} />
-              <Route path="category" element={<Category />} />
+            <Route element={<Layot />}>
+              {/* Dashboard */}
+              <Route path="/dashboard" element={<Dashboard />} />
 
-              {/* فواتير المبيعات */}
+              {/* Products */}
+              <Route path="/product" element={<Productes />} />
+              <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/product/label" element={<ProductLabel />} />
+              <Route path="/category" element={<Category />} />
+
+              {/* Sales Invoices */}
               <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
-                <Route path="sales_invoice" element={<SalesInvoices />} />
-                <Route path="add-salesinvoice" element={<AddSalesInvoice />} />
+                <Route path="/sales_invoice" element={<SalesInvoices />} />
+                <Route path="/add-salesinvoice" element={<AddSalesInvoice />} />
                 <Route
-                  path="sales_invoice/:id"
+                  path="/sales_invoice/:id"
                   element={<SalesInvoiceDetails />}
                 />
                 <Route
-                  path="sales_invoice/:id/payments/add"
+                  path="/sales_invoice/:id/payments/add"
                   element={<AddPaymentPage />}
                 />
               </Route>
 
-              {/* المشتريات */}
+              {/* Purchases */}
               <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
-                <Route path="purchases" element={<Purchases />} />
-                <Route path="supliers" element={<Suppliers />} />
-                <Route path="add-suplier" element={<AddSupplier />} />
+                <Route path="/purchases" element={<Purchases />} />
+                <Route path="/supliers" element={<Suppliers />} />
+                <Route path="/add-suplier" element={<AddSupplier />} />
               </Route>
             </Route>
           </Route>

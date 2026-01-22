@@ -44,7 +44,7 @@ const Sidebar = () => {
       >
         {/* الشعار */}
         <div className="w-full flex">
-          <NavLink to="/app" className="flex items-center gap-2">
+          <NavLink to="/dashboard" className="flex items-center gap-2">
             <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary rounded-md flex items-center justify-center">
               <img
                 src={logo2}
@@ -68,10 +68,12 @@ const Sidebar = () => {
           {/* لوحة التحكم */}
           <li>
             <NavLink
-              to="/app"
-              className={`w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !font-medium !text-gray-700 hover:!bg-gray-50 rounded-lg ${
-                isDashboardActive ? activeClass : ""
-              }`}
+              to="/dashboard"
+              className={({ isActive }) =>
+                `w-full !flex !items-center !justify-between !py-2 sm:!py-2.5 !px-2 sm:!px-3 !font-medium !text-gray-700 hover:!bg-gray-50 rounded-lg ${
+                  isActive ? activeClass : ""
+                }`
+              }
             >
               <div className="flex items-center gap-2">
                 <RxDashboard className="text-[18px] sm:text-[20px] xl:text-[18px]" />
@@ -105,7 +107,7 @@ const Sidebar = () => {
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
                   <NavLink
-                    to="/app/sales_invoice"
+                    to="/sales_invoice"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -118,7 +120,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/add-salesinvoice"
+                    to="/add-salesinvoice"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -156,7 +158,7 @@ const Sidebar = () => {
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
                   <NavLink
-                    to="/app/product"
+                    to="/product"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -169,7 +171,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/add-product"
+                    to="/add-product"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -182,7 +184,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/category"
+                    to="/category"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -220,7 +222,7 @@ const Sidebar = () => {
               <ul className="pl-6 mt-1 space-y-1">
                 <li>
                   <NavLink
-                    to="/app/purchases"
+                    to="/purchases"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""
@@ -233,7 +235,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/supliers"
+                    to="/supliers"
                     className={({ isActive }) =>
                       `!justify-start w-full !py-1.5 sm:!py-2 !text-gray-600 hover:!bg-gray-50 !text-[13px] sm:!text-[14px] xl:!text-[18px] !pl-4 flex gap-2 ${
                         isActive ? activeClass : ""

@@ -73,7 +73,7 @@ function SignUp2() {
 
     try {
       const response = await axios.post(
-        "https://48af6b89dc4d.ngrok-free.app/auth/register",
+        "https://fb8bcfa8b0c8.ngrok-free.app/auth/register",
         signUpData,
         {
           headers: { "Content-Type": "application/json" },
@@ -84,9 +84,12 @@ function SignUp2() {
         message: "تم التسجيل بنجاح",
       });
       console.log(response);
-      navigate("/verify", {
-        state: { email: signUpData.owner.email, type: "register" },
-      });
+      // ⏳ تأخير ثانية قبل الانتقال
+      setTimeout(() => {
+        navigate("/verify", {
+          state: { email: signUpData.owner.email, type: "register" },
+        });
+      }, 1000);
     } catch (error) {
       console.log(error.response);
       const msg = error.response?.data?.message;
@@ -320,7 +323,7 @@ function SignUp2() {
               </Button>
               <Link
                 to={-1}
-                className="w-1/2flex bg-blue-50gap-2border border-gray-600 px-4 py-2 rounded-md font-medium !text-gray-700 hover:bg-blue-100 transition"
+                className="w-1/2 flex bg-blue-50 gap-2 border border-gray-600 px-4 py-2 rounded-md font-medium !text-gray-700 hover:bg-blue-100 transition"
               >
                 <IoReturnDownBack className="text-[26px]" />
                 <span>رجوع للخلف</span>

@@ -1,6 +1,9 @@
 import React from "react";
-import StatsCard from "../../components/StatsCard/StatsCard";
 import RechartsCard from "../../components/RechartsCard/RechartsCard";
+import ReportBoxes from "../../components/ReportBoxes/ReportBoxes";
+import QuickAccess from "../../components/QuickAccess/QuickAccess";
+import FinancialSpreadsheet from "../../components/FinancialSpreadsheet/FinancialSpreadsheet";
+import Cookies from "js-cookie";
 
 const today = new Date().toLocaleDateString("ar-EG", {
   weekday: "long",
@@ -10,24 +13,37 @@ const today = new Date().toLocaleDateString("ar-EG", {
 });
 
 function Dashboard() {
+  const userType = Cookies.get("userType");
   return (
     <>
       {/* العنوان والترحيب */}
-      <div className="w-full py-4 px-5 bg-white/80 border border-blue-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 rounded-md">
-        <div>
-          <h1 className="text-[18px] sm:text-[20px] font-bold">
-            مرحبا
-            <span className="text-primary capitalize px-2">Eslam Amaar</span>
-          </h1>
-          <p className="text-gray-600 mt-1 text-[14px] sm:text-[15px]">{today}</p>
+      <div className="flex items-start justify-between">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-text-main mb-2">
+            مرحبا بك مجدداَ
+          </h2>
+          <p className="text-text-muted">
+            إليك نظرة عامة على أداء متجرك اليوم.
+          </p>
         </div>
-        <p className="text-primary text-[14px] sm:text-[15px] mt-2 sm:mt-0">
-          {"جلاكسي فون MGAPH05002"}
-        </p>
+
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-text-main mb-2">
+            جلاكسي فون MGAPH05002
+          </h2>
+          <p className="text-gray-600 mt-1 text-[14px] sm:text-[15px]">
+            {today}
+          </p>
+        </div>
       </div>
 
-      <StatsCard />
-      <RechartsCard />
+      {/* صناديق التقارير */}
+      {userType === "owner" && <ReportBoxes />}
+      {/* وصول سريع */}
+      <QuickAccess />
+      {/* بطاقة الرسوم البيانية */}
+      {/* <RechartsCard /> */}
+      {userType === "owner" && <FinancialSpreadsheet />}
     </>
   );
 }
