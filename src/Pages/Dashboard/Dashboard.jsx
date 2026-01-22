@@ -42,7 +42,7 @@ function Dashboard() {
       {/* وصول سريع */}
       <QuickAccess />
       {/* بطاقة الرسوم البيانية */}
-      {/* <RechartsCard /> */}
+ 
       {userType === "owner" && <FinancialSpreadsheet />}
     </>
   );

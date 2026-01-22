@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import Badge from "../../components/Badge/Badge";
+// import Badge from "../../components/Badge/Badge";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -59,9 +59,9 @@ function SalesInvoiceDetails() {
 
               {/* الشارات */}
               <div className="flex flex-wrap items-center gap-1">
-                <Badge status={invoiceData?.paymentStatus} />
+                <StatusBadge status={invoiceData?.paymentStatus} />
                 {invoiceData?.returned !== "none" && (
-                  <Badge status="مرتجع جزئي" />
+                  <StatusBadge status="مرتجع" />
                 )}
               </div>
             </div>

@@ -3,6 +3,7 @@ import { MdAddShoppingCart } from "react-icons/md";
 import { MdOutlineAddBox } from "react-icons/md";
 import { MdOutlineAssessment } from "react-icons/md";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function QuickAccess() {
   return (
@@ -15,7 +16,10 @@ function QuickAccess() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
-        <button className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1">
+        <Link
+          to={"/add-salesinvoice"}
+          className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1"
+        >
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
             <span className="material-symbols-outlined text-3xl">
               <MdAddShoppingCart />
@@ -27,9 +31,12 @@ function QuickAccess() {
             </p>
             <p className="text-xs text-text-muted">إنشاء عملية بيع جديدة</p>
           </div>
-        </button>
+        </Link>
 
-        <button className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1">
+        <Link
+          to={"/add-product"}
+          className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1"
+        >
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
             <span className="material-symbols-outlined text-3xl">
               <MdOutlineAddBox />
@@ -39,9 +46,12 @@ function QuickAccess() {
             <p className="font-bold text-lg mb-1 text-text-main">إضافة صنف</p>
             <p className="text-xs text-text-muted">تسجيل منتج في المخازن</p>
           </div>
-        </button>
+        </Link>
 
-        <button className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1">
+        <Link
+          to={"/reports"}
+          className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1"
+        >
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
             <span className="material-symbols-outlined text-3xl">
               <MdOutlineAssessment />
@@ -53,9 +63,9 @@ function QuickAccess() {
             </p>
             <p className="text-xs text-text-muted">تحليل الأداء المالي</p>
           </div>
-        </button>
+        </Link>
 
-        <button className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1">
+        <Link to={"/reports"} className="group flex flex-col items-center gap-4 p-8 bg-card-bg rounded-xl border border-border-color shadow-soft hover:border-primary transition-all hover:-translate-y-1">
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
             <span className="material-symbols-outlined text-3xl">
               <MdOutlinePersonAddAlt />
@@ -67,7 +77,7 @@ function QuickAccess() {
             </p>
             <p className="text-xs text-text-muted">إضافة وتعديل العملاء</p>
           </div>
-        </button>
+        </Link>
       </div>
     </div>
   );

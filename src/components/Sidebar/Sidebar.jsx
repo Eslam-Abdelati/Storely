@@ -15,7 +15,7 @@ const Sidebar = () => {
   const [submenuIndex, setSubmenuIndex] = useState(null);
   const { isOpenSidbar, setIsOpenSidbar } = useContext(MyContext);
   const location = useLocation();
-  const isDashboardActive = location.pathname === "/app";
+  
   const userType = Cookies.get("userType");
 
   const toggleSubmenu = (index) => {

@@ -173,7 +173,7 @@ const Navbar = () => {
           {openSetting && (
             <div className="absolute left-0 top-full mt-3 w-64 bg-white rounded-xl border border-gray-100 shadow-2xl z-50 overflow-hidden">
               <div className="p-4 border-b border-gray-50 ">
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+                <h3 className="text-sm font-bold text-gray-900">
                   إعدادات النظام
                 </h3>
               </div>
@@ -216,7 +216,7 @@ const Navbar = () => {
                 </button>
               </div>
 
-              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 ">
+              <div className="p-3 bg-gray-50 border-t border-gray-100 ">
                 <button className="w-full py-2 bg-white  text-xs font-bold text-gray-600  border border-gray-200  rounded-lg hover:bg-gray-50 transition-colors">
                   إظهار كافة الإعدادات
                 </button>

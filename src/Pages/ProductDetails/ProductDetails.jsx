@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import Badge from "../../components/Badge/Badge";
+// import Badge from "../../components/Badge/Badge";
 import Button from "@mui/material/Button";
 import { MdOutlineEdit } from "react-icons/md";
 import { HiOutlineTrash } from "react-icons/hi2";
@@ -38,7 +38,7 @@ function ProductDetails() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 text-[rgb(30,64,175)] gap-3">
           <h4 className="text-base sm:text-lg md:text-xl font-semibold flex items-center flex-wrap gap-2 text-center sm:text-start">
             سامسونج A52
-            <Badge status="في المخزون" />
+            {/* <Badge status="في المخزون" /> */}
           </h4>
 
           <div className="flex justify-center sm:justify-end w-full sm:w-auto">

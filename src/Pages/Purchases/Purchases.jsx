@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import Badge from "../../components/Badge/Badge";
+// import Badge from "../../components/Badge/Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -271,10 +271,10 @@ function Purchases() {
                     </p>
                   )}
                   <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
-                    <Badge status={invoice.paymentStatus} />
-                    {invoice.returned !== "none" && (
+                    {/* <Badge status={invoice.paymentStatus} /> */}
+                    {/* {invoice.returned !== "none" && (
                       <Badge status="مرتجع جزئي" />
-                    )}
+                    )} */}
                   </div>
                 </div>
 
@@ -346,7 +346,6 @@ function Purchases() {
             </div>
           ))}
         </div>
-
       </div>
     </>
   );

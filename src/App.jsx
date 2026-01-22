@@ -26,6 +26,7 @@ import AddSupplier from "./Pages/AddSupplier/AddSupplier";
 
 import PublicRoute from "./components/PublicRoute/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Reports from "./Pages/Reports/Reports";
 
 const theme = createTheme({
   typography: {
@@ -91,6 +92,13 @@ function App() {
                 <Route path="/supliers" element={<Suppliers />} />
                 <Route path="/add-suplier" element={<AddSupplier />} />
               </Route>
+
+              {/* Reports */}
+              <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+                <Route path="/reports" element={<Reports />} />
+              </Route>
+              
+              {/*  */}
             </Route>
           </Route>
 

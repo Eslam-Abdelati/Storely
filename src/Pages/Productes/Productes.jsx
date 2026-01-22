@@ -9,7 +9,7 @@ import Select from "react-select";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa6";
 import { HiOutlineTrash } from "react-icons/hi2";
-import Badge from "../../components/Badge/Badge";
+// import Badge from "../../components/Badge/Badge";
 
 // الفئات
 const categoryOptions = [
@@ -401,7 +401,7 @@ function Productes() {
                       <td className="px-2 sm:px-4 md:px-6 py-2 whitespace-nowrap text-start">
                         <div className="flex flex-col items-center gap-1">
                           {product.quantity}
-                          <Badge status="في المخزون" />
+                          {/* <Badge status="في المخزون" /> */}
                         </div>
                       </td>
 
