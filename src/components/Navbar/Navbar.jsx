@@ -19,6 +19,7 @@ import { MdOutlineTune } from "react-icons/md";
 import { FaPalette } from "react-icons/fa";
 import { MdOutlinePayments } from "react-icons/md";
 import { MdManageAccounts } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -102,7 +103,7 @@ const Navbar = () => {
             }}
           >
             <StyledBadge badgeContent={2} color="secondary">
-              <FaRegBell className="!text-[22px]" />
+              <FaRegBell className="!text-[20px]" />
             </StyledBadge>
           </IconButton>
 
@@ -167,7 +168,7 @@ const Navbar = () => {
               setOpenUserMenu(false);
             }}
           >
-            <IoSettingsOutline className="!text-[22px]" />
+            <IoSettingsOutline className="!text-[20px]" />
           </IconButton>
 
           {openSetting && (
@@ -226,25 +227,18 @@ const Navbar = () => {
         </div>
 
         <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
-
         {/* 👤 المستخدم */}
-        <div className="relative" ref={userMenuRef}>
-          <div
+        <div className="relative sm:block" ref={settingRef}>
+          <IconButton
+            aria-label="settings"
             onClick={() => {
               setOpenUserMenu((prev) => !prev);
               setOpenNotifications(false);
               setOpenSetting(false);
             }}
-            className="cursor-pointer"
           >
-            <div
-              className="w-10 h-10 rounded-full bg-cover bg-center border-2"
-              style={{
-                backgroundImage:
-                  "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2DS_8ai4nyU9pVyD3k--tkVFQm6k082a5LeYkOnm-v8lLZWRXVQHlOIoR4ibn52-Owey12Sf-dm_vT3P2wf59jJUyQaw-QpReJSbazF-NsQIFCA9Tkcqco55MXmwg9HtkSADUGwFKybDc06FIkviQ3xib1S5FMoa_puWBQvg7OtFX2JPImwMyEXcBpKSRlfV-MwVAhliUmimsPj4gkExORcNL0qpahl02AmO1LiwQFnFNXBhD2J6H7CE1W7lJPvFU8mtGd1cZgOo')",
-              }}
-            />
-          </div>
+            <FaRegUser className="!text-[20px]" />
+          </IconButton>
 
           {/* Dropdown */}
           {openUserMenu && (

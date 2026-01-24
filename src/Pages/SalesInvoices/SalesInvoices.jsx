@@ -195,7 +195,8 @@ function SalesInvoices() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
+      {/* عنوان الصفحة */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4 lg:gap-0">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">قائمة الفواتير</h1>
           <p className="text-sm text-[#657286] mt-1">
@@ -203,14 +204,15 @@ function SalesInvoices() {
           </p>
         </div>
 
-        <div className="flex gap-2">
-          <button className="flex items-center gap-2 text-sm text-[#657286] font-semibold bg-[#f0f2f4] hover:bg-[#dbdddf] transition-all dark:bg-gray-800 px-3 py-1.5 rounded-lg">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <button className="flex items-center justify-center gap-2 text-sm text-[#657286] font-semibold bg-[#f0f2f4] hover:bg-[#dbdddf] transition-all px-3 py-1.5 rounded-lg w-full sm:w-auto">
             <span className="material-symbols-outlined text-[18px]">
               <FiDownload className="text-[22px]" />
             </span>
             تصدير التقرير
           </button>
-          <button className="flex items-center gap-2 text-sm text-white font-semibold bg-primary hover:bg-blue-700 transition-all px-4 py-1.5 rounded-lg">
+
+          <button className="flex items-center justify-center gap-2 text-sm text-white font-semibold bg-primary hover:bg-blue-700 transition-all px-4 py-1.5 rounded-lg w-full sm:w-auto">
             <span className="material-symbols-outlined text-[18px]">
               <IoIosAdd className="text-[22px]" />
             </span>
@@ -220,7 +222,7 @@ function SalesInvoices() {
       </div>
 
       {/* الفلاتر */}
-      <div className="bg-white dark:bg-[#1f2937] card-shadow rounded-xl border border-border-light dark:border-border-dark p-5 mb-6">
+      <div className="bg-white  card-shadow rounded-xl border border-border-light dark:border-border-dark p-5 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
           {/* رقم الفاتورة */}
           <div className="lg:col-span-1">
@@ -237,7 +239,7 @@ function SalesInvoices() {
                 autoComplete="off"
                 variant="outlined"
                 size="small"
-                className="w-full dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pr-3 pl-3 text-sm 
+                className="w-full  border-gray-300 rounded-lg py-2 pr-3 pl-3 text-sm 
                          focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
                 placeholder="رقم الفاتورة..."
               />
@@ -339,7 +341,7 @@ function SalesInvoices() {
                 setFormData(initialFormState);
                 setAppliedFilters(null);
               }}
-              className="bg-gray-100 dark:bg-gray-800 text-[#657286] p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="bg-gray-100 text-[#657286] p-2 rounded-lg hover:bg-gray-200 transition-colors"
             >
               <IoMdRefresh />
             </button>
@@ -350,12 +352,12 @@ function SalesInvoices() {
       {/* قائمة الفواتير */}
       <div className="grid grid-cols-12 gap-8">
         <div className="col-span-12">
-          <div className="bg-white dark:bg-[#1f2327] card-shadow rounded-xl border border-[#f0f2f4] dark:border-gray-800 overflow-hidden">
+          <div className="bg-white card-shadow rounded-xl border border-[#f0f2f4 overflow-hidden">
             {/* Header */}
-            <div className="px-6 py-5 border-b border-[#f0f2f4] dark:border-gray-800 flex items-center justify-between">
+            <div className="px-6 py-5 border-b border-[#f0f2f4] flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <h4 className="text-lg font-bold">قائمة الفواتير</h4>
-                <span className="bg-[#f0f2f4] dark:bg-gray-800 text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
+                <span className="bg-[#f0f2f4] text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
                   {filteredInvoices.length} نتيجة
                 </span>
               </div>
@@ -365,7 +367,7 @@ function SalesInvoices() {
             <div className="overflow-auto max-h-[420px]">
               <table className="w-full text-right border-collapse">
                 <thead>
-                  <tr className="bg-[#f9fafb] dark:bg-[#111827] border-b border-border-light dark:border-border-dark">
+                  <tr className="bg-[#f9fafb]  border-b border-border-light">
                     <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
                       رقم الفاتورة
                     </th>
@@ -407,7 +409,7 @@ function SalesInvoices() {
                     filteredInvoices.map((inv, idx) => (
                       <tr
                         key={idx}
-                        className="hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors group relative overflow-visible"
+                        className="hover:bg-gray-50 transition-colors group relative overflow-visible"
                       >
                         <td className="px-6 py-4 text-sm font-bold text-primary whitespace-nowrap">
                           #{inv.invoiceNumber}
@@ -432,7 +434,7 @@ function SalesInvoices() {
                           {inv.items.length}
                         </td>
 
-                        <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                        <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap">
                           {inv.releaseDate}
                         </td>
 
@@ -452,7 +454,7 @@ function SalesInvoices() {
                                   openDropdown === idx ? null : idx,
                                 )
                               }
-                              className="p-1.5 text-primary bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors ring-2 ring-primary/20"
+                              className="p-1.5 text-primary bg-blue-50 rounded-lg transition-colors ring-2 ring-primary/20"
                             >
                               <span className="material-symbols-outlined text-[20px]">
                                 <MdMoreVert />
@@ -460,27 +462,27 @@ function SalesInvoices() {
                             </button>
 
                             {openDropdown === idx && (
-                              <div className="absolute left-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 dropdown-shadow rounded-xl border border-border-light dark:border-border-dark z-[9999] py-1.5">
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                              <div className="absolute left-0 top-full mt-2 w-48 bg-white dropdown-shadow rounded-xl border border-border-light z-[9999] py-1.5">
+                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                   <span className="material-symbols-outlined text-[20px] text-primary">
                                     <MdVisibility />
                                   </span>
                                   عرض التفاصيل
                                 </button>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50transition-colors">
                                   <span className="material-symbols-outlined text-[20px] text-[#657286]">
                                     <MdEdit />
                                   </span>
                                   تعديل
                                 </button>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                   <span className="material-symbols-outlined text-[20px] text-[#657286]">
                                     <MdLocalPrintshop />
                                   </span>
                                   طباعة
                                 </button>
-                                <div className="my-1 border-t border-border-light dark:border-border-dark mx-2"></div>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                                <div className="my-1 border-t border-border-light mx-2"></div>
+                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
                                   <span className="material-symbols-outlined text-[20px]">
                                     <RiDeleteBin6Fill />
                                   </span>

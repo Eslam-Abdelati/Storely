@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import logo2 from "../../assets/icon.svg";
 import { Collapse } from "react-collapse";
@@ -14,9 +14,6 @@ import Cookies from "js-cookie";
 const Sidebar = () => {
   const [submenuIndex, setSubmenuIndex] = useState(null);
   const { isOpenSidbar, setIsOpenSidbar } = useContext(MyContext);
-  const location = useLocation();
-  
-  const userType = Cookies.get("userType");
 
   const toggleSubmenu = (index) => {
     setSubmenuIndex(submenuIndex === index ? null : index);
@@ -78,7 +75,7 @@ const Sidebar = () => {
               <div className="flex items-center gap-2">
                 <RxDashboard className="text-[18px] sm:text-[20px] xl:text-[18px]" />
                 <span className="text-[14px] sm:text-[15px] xl:text-[18px]">
-                  لوحة التحكم
+                 الصفحة الرئيسية
                 </span>
               </div>
             </NavLink>

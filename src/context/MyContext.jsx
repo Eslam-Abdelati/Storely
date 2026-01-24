@@ -8,6 +8,8 @@ const MyProvider = ({ children }) => {
   });
 
   const [isLogin, setIsLogin] = useState(false);
+  // ✅ هنا نضيف Loading
+  const [isLoading, setIsLoading] = useState(false);
   // ✅ البيانات المؤقتة الخاصة بالتسجيل (صفحتين)
   const [signUpData, setSignUpData] = useState({
     // صفحة FirstSignUp
@@ -76,6 +78,8 @@ const MyProvider = ({ children }) => {
     isLogin,
     setIsLogin,
     // ✅ بيانات التسجيل
+    isLoading,
+    setIsLoading,
     signUpData,
     updateSignUpData,
   };
