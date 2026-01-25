@@ -91,7 +91,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1 sm:gap-1">
         {/* 🔔 الإشعارات */}
         <div className="relative sm:block" ref={notificationRef}>
           <IconButton
@@ -103,13 +103,25 @@ const Navbar = () => {
             }}
           >
             <StyledBadge badgeContent={2} color="secondary">
-              <FaRegBell className="!text-[20px]" />
+              <FaRegBell className="!text-[18px]" />
             </StyledBadge>
           </IconButton>
 
           {/* مربع الإشعارات */}
           {openNotifications && (
-            <div className="absolute top-full mt-3 w-80 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0">
+            <div
+              className="
+    fixed sm:absolute
+    top-16 sm:top-full
+    left-1/2 sm:left-0
+    -translate-x-1/2 sm:translate-x-0
+    mt-0 sm:mt-3
+    w-[95%] sm:w-80
+    bg-white rounded-xl
+    shadow-lg border border-slate-200
+    z-50 overflow-hidden
+  "
+            >
               {/* الهيدر */}
               <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                 <h3 className="font-bold text-sm">الإشعارات</h3>
@@ -168,7 +180,7 @@ const Navbar = () => {
               setOpenUserMenu(false);
             }}
           >
-            <IoSettingsOutline className="!text-[20px]" />
+            <IoSettingsOutline className="!text-[18px]" />
           </IconButton>
 
           {openSetting && (
@@ -228,7 +240,7 @@ const Navbar = () => {
 
         <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
         {/* 👤 المستخدم */}
-        <div className="relative sm:block" ref={settingRef}>
+        <div className="relative sm:block" ref={userMenuRef}>
           <IconButton
             aria-label="settings"
             onClick={() => {
@@ -237,7 +249,7 @@ const Navbar = () => {
               setOpenSetting(false);
             }}
           >
-            <FaRegUser className="!text-[20px]" />
+            <FaRegUser className="!text-[18px]" />
           </IconButton>
 
           {/* Dropdown */}

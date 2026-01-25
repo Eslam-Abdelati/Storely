@@ -12,6 +12,7 @@ import { MdLocalPrintshop } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 
+
 const customersList = [
   { value: "all", label: "الكل" },
   { value: "c1", label: "شركة الأمل التجارية" },
