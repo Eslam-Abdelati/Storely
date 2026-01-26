@@ -37,7 +37,7 @@ function Layot() {
         } flex flex-col h-full transition-all duration-300`}
       >
         <Navbar />
-        <main className="flex-1 overflow-y-auto py-4 px-5">
+        <main className="flex-1 overflow-y-auto py-2 px-2">
           {isLoading ? (
             <div className="absolute inset-0 z-50 bg-black/40 flex items-center justify-center">
               <Loading />

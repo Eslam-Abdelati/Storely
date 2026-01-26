@@ -1,49 +1,197 @@
-import React, { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
+import React, { useRef, useState } from "react";
+import { arSD } from "@mui/x-data-grid/locales";
+
+import { useNavigate } from "react-router-dom";
+
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+
+import {
+  DataGrid,
+  Toolbar,
+  ToolbarButton,
+  ColumnsPanelTrigger,
+  FilterPanelTrigger,
+  ExportCsv,
+  ExportPrint,
+  QuickFilter,
+  useGridApiContext,
+  useGridSelector,
+  gridFilteredSortedRowIdsSelector,
+} from "@mui/x-data-grid";
+import Tooltip from "@mui/material/Tooltip";
+import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
-import Select from "react-select";
-import { IoIosAdd } from "react-icons/io";
-import { FiDownload } from "react-icons/fi";
-import { IoMdRefresh } from "react-icons/io";
-import { MdMoreVert } from "react-icons/md";
-import { MdVisibility } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
-import { MdLocalPrintshop } from "react-icons/md";
-import { RiDeleteBin6Fill } from "react-icons/ri";
+import InputAdornment from "@mui/material/InputAdornment";
+import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from "@mui/icons-material/Search";
+import Typography from "@mui/material/Typography";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
+import {
+  MdMoreVert,
+  MdVisibility,
+  MdEdit,
+  MdLocalPrintshop,
+} from "react-icons/md";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { IoMdAdd } from "react-icons/io";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 
+const theme = createTheme({
+  direction: "rtl",
+  typography: {
+    fontFamily: "Cairo, Arial",
+  },
+});
 
-const customersList = [
-  { value: "all", label: "الكل" },
-  { value: "c1", label: "شركة الأمل التجارية" },
-  { value: "c2", label: "مؤسسة النجاح" },
-  { value: "c3", label: "مركز التقنية الحديثة" },
-  { value: "c4", label: "سليمان العلي" },
-];
+// 1) Button Hover Style
+const MyToolbarButton = styled(ToolbarButton)(() => ({
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  padding: "6px 10px",
+  borderRadius: 10,
+  transition: "all 0.2s ease",
 
-const staffList = [
-  { value: "all", label: "الكل" },
-  { value: "emp1", label: "سامي محمد" },
-  { value: "emp2", label: "محمود علي" },
-  { value: "emp3", label: "أحمد سامي" },
-  { value: "emp4", label: "محمد عبد الله" },
-];
+  "&:hover": {
+    backgroundColor: "#f0f0f0",
+    transform: "translateY(-1px)",
+  },
 
-// ✅ قائمة حالات الدفع
-const paymentStatusList = [
-  { value: "all", label: "الكل" },
-  { value: "paid", label: "مدفوع" },
-  { value: "partial", label: "مدفوع جزئي" },
-  { value: "unpaid", label: "متأخرة" },
-  { value: "partial_returned", label: "معلقة" },
-  { value: "returned", label: "مرتجع" },
-];
+  "& .MuiSvgIcon-root": {
+    fontSize: 18,
+  },
+}));
 
-function SalesInvoices() {
-  const [invoices, setInvoices] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(null);
-  // ✅ داتا داخل نفس الصفحة
+const StyledQuickFilter = styled(QuickFilter)({
+  display: "grid",
+  alignItems: "center",
+});
+
+const StyledToolbarButton = styled(ToolbarButton)(({ theme, ownerState }) => ({
+  gridArea: "1 / 1",
+  width: "min-content",
+  height: "min-content",
+  zIndex: 1,
+  opacity: ownerState.expanded ? 0 : 1,
+  pointerEvents: ownerState.expanded ? "none" : "auto",
+  transition: theme.transitions.create(["opacity"]),
+}));
+
+const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
+  gridArea: "1 / 1",
+  overflowX: "clip",
+  width: ownerState.expanded ? 260 : "var(--trigger-width)",
+  opacity: ownerState.expanded ? 1 : 0,
+  transition: theme.transitions.create(["width", "opacity"]),
+}));
+
+const CustomToolbar = () => {
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const exportMenuTriggerRef = useRef(null);
+  const apiRef = useGridApiContext();
+
+  // 👈 عدد الصفوف بعد الفلترة + البحث + الترتيب
+  const filteredRowsCount = useGridSelector(
+    apiRef,
+    gridFilteredSortedRowIdsSelector,
+  ).length;
+
+  return (
+    <Toolbar>
+      <Typography component="div" fontWeight="medium" sx={{ flex: 1, mx: 0.5 }}>
+        <div className="flex items-center gap-3">
+          <h4>قائمة الفواتير</h4>
+          <span className="bg-[#f0f2f4] text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
+            {filteredRowsCount} نتيجة
+          </span>
+        </div>
+      </Typography>
+
+      {/* Columns */}
+      <ColumnsPanelTrigger render={<MyToolbarButton />}>
+        <ViewColumnIcon />
+        <span className="text-sm">الأعمدة</span>
+      </ColumnsPanelTrigger>
+
+      {/* Filters */}
+      <FilterPanelTrigger
+        render={(props, state) => (
+          <MyToolbarButton {...props} color="default">
+            <Badge
+              badgeContent={state.filterCount}
+              color="primary"
+              variant="dot"
+            >
+              <FilterListIcon />
+              <span className="text-sm">تصفية</span>
+            </Badge>
+          </MyToolbarButton>
+        )}
+      />
+
+      <Divider
+        orientation="vertical"
+        variant="middle"
+        flexItem
+        sx={{ mx: 0.5 }}
+      />
+
+      {/* Export */}
+      <MyToolbarButton
+        ref={exportMenuTriggerRef}
+        id="export-menu-trigger"
+        aria-controls="export-menu"
+        aria-haspopup="true"
+        aria-expanded={exportMenuOpen ? "true" : undefined}
+        onClick={() => setExportMenuOpen(true)}
+      >
+        <FileDownloadIcon />
+        <span className="text-sm">تصدير</span>
+      </MyToolbarButton>
+
+      <Menu
+        id="export-menu"
+        anchorEl={exportMenuTriggerRef.current}
+        open={exportMenuOpen}
+        onClose={() => setExportMenuOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        slotProps={{
+          list: {
+            "aria-labelledby": "export-menu-trigger",
+          },
+        }}
+      >
+        <ExportPrint
+          render={<MenuItem />}
+          onClick={() => setExportMenuOpen(false)}
+        >
+          طباعة
+        </ExportPrint>
+        <ExportCsv
+          render={<MenuItem />}
+          onClick={() => setExportMenuOpen(false)}
+        >
+          تحميل CSV
+        </ExportCsv>
+      </Menu>
+    </Toolbar>
+  );
+};
+
+const salesInvoices = () => {
+  const navigate = useNavigate();
+
   const salesInvoicesData = [
     {
       id: "INV-2024-001",
@@ -120,82 +268,173 @@ function SalesInvoices() {
       paymentStatus: "pending",
       returned: 500,
     },
+    {
+      id: "INV-2024-006",
+      invoiceNumber: "INV-2024-006",
+      customer: "شركة سراج التجارية",
+      customerId: "CUST-006",
+      releaseDate: "2024-10-25",
+      employee: { value: "emp1", label: "سامي محمد" },
+      items: [
+        { name: "تابلت سامسونج", qty: 1, price: 12000 },
+        { name: "قلم S-Pen", qty: 1, price: 900 },
+      ],
+      netTotal: 12900,
+      paymentStatus: "pending",
+      returned: 500,
+    },
   ];
 
-  // ✅ حالة النموذج
-  const [formData, setFormData] = useState({
-    invoiceNumber: "",
-    date: "",
-    customer: customersList[0],
-    employee: staffList[0],
-    paymentStatus: paymentStatusList[0],
-  });
-  const initialFormState = {
-    invoiceNumber: "",
-    date: "",
-    customer: customersList[0],
-    employee: staffList[0],
-    paymentStatus: paymentStatusList[0],
-  };
+  // هنا نعمل حقل customerInfo داخل كل row
+  const rows = salesInvoicesData.map((inv) => ({
+    id: inv.id,
+    invoiceNumber: inv.invoiceNumber,
+    customer: inv.customer,
 
-  // ✅ القائمة المنسدلة (Menu)
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event) => setAnchorEl(event.currentTarget);
-  // const handleClose = () => setAnchorEl(null);
+    // ✅ نحول التاريخ لـ Date
+    releaseDate: new Date(inv.releaseDate),
 
-  // ✅ لتحديث حقول الإدخال العادية
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    // ✅ نخزن اسم الموظف مباشرة
+    employee: inv.employee?.label || "غير محدد",
 
-  // ✅ لتحديث Select (react-select)
-  const handleSelectChange = (selectedOption, { name }) => {
-    setFormData((prev) => ({ ...prev, [name]: selectedOption }));
-  };
-  // ✅ تحميل بيانات الفواتير عند التحميل الأولي للصفحة
-  useEffect(() => {
-    // في حالة جلب البيانات من API، يمكن استبدال هذا الجزء بعملية الجلب الحقيقية
-    setInvoices(salesInvoicesData);
-  }, []);
-  // ✅ تطبيق الفلاتر على قائمة الفواتير
-  const filteredInvoices = appliedFilters
-    ? invoices.filter((inv) => {
-        if (
-          appliedFilters.invoiceNumber &&
-          !inv.invoiceNumber.includes(appliedFilters.invoiceNumber)
-        )
-          return false;
+    itemsCount: inv.items.reduce((sum, item) => sum + item.qty, 0),
+    netTotal: inv.netTotal,
+    paymentStatus: inv.paymentStatus,
+  }));
 
-        if (
-          appliedFilters.customer.value !== "all" &&
-          inv.customer !== appliedFilters.customer.label
-        )
-          return false;
+  const columns = [
+    {
+      field: "invoiceNumber",
+      headerName: "رقم الفاتورة",
+      width: 140,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => (
+        <span
+          onClick={() => navigate(`/invoices/${params.row.id}`)}
+          className="text-blue-600 font-medium cursor-pointer hover:underline"
+        >
+          {params.value}
+        </span>
+      ),
+    },
 
-        if (
-          appliedFilters.employee.value !== "all" &&
-          inv.employee?.value !== appliedFilters.employee.value
-        )
-          return false;
+    {
+      field: "customer",
+      headerName: "العميل",
+      width: 180,
+      type: "string",
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "releaseDate",
+      headerName: "التاريخ",
+      width: 130,
+      type: "date",
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "employee",
+      headerName: "الموظف",
+      width: 150,
+      type: "string",
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "itemsCount",
+      headerName: "الأصناف",
+      type: "number",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "netTotal",
+      headerName: "الإجمالي",
+      type: "number",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "paymentStatus",
+      headerName: "حالة الدفع",
+      width: 160,
+      type: "singleSelect",
+      valueOptions: [
+        { value: "paid", label: "مدفوع" },
+        { value: "partial", label: "مدفوع جزئي" },
+        { value: "late", label: "متأخرة" },
+        { value: "pending", label: "معلقة" },
+        { value: "returned", label: "مرتجع" },
+      ],
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => <StatusBadge status={params.value} />,
+    },
+  ];
 
-        if (
-          appliedFilters.paymentStatus.value !== "all" &&
-          inv.paymentStatus !== appliedFilters.paymentStatus.value
-        )
-          return false;
-
-        // ✅ فلترة التاريخ
-        if (appliedFilters.date && inv.releaseDate !== appliedFilters.date)
-          return false;
-
-        return true;
-      })
-    : invoices;
+  const data = { rows, columns };
+  const loading = false;
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="bg-white card-shadow rounded-xl border border-border-light p-2 mb-3">
+        <div className="flex items-center gap-2">
+          {/* 2) زر جديد */}
+          <Button
+            className="gap-2 w-fit"
+            onClick={() => navigate("/add-salesinvoice")}
+          >
+            <IoMdAdd size={20} />
+            <span className="!text-[#000000DE]">جديد</span>
+          </Button>
+
+          {/* 3) زر تعديل */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <MdEdit size={20} className="text-purple-400" />
+            <span className="!text-[#000000DE]">تعديل</span>
+          </Button>
+
+          {/* 4) زر حذف */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <RiDeleteBin6Fill size={20} className="text-red-400" />
+            <span className="!text-[#000000DE]">حذف</span>
+          </Button>
+
+          {/* 5) زر عرض */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <MdVisibility size={20} className="text-gray-400" />
+            <span className="!text-[#000000DE]">عرض</span>
+          </Button>
+
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <span className="!text-[#000000DE]">إدارة</span>
+          </Button>
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <span className="!text-[#000000DE]">خيارات</span>
+          </Button>
+        </div>
+      </div>
       {/* عنوان الصفحة */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4 lg:gap-0">
         <div>
@@ -204,306 +443,46 @@ function SalesInvoices() {
             إدارة وتتبع فواتير المبيعات الخاصة بالمؤسسة
           </p>
         </div>
-
-        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-          <button className="flex items-center justify-center gap-2 text-sm text-[#657286] font-semibold bg-[#f0f2f4] hover:bg-[#dbdddf] transition-all px-3 py-1.5 rounded-lg w-full sm:w-auto">
-            <span className="material-symbols-outlined text-[18px]">
-              <FiDownload className="text-[22px]" />
-            </span>
-            تصدير التقرير
-          </button>
-
-          <button className="flex items-center justify-center gap-2 text-sm text-white font-semibold bg-primary hover:bg-blue-700 transition-all px-4 py-1.5 rounded-lg w-full sm:w-auto">
-            <span className="material-symbols-outlined text-[18px]">
-              <IoIosAdd className="text-[22px]" />
-            </span>
-            فاتورة جديدة
-          </button>
-        </div>
       </div>
 
-      {/* الفلاتر */}
-      <div className="bg-white  card-shadow rounded-xl border border-border-light dark:border-border-dark p-5 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
-          {/* رقم الفاتورة */}
-          <div className="lg:col-span-1">
-            <label className="block text-xs font-bold text-[#657286] mb-2 uppercase tracking-wide">
-              رقم الفاتورة
-            </label>
-            <div className="relative">
-              <TextField
-                type="text"
-                id="invoiceNumber"
-                name="invoiceNumber"
-                value={formData.invoiceNumber}
-                onChange={handleInputChange}
-                autoComplete="off"
-                variant="outlined"
-                size="small"
-                className="w-full  border-gray-300 rounded-lg py-2 pr-3 pl-3 text-sm 
-                         focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
-                placeholder="رقم الفاتورة..."
-              />
-            </div>
-          </div>
+      <Box
+        dir="rtl"
+        sx={{
+          height: "100%",
+          width: "100%",
+          direction: "rtl",
+        }}
+      >
+        <DataGrid
+          {...data}
+          localeText={{
+            ...arSD.components.MuiDataGrid.defaultProps.localeText,
+            columnMenuFilter: "تصفية",
+          }}
+          loading={loading}
+          slots={{ toolbar: CustomToolbar }}
+          showToolbar
+          hideFooterPagination
+          checkboxSelection
+          sx={{
+            direction: "rtl",
 
-          {/* التاريخ */}
-          <div>
-            <label className="block text-xs font-bold text-[#657286] mb-2 uppercase tracking-wide">
-              التاريخ
-            </label>
+            "& .MuiDataGrid-columnHeaders": {
+              direction: "rtl",
+              textAlign: "center",
+            },
 
-            <div className="relative">
-              <TextField
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                size="small"
-                fullWidth
-                sx={{
-                  backgroundColor: "#f9fafb",
-                  borderRadius: "8px",
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#e5e7eb",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#3b82f6",
-                    },
-                  },
-                }}
-              />
-            </div>
-          </div>
+            "& .MuiDataGrid-cell": {
+              textAlign: "center",
+            },
 
-          {/* العميل */}
-          <div>
-            <label className="block text-xs font-bold text-[#657286] mb-2 uppercase tracking-wide">
-              العميل
-            </label>
-            <div className="relative">
-              <Select
-                name="customer"
-                options={customersList}
-                value={formData.customer}
-                onChange={handleSelectChange}
-                className="!bg-[#f9fafb] w-full"
-                isSearchable
-                autoComplete="off"
-              />
-            </div>
-          </div>
-
-          {/* الموظف */}
-          <div>
-            <label className="block text-xs font-bold text-[#657286] mb-2 uppercase tracking-wide">
-              الموظف
-            </label>
-            <div className="relative">
-              <Select
-                name="employee"
-                options={staffList}
-                value={formData.employee}
-                onChange={handleSelectChange}
-                isSearchable
-                autoComplete="off"
-                className="!bg-[#f9fafb] w-full"
-              />
-            </div>
-          </div>
-
-          {/* حالة الدفع */}
-          <div>
-            <label className="block text-xs font-bold text-[#657286] mb-2 uppercase tracking-wide">
-              حالة الدفع
-            </label>
-            <Select
-              name="paymentStatus"
-              options={paymentStatusList}
-              value={formData.paymentStatus}
-              onChange={handleSelectChange}
-              isSearchable
-              autoComplete="off"
-              className="!bg-[#f9fafb] w-full"
-            />
-          </div>
-          {/* الأزرار */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setAppliedFilters(formData)}
-              className="flex-1 bg-primary text-white text-sm font-bold py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              تطبيق
-            </button>
-
-            <button
-              onClick={() => {
-                setFormData(initialFormState);
-                setAppliedFilters(null);
-              }}
-              className="bg-gray-100 text-[#657286] p-2 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              <IoMdRefresh />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* قائمة الفواتير */}
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-12">
-          <div className="bg-white card-shadow rounded-xl border border-[#f0f2f4 overflow-hidden">
-            {/* Header */}
-            <div className="px-6 py-5 border-b border-[#f0f2f4] flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h4 className="text-lg font-bold">قائمة الفواتير</h4>
-                <span className="bg-[#f0f2f4] text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
-                  {filteredInvoices.length} نتيجة
-                </span>
-              </div>
-            </div>
-
-            {/* Table with scroll */}
-            <div className="overflow-auto max-h-[420px]">
-              <table className="w-full text-right border-collapse">
-                <thead>
-                  <tr className="bg-[#f9fafb]  border-b border-border-light">
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      رقم الفاتورة
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      العميل
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      الموظف
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider text-center whitespace-nowrap">
-                      عدد المنتجات
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      التاريخ
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      الإجمالي
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider whitespace-nowrap">
-                      حالة الدفع
-                    </th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#657286] uppercase tracking-wider text-left">
-                      الإجراءات
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y divide-border-light dark:divide-border-dark">
-                  {filteredInvoices.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={8}
-                        className="px-6 py-6 text-center text-sm text-[#657286]"
-                      >
-                        لا يوجد بيانات
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredInvoices.map((inv, idx) => (
-                      <tr
-                        key={idx}
-                        className="hover:bg-gray-50 transition-colors group relative overflow-visible"
-                      >
-                        <td className="px-6 py-4 text-sm font-bold text-primary whitespace-nowrap">
-                          #{inv.invoiceNumber}
-                        </td>
-
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-bold">
-                              {inv.customer}
-                            </span>
-                            <span className="text-[10px] text-[#657286]">
-                              {inv.customerId}
-                            </span>
-                          </div>
-                        </td>
-
-                        <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                          {inv.employee.label}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm text-center whitespace-nowrap">
-                          {inv.items.length}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap">
-                          {inv.releaseDate}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm font-bold whitespace-nowrap ">
-                          {inv.netTotal.toLocaleString()} ج.م
-                        </td>
-
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <StatusBadge status={inv.paymentStatus} />
-                        </td>
-
-                        <td className="px-6 py-4 text-left relative overflow-visible ">
-                          <div className="flex items-center justify-end relative">
-                            <button
-                              onClick={() =>
-                                setOpenDropdown(
-                                  openDropdown === idx ? null : idx,
-                                )
-                              }
-                              className="p-1.5 text-primary bg-blue-50 rounded-lg transition-colors ring-2 ring-primary/20"
-                            >
-                              <span className="material-symbols-outlined text-[20px]">
-                                <MdMoreVert />
-                              </span>
-                            </button>
-
-                            {openDropdown === idx && (
-                              <div className="absolute left-0 top-full mt-2 w-48 bg-white dropdown-shadow rounded-xl border border-border-light z-[9999] py-1.5">
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                  <span className="material-symbols-outlined text-[20px] text-primary">
-                                    <MdVisibility />
-                                  </span>
-                                  عرض التفاصيل
-                                </button>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50transition-colors">
-                                  <span className="material-symbols-outlined text-[20px] text-[#657286]">
-                                    <MdEdit />
-                                  </span>
-                                  تعديل
-                                </button>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                  <span className="material-symbols-outlined text-[20px] text-[#657286]">
-                                    <MdLocalPrintshop />
-                                  </span>
-                                  طباعة
-                                </button>
-                                <div className="my-1 border-t border-border-light mx-2"></div>
-                                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
-                                  <span className="material-symbols-outlined text-[20px]">
-                                    <RiDeleteBin6Fill />
-                                  </span>
-                                  <span className="font-bold">حذف</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+            "& .MuiDataGrid-toolbarContainer": {
+              direction: "rtl",
+            },
+          }}
+        />
+      </Box>
+    </ThemeProvider>
   );
-}
-
-export default SalesInvoices;
+};
+export default salesInvoices;

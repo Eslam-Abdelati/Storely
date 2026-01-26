@@ -1,4 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { arSD } from "@mui/x-data-grid/locales";
+
+import { useNavigate } from "react-router-dom";
+
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
@@ -11,9 +15,9 @@ import {
   ExportCsv,
   ExportPrint,
   QuickFilter,
-  QuickFilterControl,
-  QuickFilterClear,
-  QuickFilterTrigger,
+  useGridApiContext,
+  useGridSelector,
+  gridFilteredSortedRowIdsSelector,
 } from "@mui/x-data-grid";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
@@ -36,6 +40,18 @@ import {
   MdLocalPrintshop,
 } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { IoMdAdd } from "react-icons/io";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+
+const theme = createTheme({
+  direction: "rtl",
+  typography: {
+    fontFamily: "Cairo, Arial",
+  },
+});
 
 // 1) Button Hover Style
 const MyToolbarButton = styled(ToolbarButton)(() => ({
@@ -82,11 +98,23 @@ const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
 function CustomToolbar() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const exportMenuTriggerRef = useRef(null);
+  const apiRef = useGridApiContext();
+
+  // 👈 عدد الصفوف بعد الفلترة + البحث + الترتيب
+  const filteredRowsCount = useGridSelector(
+    apiRef,
+    gridFilteredSortedRowIdsSelector,
+  ).length;
 
   return (
     <Toolbar>
-      <Typography fontWeight="medium" sx={{ flex: 1, mx: 0.5 }}>
-        لوحة التحكم
+      <Typography component="div" fontWeight="medium" sx={{ flex: 1, mx: 0.5 }}>
+        <div className="flex items-center gap-3">
+          <h4>قائمة الفواتير</h4>
+          <span className="bg-[#f0f2f4] text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
+            {filteredRowsCount} نتيجة
+          </span>
+        </div>
       </Typography>
 
       {/* Columns */}
@@ -162,7 +190,8 @@ function CustomToolbar() {
 }
 
 export default function GridToolbar() {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
   const salesInvoicesData = [
     {
       id: "INV-2024-001",
@@ -239,6 +268,21 @@ export default function GridToolbar() {
       paymentStatus: "pending",
       returned: 500,
     },
+    {
+      id: "INV-2024-006",
+      invoiceNumber: "INV-2024-006",
+      customer: "شركة سراج التجارية",
+      customerId: "CUST-006",
+      releaseDate: "2024-10-25",
+      employee: { value: "emp1", label: "سامي محمد" },
+      items: [
+        { name: "تابلت سامسونج", qty: 1, price: 12000 },
+        { name: "قلم S-Pen", qty: 1, price: 900 },
+      ],
+      netTotal: 12900,
+      paymentStatus: "pending",
+      returned: 500,
+    },
   ];
 
   // هنا نعمل حقل customerInfo داخل كل row
@@ -246,8 +290,13 @@ export default function GridToolbar() {
     id: inv.id,
     invoiceNumber: inv.invoiceNumber,
     customer: inv.customer,
-    releaseDate: inv.releaseDate,
-    employee: inv.employee,
+
+    // ✅ نحول التاريخ لـ Date
+    releaseDate: new Date(inv.releaseDate),
+
+    // ✅ نخزن اسم الموظف مباشرة
+    employee: inv.employee?.label || "غير محدد",
+
     itemsCount: inv.items.reduce((sum, item) => sum + item.qty, 0),
     netTotal: inv.netTotal,
     paymentStatus: inv.paymentStatus,
@@ -257,40 +306,46 @@ export default function GridToolbar() {
     {
       field: "invoiceNumber",
       headerName: "رقم الفاتورة",
-      width: 120,
+      width: 140,
       align: "center",
       headerAlign: "center",
-       renderCell: (params) => (
-    <span className="text-blue-600 font-medium cursor-pointer hover:underline">
-      {params.value}
-    </span>
-  ),
+      renderCell: (params) => (
+        <span
+          onClick={() => navigate(`/invoices/${params.row.id}`)}
+          className="text-blue-600 font-medium cursor-pointer hover:underline"
+        >
+          {params.value}
+        </span>
+      ),
     },
+
     {
       field: "customer",
       headerName: "العميل",
-      width: 150,
+      width: 180,
+      type: "string",
       align: "center",
       headerAlign: "center",
     },
     {
       field: "releaseDate",
       headerName: "التاريخ",
-      width: 120,
+      width: 130,
+      type: "date",
       align: "center",
       headerAlign: "center",
     },
     {
       field: "employee",
       headerName: "الموظف",
-      width: 120,
-      renderCell: (params) => params.value?.label || "غير محدد",
+      width: 150,
+      type: "string",
       align: "center",
       headerAlign: "center",
     },
     {
       field: "itemsCount",
-      headerName: "عدد المنتجات",
+      headerName: "الأصناف",
       type: "number",
       width: 100,
       align: "center",
@@ -300,142 +355,133 @@ export default function GridToolbar() {
       field: "netTotal",
       headerName: "الإجمالي",
       type: "number",
-      width: 100,
+      width: 120,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "paymentStatus",
       headerName: "حالة الدفع",
-      width: 140,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        return (
-          <Box>
-            <StatusBadge status={params.value} />
-          </Box>
-        );
-      },
-    },
-    {
-      field: "actions",
-      headerName: "الإجراءات",
       width: 160,
+      type: "singleSelect",
+      valueOptions: [
+        { value: "paid", label: "مدفوع" },
+        { value: "partial", label: "مدفوع جزئي" },
+        { value: "late", label: "متأخرة" },
+        { value: "pending", label: "معلقة" },
+        { value: "returned", label: "مرتجع" },
+      ],
       align: "center",
       headerAlign: "center",
-      sortable: false,
-      filterable: false,
-
-      renderCell: () => {
-        const open = Boolean(anchorEl);
-
-        const handleOpen = (event) => {
-          setAnchorEl(event.currentTarget);
-        };
-
-        const handleClose = () => {
-          setAnchorEl(null);
-        };
-
-        return (
-          <div className="flex items-center justify-center">
-            <button
-              onClick={handleOpen}
-              className="p-1.5 text-primary bg-blue-50 rounded-lg transition-colors ring-2 ring-primary/20"
-            >
-              <MdMoreVert />
-            </button>
-
-            <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-              <MenuItem onClick={handleClose}>
-                <MdVisibility className="ml-2" /> عرض التفاصيل
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <MdEdit className="ml-2" /> تعديل
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <MdLocalPrintshop className="ml-2" /> طباعة
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={handleClose} sx={{ color: "red" }}>
-                <RiDeleteBin6Fill className="ml-2" /> حذف
-              </MenuItem>
-            </Menu>
-          </div>
-        );
-      },
+      renderCell: (params) => <StatusBadge status={params.value} />,
     },
   ];
+
   const data = { rows, columns };
   const loading = false;
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
-      <DataGrid
-        {...data}
-        loading={loading}
-        slots={{ toolbar: CustomToolbar }}
-        showToolbar
-        pageSizeOptions={[10, 25, 50, 100]}
-        checkboxSelection
-        localeText={{
-          toolbarDensity: "حجم الصفوف",
-          toolbarDensityLabel: "حجم الصفوف",
-          toolbarDensityCompact: "صغير",
-          toolbarDensityStandard: "عادي",
-          toolbarDensityComfortable: "مريح",
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="bg-white card-shadow rounded-xl border border-border-light p-2 mb-3">
+        <div className="flex items-center gap-2">
+          {/* 2) زر جديد */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <IoMdAdd size={20} />
+            <span className="!text-[#000000DE]">جديد</span>
+          </Button>
 
-          toolbarColumns: "الأعمدة",
-          toolbarColumnsLabel: "اختر الأعمدة",
+          {/* 3) زر تعديل */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <MdEdit size={20} className="text-purple-400" />
+            <span className="!text-[#000000DE]">تعديل</span>
+          </Button>
 
-          toolbarFilters: "الفلتر",
-          toolbarFiltersLabel: "إظهار الفلتر",
-          toolbarFiltersTooltipHide: "إخفاء الفلتر",
-          toolbarFiltersTooltipShow: "إظهار الفلتر",
+          {/* 4) زر حذف */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <RiDeleteBin6Fill size={20} className="text-red-400" />
+            <span className="!text-[#000000DE]">حذف</span>
+          </Button>
 
-          toolbarExport: "تصدير",
-          toolbarExportLabel: "تصدير",
-          toolbarExportCSV: "تحميل CSV",
-          toolbarExportPrint: "طباعة",
+          {/* 5) زر عرض */}
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <MdVisibility size={20} className="text-gray-400" />
+            <span className="!text-[#000000DE]">عرض</span>
+          </Button>
 
-          columnMenuLabel: "القائمة",
-          columnMenuShowColumns: "إظهار الأعمدة",
-          columnMenuFilter: "تصفية",
-          columnMenuHideColumn: "إخفاء العمود",
-          columnMenuUnsort: "إلغاء الترتيب",
-          columnMenuSortAsc: "ترتيب تصاعدي",
-          columnMenuSortDesc: "ترتيب تنازلي",
-          columnMenuManageColumns: "إدارة الأعمدة",
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <span className="!text-[#000000DE]">إدارة</span>
+          </Button>
+          <Button
+            className="gap-2 w-fit"
+            // onClick={() => navigate("/invoices/new")}
+          >
+            <span className="!text-[#000000DE]">خيارات</span>
+          </Button>
+        </div>
+      </div>
+      {/* عنوان الصفحة */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4 lg:gap-0">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">قائمة الفواتير</h1>
+          <p className="text-sm text-[#657286] mt-1">
+            إدارة وتتبع فواتير المبيعات الخاصة بالمؤسسة
+          </p>
+        </div>
+      </div>
 
-          filterPanelAddFilter: "إضافة فلتر",
-          filterPanelDeleteIconLabel: "حذف",
-          filterPanelOperators: "المقارنة",
-          filterPanelOperatorAnd: "و",
-          filterPanelOperatorOr: "أو",
-          filterPanelColumns: "العمود",
-          filterPanelInputLabel: "القيمة",
-          filterPanelInputPlaceholder: "قيمة الفلتر",
-
-          filterOperatorContains: "يحتوي على",
-          filterOperatorNotContains: "لا يحتوي على",
-          filterOperatorEquals: "يساوي",
-          filterOperatorNotEquals: "لا يساوي",
-          filterOperatorStartsWith: "يبدأ بـ",
-          filterOperatorEndsWith: "ينتهي بـ",
-          filterOperatorIsEmpty: "فارغ",
-          filterOperatorIsNotEmpty: "غير فارغ",
-          filterOperatorIsAnyOf: "أي من",
-
-          toolbarQuickFilterPlaceholder: "ابحث...",
+      <Box
+        dir="rtl"
+        sx={{
+          height: "100%",
+          width: "100%",
+          direction: "rtl",
         }}
-      />
-    </div>
+      >
+        <DataGrid
+          {...data}
+          localeText={{
+            ...arSD.components.MuiDataGrid.defaultProps.localeText,
+            columnMenuFilter: "تصفية",
+          }}
+          loading={loading}
+          slots={{ toolbar: CustomToolbar }}
+          showToolbar
+          hideFooterPagination
+          checkboxSelection
+          sx={{
+            direction: "rtl",
+
+            "& .MuiDataGrid-columnHeaders": {
+              direction: "rtl",
+              textAlign: "center",
+            },
+
+            "& .MuiDataGrid-cell": {
+              textAlign: "center",
+            },
+
+            "& .MuiDataGrid-toolbarContainer": {
+              direction: "rtl",
+            },
+          }}
+        />
+      </Box>
+    </ThemeProvider>
   );
 }
