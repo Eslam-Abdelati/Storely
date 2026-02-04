@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Badge from "../StatusBadge/StatusBadge";
+import Badge from "./StatusBadge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { MdOutlinePayment } from "react-icons/md";

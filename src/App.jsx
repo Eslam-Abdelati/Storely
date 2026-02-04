@@ -14,7 +14,7 @@ import Productes from "./Pages/Productes/Productes";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import Category from "./Pages/Category/Category";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
-import ProductLabel from "./components/ProductLabel/ProductLabel";
+import ProductLabel from "./components/Dashboard/ProductLabel";
 import FirstSignUp from "./Pages/SignUp/FirstSignUp";
 import SalesInvoiceDetails from "./Pages/SalesInvoiceDetails/SalesInvoiceDetails";
 import SalesInvoices from "./Pages/SalesInvoices/SalesInvoices";
@@ -24,9 +24,16 @@ import Purchases from "./Pages/Purchases/Purchases";
 import Suppliers from "./Pages/Suppliers/Suppliers";
 import AddSupplier from "./Pages/AddSupplier/AddSupplier";
 
-import PublicRoute from "./components/PublicRoute/PublicRoute";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import PublicRoute from "./components/Dashboard/PublicRoute";
+import ProtectedRoute from "./components/Dashboard/ProtectedRoute";
 import Reports from "./Pages/Reports/Reports";
+import Home from "./Pages/Home/Home";
+import Step1 from "./Pages/RegisterStepper/Step1";
+import Step2 from "./Pages/RegisterStepper/Step2";
+import Step3 from "./Pages/RegisterStepper/Step3";
+import RegisterLayout from "./components/Landing/RegisterLayout";
+import Step4 from "./Pages/RegisterStepper/Step4";
+import Login2 from "./Pages/Login/Login2";
 
 const theme = createTheme({
   typography: {
@@ -47,20 +54,33 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          {/* Default route */}
-          <Route path="/" element={<Navigate to="/sign-up" replace />} />
+          {/* 🌍 Public pages for everyone */}
+          <Route path="/" element={<Home />} />
 
-          {/* Public routes */}
+          {/* Default route */}
+          {/* <Route path="/" element={<Navigate to="/sign-up" replace />} /> */}
+
+          {/* 🔓 Auth pages */}
           <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/sign-up" element={<FirstSignUp />} />
-            <Route path="/sign-up2" element={<SignUp2 />} />
+            {/* register */}
+            <Route path="/register" element={<RegisterLayout />}>
+              <Route index element={<Step1 />} />
+              <Route path="step1" element={<Step1 />} />
+              <Route path="step2" element={<Step2 />} />
+              <Route path="step3" element={<Step3 />} />
+              <Route path="step4" element={<Step4 />} />
+            </Route>
+            {/* <Route path="/login" element={<Login />} /> */}
+            <Route path="/login" element={<Login2 />} />
             <Route path="/verify" element={<VerifyOTP />} />
+
+            {/* <Route path="/sign-up" element={<FirstSignUp />} /> */}
+            {/* <Route path="/sign-up2" element={<SignUp2 />} /> */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
           </Route>
 
-          {/* Protected routes */}
-          <Route element={<ProtectedRoute />}>
+          {/* 🔐 Protected system */}
+         
             <Route element={<Layot />}>
               {/* Dashboard */}
               <Route path="/dashboard" element={<Dashboard />} />
@@ -97,11 +117,10 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
                 <Route path="/reports" element={<Reports />} />
               </Route>
-              
+
               {/*  */}
             </Route>
-          </Route>
-
+          
           {/* 404 */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

@@ -5,7 +5,7 @@ import bgImage from "../../assets/patern.webp";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import UploadBox from "../../components/UploadBox/UploadBox";
+import UploadBox from "../../components/Dashboard/UploadBox";
 import Alert from "@mui/material/Alert";
 
 const countries = [
@@ -38,14 +38,14 @@ function FirstSignUp() {
   });
 
   useEffect(() => {
-  if (alert.message) {
-    const timer = setTimeout(() => {
-      navigate("/sign-up2");
-    }, 1500);
+    if (alert.message) {
+      const timer = setTimeout(() => {
+        navigate("/sign-up2");
+      }, 1500);
 
-    return () => clearTimeout(timer);
-  }
-}, [alert.message, navigate]);
+      return () => clearTimeout(timer);
+    }
+  }, [alert.message, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,17 +56,17 @@ function FirstSignUp() {
     updateSignUpData({ logo: file });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setTimeout(() => {
-    setLoading(false);
-    setAlert({
-      type: "success",
-      message: "اكمل البيانات التاليه للتسجيل",
-    });
-  }, 2000);
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setAlert({
+        type: "success",
+        message: "اكمل البيانات التاليه للتسجيل",
+      });
+    }, 2000);
+  };
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-blue-100 py-10 sm:py-16">
@@ -118,7 +118,7 @@ const handleSubmit = async (e) => {
               </label>
               <input
                 type="text"
-                className="w-full h-[45px] sm:h-[50px] border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none px-3 text-[14px] sm:text-[15px]"
+                className="w-full py-2 px-3 border-2 border-gray-200 rounded-md focus:border-primary focus:outline-none text-[14px] sm:text-[15px]"
                 id="store_name"
                 name="store_name"
                 value={signUpData.store_name}

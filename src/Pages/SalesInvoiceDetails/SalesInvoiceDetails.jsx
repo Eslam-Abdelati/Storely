@@ -13,11 +13,11 @@ import { FaRegFilePdf } from "react-icons/fa6";
 import { FaPrint } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
-import PrintInvoice from "../../components/PrintInvoice/PrintInvoice";
+import PrintInvoice from "../../components/Dashboard/PrintInvoice/PrintInvoice";
 import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import InvoiceSummary from "../../components/InvoiceSummary/InvoiceSummary";
-import InvoicePayments from "../../components/InvoicePayments/InvoicePayments";
+import InvoiceSummary from "../../components/Dashboard/InvoiceSummary";
+import InvoicePayments from "../../components/Dashboard/InvoicePayments";
 
 function SalesInvoiceDetails() {
   const { id } = useParams(); // بدل invoiceNumber

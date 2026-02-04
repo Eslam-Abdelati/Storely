@@ -52,10 +52,10 @@
 
 body {
   /* font-family: Montserrat, serif !important; */
-  /* font-family: "Cairo", sans-serif !important; */
-  font-family:
+  font-family: "Cairo", sans-serif !important;
+  /* font-family:
     ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji" !important;
+    "Segoe UI Symbol", "Noto Color Emoji" !important; */
   font-optical-sizing: auto !important;
   background-color: #f8fafc !important;
   overflow-x: hidden;
@@ -166,4 +166,24 @@ th.MuiTableCell-root {
 }
 .otpBox input:focus {
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.css-1q55ijt-MuiInputBase-input-MuiOutlinedInput-input {
+  width: 72% !important;
+}
+
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.4s ease-out forwards;
 }

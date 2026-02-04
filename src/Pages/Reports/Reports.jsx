@@ -1,487 +1,450 @@
-import React, { useRef, useState } from "react";
-import { arSD } from "@mui/x-data-grid/locales";
+import React from "react";
 
-import { useNavigate } from "react-router-dom";
-
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-
-import {
-  DataGrid,
-  Toolbar,
-  ToolbarButton,
-  ColumnsPanelTrigger,
-  FilterPanelTrigger,
-  ExportCsv,
-  ExportPrint,
-  QuickFilter,
-  useGridApiContext,
-  useGridSelector,
-  gridFilteredSortedRowIdsSelector,
-} from "@mui/x-data-grid";
-import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import Badge from "@mui/material/Badge";
-import ViewColumnIcon from "@mui/icons-material/ViewColumn";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import CancelIcon from "@mui/icons-material/Cancel";
-import SearchIcon from "@mui/icons-material/Search";
-import Typography from "@mui/material/Typography";
-import StatusBadge from "../../components/StatusBadge/StatusBadge";
-import {
-  MdMoreVert,
-  MdVisibility,
-  MdEdit,
-  MdLocalPrintshop,
-} from "react-icons/md";
-import { RiDeleteBin6Fill } from "react-icons/ri";
-import { IoMdAdd } from "react-icons/io";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-
-const theme = createTheme({
-  direction: "rtl",
-  typography: {
-    fontFamily: "Cairo, Arial",
-  },
-});
-
-// 1) Button Hover Style
-const MyToolbarButton = styled(ToolbarButton)(() => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  padding: "6px 10px",
-  borderRadius: 10,
-  transition: "all 0.2s ease",
-
-  "&:hover": {
-    backgroundColor: "#f0f0f0",
-    transform: "translateY(-1px)",
-  },
-
-  "& .MuiSvgIcon-root": {
-    fontSize: 18,
-  },
-}));
-
-const StyledQuickFilter = styled(QuickFilter)({
-  display: "grid",
-  alignItems: "center",
-});
-
-const StyledToolbarButton = styled(ToolbarButton)(({ theme, ownerState }) => ({
-  gridArea: "1 / 1",
-  width: "min-content",
-  height: "min-content",
-  zIndex: 1,
-  opacity: ownerState.expanded ? 0 : 1,
-  pointerEvents: ownerState.expanded ? "none" : "auto",
-  transition: theme.transitions.create(["opacity"]),
-}));
-
-const StyledTextField = styled(TextField)(({ theme, ownerState }) => ({
-  gridArea: "1 / 1",
-  overflowX: "clip",
-  width: ownerState.expanded ? 260 : "var(--trigger-width)",
-  opacity: ownerState.expanded ? 1 : 0,
-  transition: theme.transitions.create(["width", "opacity"]),
-}));
-
-function CustomToolbar() {
-  const [exportMenuOpen, setExportMenuOpen] = useState(false);
-  const exportMenuTriggerRef = useRef(null);
-  const apiRef = useGridApiContext();
-
-  // 👈 عدد الصفوف بعد الفلترة + البحث + الترتيب
-  const filteredRowsCount = useGridSelector(
-    apiRef,
-    gridFilteredSortedRowIdsSelector,
-  ).length;
-
+export default function Reborts() {
   return (
-    <Toolbar>
-      <Typography component="div" fontWeight="medium" sx={{ flex: 1, mx: 0.5 }}>
-        <div className="flex items-center gap-3">
-          <h4>قائمة الفواتير</h4>
-          <span className="bg-[#f0f2f4] text-[#657286] text-[10px] font-bold px-2 py-0.5 rounded">
-            {filteredRowsCount} نتيجة
-          </span>
+    <div className="bg-background-light dark:bg-background-dark min-h-screen text-right">
+      {/* Header */}
+
+      {/* Main */}
+      <main className="max-w-[1400px] mx-auto p-6 md:p-10">
+        {/* Breadcrumb */}
+
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div className="flex flex-col">
+            <h1 className="text-[#121417] dark:text-white text-3xl font-extrabold tracking-tight">
+              إنشاء فاتورة
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              إنشاء مستند مبيعات جديد وإدارة شروط الدفع
+            </p>
+          </div>
+
+          <div className="flex gap-3">
+            <button className="px-5 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 transition-all">
+              حفظ كمسودة
+            </button>
+            <button className="px-5 py-2.5 rounded-lg bg-primary text-white font-bold text-sm shadow-sm hover:bg-blue-600 flex items-center gap-2 transition-all">
+              <span className="material-symbols-outlined text-lg">print</span>
+              حفظ وطباعة
+            </button>
+          </div>
         </div>
-      </Typography>
 
-      {/* Columns */}
-      <ColumnsPanelTrigger render={<MyToolbarButton />}>
-        <ViewColumnIcon />
-        <span className="text-sm">الأعمدة</span>
-      </ColumnsPanelTrigger>
+        {/* Grid */}
+        <div className="grid grid-cols-12 gap-8">
+          {/* Left */}
+          <div className="col-span-12 lg:col-span-8 space-y-6">
+            {/* Customer */}
+            <div className="bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+              <div className="flex items-center gap-2 mb-6 border-b border-gray-50 dark:border-gray-800 pb-4">
+                <span className="material-symbols-outlined text-primary">
+                  person_search
+                </span>
+                <h3 className="text-lg font-bold text-[#121417] dark:text-white">
+                  بيانات العميل واللوجستيات
+                </h3>
+              </div>
 
-      {/* Filters */}
-      <FilterPanelTrigger
-        render={(props, state) => (
-          <MyToolbarButton {...props} color="default">
-            <Badge
-              badgeContent={state.filterCount}
-              color="primary"
-              variant="dot"
-            >
-              <FilterListIcon />
-              <span className="text-sm">تصفية</span>
-            </Badge>
-          </MyToolbarButton>
-        )}
-      />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    اختر العميل
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                      search
+                    </span>
+                    <select className="w-full h-12 pr-10 pl-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:ring-1 focus:ring-primary appearance-none">
+                      <option value="1">شركة تكنولوجيا الحلول العالمية</option>
+                      <option value="2">مجموعة قمة اللوجستيات</option>
+                      <option value="3">شركاء نوفا للتجزئة</option>
+                    </select>
+                  </div>
+                </div>
 
-      <Divider
-        orientation="vertical"
-        variant="middle"
-        flexItem
-        sx={{ mx: 0.5 }}
-      />
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    مستودع المصدر
+                  </label>
+                  <select className="w-full h-12 px-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:ring-1 focus:ring-primary">
+                    <option value="w1">مركز التوزيع المركزي (أ1)</option>
+                    <option value="w2">محور الساحل الغربي</option>
+                    <option value="w3">مكتب الامتثال الأوروبي</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-      {/* Export */}
-      <MyToolbarButton
-        ref={exportMenuTriggerRef}
-        id="export-menu-trigger"
-        aria-controls="export-menu"
-        aria-haspopup="true"
-        aria-expanded={exportMenuOpen ? "true" : undefined}
-        onClick={() => setExportMenuOpen(true)}
-      >
-        <FileDownloadIcon />
-        <span className="text-sm">تصدير</span>
-      </MyToolbarButton>
+            {/* Invoice Items */}
+            <div className="bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary">
+                    list_alt
+                  </span>
+                  <h3 className="text-lg font-bold text-[#121417] dark:text-white">
+                    عناصر الفاتورة
+                  </h3>
+                </div>
+                <button className="text-sm font-bold text-primary flex items-center gap-1 hover:underline">
+                  <span className="material-symbols-outlined text-lg">
+                    add_circle
+                  </span>
+                  إضافة سريعة
+                </button>
+              </div>
 
-      <Menu
-        id="export-menu"
-        anchorEl={exportMenuTriggerRef.current}
-        open={exportMenuOpen}
-        onClose={() => setExportMenuOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        slotProps={{
-          list: {
-            "aria-labelledby": "export-menu-trigger",
-          },
-        }}
-      >
-        <ExportPrint
-          render={<MenuItem />}
-          onClick={() => setExportMenuOpen(false)}
-        >
-          طباعة
-        </ExportPrint>
-        <ExportCsv
-          render={<MenuItem />}
-          onClick={() => setExportMenuOpen(false)}
-        >
-          تحميل CSV
-        </ExportCsv>
-      </Menu>
-    </Toolbar>
-  );
-}
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-right border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 dark:bg-gray-800/50">
+                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">
+                        المنتج / الخدمة
+                      </th>
+                      <th className="px-4 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest w-24 text-center">
+                        الكمية
+                      </th>
+                      <th className="px-4 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest w-32">
+                        سعر الوحدة
+                      </th>
+                      <th className="px-4 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest w-24 text-center">
+                        الضريبة %
+                      </th>
+                      <th className="px-4 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest w-32 text-left">
+                        الإجمالي
+                      </th>
+                      <th className="px-6 py-4 w-12"></th>
+                    </tr>
+                  </thead>
 
-export default function GridToolbar() {
-  const navigate = useNavigate();
+                  <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                    {/* Row 1 */}
+                    <tr>
+                      <td className="px-6 py-4">
+                        <input
+                          className="w-full border-none focus:ring-0 bg-transparent text-sm p-0 placeholder:text-gray-400 font-medium"
+                          type="text"
+                          defaultValue="شاشة سامسونج 27 بوصة"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="2"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="relative">
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+                            SAR
+                          </span>
+                          <input
+                            className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm pl-10 pr-2 py-1.5 focus:ring-primary font-medium"
+                            type="number"
+                            defaultValue="800"
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="15"
+                        />
+                      </td>
+                      <td className="px-4 py-4 text-left">
+                        <span className="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                          1,840.00 ر.س
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button className="text-gray-300 hover:text-red-500 transition-colors">
+                          <span className="material-symbols-outlined text-lg">
+                            delete_outline
+                          </span>
+                        </button>
+                      </td>
+                    </tr>
 
-  const salesInvoicesData = [
-    {
-      id: "INV-2024-001",
-      invoiceNumber: "INV-2024-001",
-      customer: "شركة الأمل التجارية",
-      customerId: "CUST-001",
-      releaseDate: "2024-10-15",
-      employee: { value: "emp1", label: "سامي محمد" },
-      items: [
-        { name: "هاتف سامسونج A54", qty: 2, price: 6500 },
-        { name: "شاحن سريع", qty: 1, price: 300 },
-      ],
-      netTotal: 13300,
-      paymentStatus: "paid",
-      returned: 0,
-    },
-    {
-      id: "INV-2024-002",
-      invoiceNumber: "INV-2024-002",
-      customer: "مؤسسة النجاح",
-      customerId: "CUST-002",
-      releaseDate: "2024-10-14",
-      employee: { value: "emp2", label: "محمود علي" },
-      items: [
-        { name: "ايفون 14", qty: 1, price: 22000 },
-        { name: "جراب حماية", qty: 2, price: 150 },
-      ],
-      netTotal: 22300,
-      paymentStatus: "late",
-      returned: 0,
-    },
-    {
-      id: "INV-2024-003",
-      invoiceNumber: "INV-2024-003",
-      customer: "مركز التقنية الحديثة",
-      customerId: "CUST-003",
-      releaseDate: "2024-10-14",
-      employee: { value: "emp3", label: "أحمد سامي" },
-      items: [
-        { name: "لابتوب Dell", qty: 1, price: 18000 },
-        { name: "ماوس لاسلكي", qty: 1, price: 350 },
-      ],
-      netTotal: 18350,
-      paymentStatus: "partial",
-      returned: 0,
-    },
-    {
-      id: "INV-2024-004",
-      invoiceNumber: "INV-2024-004",
-      customer: "سليمان العلي",
-      customerId: "CUST-004",
-      releaseDate: "2024-10-13",
-      employee: { value: "emp4", label: "محمد عبد الله" },
-      items: [
-        { name: "هاتف شاومي 13", qty: 1, price: 9500 },
-        { name: "سماعة بلوتوث", qty: 1, price: 600 },
-      ],
-      netTotal: 10100,
-      paymentStatus: "returned",
-      returned: 300,
-    },
-    {
-      id: "INV-2024-005",
-      invoiceNumber: "INV-2024-005",
-      customer: "شركة الأمل التجارية",
-      customerId: "CUST-005",
-      releaseDate: "2024-10-12",
-      employee: { value: "emp1", label: "سامي محمد" },
-      items: [
-        { name: "تابلت سامسونج", qty: 1, price: 12000 },
-        { name: "قلم S-Pen", qty: 1, price: 900 },
-      ],
-      netTotal: 12900,
-      paymentStatus: "pending",
-      returned: 500,
-    },
-    {
-      id: "INV-2024-006",
-      invoiceNumber: "INV-2024-006",
-      customer: "شركة سراج التجارية",
-      customerId: "CUST-006",
-      releaseDate: "2024-10-25",
-      employee: { value: "emp1", label: "سامي محمد" },
-      items: [
-        { name: "تابلت سامسونج", qty: 1, price: 12000 },
-        { name: "قلم S-Pen", qty: 1, price: 900 },
-      ],
-      netTotal: 12900,
-      paymentStatus: "pending",
-      returned: 500,
-    },
-  ];
+                    {/* Row 2 */}
+                    <tr>
+                      <td className="px-6 py-4">
+                        <input
+                          className="w-full border-none focus:ring-0 bg-transparent text-sm p-0 placeholder:text-gray-400 font-medium"
+                          type="text"
+                          defaultValue="لوحة مفاتيح ميكانيكية"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="5"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="relative">
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+                            SAR
+                          </span>
+                          <input
+                            className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm pl-10 pr-2 py-1.5 focus:ring-primary font-medium"
+                            type="number"
+                            defaultValue="150"
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="15"
+                        />
+                      </td>
+                      <td className="px-4 py-4 text-left">
+                        <span className="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                          862.50 ر.س
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button className="text-gray-300 hover:text-red-500 transition-colors">
+                          <span className="material-symbols-outlined text-lg">
+                            delete_outline
+                          </span>
+                        </button>
+                      </td>
+                    </tr>
 
-  // هنا نعمل حقل customerInfo داخل كل row
-  const rows = salesInvoicesData.map((inv) => ({
-    id: inv.id,
-    invoiceNumber: inv.invoiceNumber,
-    customer: inv.customer,
+                    {/* Row 3 */}
+                    <tr>
+                      <td className="px-6 py-4">
+                        <input
+                          className="w-full border-none focus:ring-0 bg-transparent text-sm p-0 placeholder:text-gray-400 font-medium"
+                          type="text"
+                          defaultValue="ماوس لاسلكي"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="3"
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="relative">
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+                            SAR
+                          </span>
+                          <input
+                            className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm pl-10 pr-2 py-1.5 focus:ring-primary font-medium"
+                            type="number"
+                            defaultValue="90"
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <input
+                          className="w-full border-gray-100 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-900 text-sm text-center py-1.5 px-2 focus:ring-primary"
+                          type="number"
+                          defaultValue="15"
+                        />
+                      </td>
+                      <td className="px-4 py-4 text-left">
+                        <span className="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                          310.50 ر.س
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button className="text-gray-300 hover:text-red-500 transition-colors">
+                          <span className="material-symbols-outlined text-lg">
+                            delete_outline
+                          </span>
+                        </button>
+                      </td>
+                    </tr>
 
-    // ✅ نحول التاريخ لـ Date
-    releaseDate: new Date(inv.releaseDate),
+                    <tr className="bg-blue-50/20 dark:bg-blue-900/10">
+                      <td className="px-6 py-3" colSpan="6">
+                        <button className="flex items-center gap-2 text-primary text-sm font-bold hover:opacity-80">
+                          <span className="material-symbols-outlined text-lg">
+                            add
+                          </span>
+                          إضافة عنصر آخر
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-    // ✅ نخزن اسم الموظف مباشرة
-    employee: inv.employee?.label || "غير محدد",
+            {/* Notes */}
+            <div className="bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2 block">
+                ملاحظات داخلية / الشروط
+              </label>
+              <textarea
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:ring-1 focus:ring-primary placeholder:text-gray-400"
+                placeholder="حدد تعليمات شحن خاصة أو شروط دفع..."
+                rows="3"
+              />
+            </div>
+          </div>
 
-    itemsCount: inv.items.reduce((sum, item) => sum + item.qty, 0),
-    netTotal: inv.netTotal,
-    paymentStatus: inv.paymentStatus,
-  }));
+          {/* Right */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            {/* General */}
+            <div className="bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+              <h3 className="text-lg font-bold text-[#121417] dark:text-white mb-6">
+                معلومات عامة
+              </h3>
+              <div className="space-y-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-500 uppercase">
+                    رقم الفاتورة
+                  </label>
+                  <input
+                    className="w-full h-11 px-4 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm font-semibold text-left"
+                    dir="ltr"
+                    readOnly
+                    type="text"
+                    value="INV-2024-0892"
+                  />
+                </div>
 
-  const columns = [
-    {
-      field: "invoiceNumber",
-      headerName: "رقم الفاتورة",
-      width: 140,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <span
-          onClick={() => navigate(`/invoices/${params.row.id}`)}
-          className="text-blue-600 font-medium cursor-pointer hover:underline"
-        >
-          {params.value}
-        </span>
-      ),
-    },
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-500 uppercase">
+                    تاريخ الإصدار
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                      calendar_today
+                    </span>
+                    <input
+                      className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-right"
+                      type="date"
+                      defaultValue="2024-05-20"
+                    />
+                  </div>
+                </div>
 
-    {
-      field: "customer",
-      headerName: "العميل",
-      width: 180,
-      type: "string",
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "releaseDate",
-      headerName: "التاريخ",
-      width: 130,
-      type: "date",
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "employee",
-      headerName: "الموظف",
-      width: 150,
-      type: "string",
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "itemsCount",
-      headerName: "الأصناف",
-      type: "number",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "netTotal",
-      headerName: "الإجمالي",
-      type: "number",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "paymentStatus",
-      headerName: "حالة الدفع",
-      width: 160,
-      type: "singleSelect",
-      valueOptions: [
-        { value: "paid", label: "مدفوع" },
-        { value: "partial", label: "مدفوع جزئي" },
-        { value: "late", label: "متأخرة" },
-        { value: "pending", label: "معلقة" },
-        { value: "returned", label: "مرتجع" },
-      ],
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => <StatusBadge status={params.value} />,
-    },
-  ];
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-500 uppercase">
+                    تاريخ الاستحقاق
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                      event_repeat
+                    </span>
+                    <select className="w-full h-11 px-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm appearance-none">
+                      <option>صافي 30 يوم</option>
+                      <option>صافي 60 يوم</option>
+                      <option>الدفع عند الاستلام</option>
+                      <option>تاريخ مخصص</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  const data = { rows, columns };
-  const loading = false;
+            {/* Summary */}
+            <div className="bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+              <div className="p-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
+                <h3 className="text-lg font-bold text-[#121417] dark:text-white">
+                  الملخص المالي
+                </h3>
+              </div>
+              <div className="p-6 space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">المجموع الفرعي</span>
+                  <span className="font-semibold text-[#121417] dark:text-white">
+                    2,620.00 ر.س
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">الضريبة (15%)</span>
+                  <span className="font-semibold text-[#121417] dark:text-white">
+                    393.00 ر.س
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">الشحن</span>
+                  <span className="font-semibold text-primary">+0.00 ر.س</span>
+                </div>
+                <div className="pt-4 mt-4 border-t border-dashed border-gray-200 dark:border-gray-700 flex justify-between items-end">
+                  <span className="text-base font-bold text-[#121417] dark:text-white uppercase">
+                    الإجمالي النهائي
+                  </span>
+                  <span className="text-3xl font-black text-primary tracking-tighter">
+                    3,013.00 ر.س
+                  </span>
+                </div>
+              </div>
+            </div>
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div className="bg-white card-shadow rounded-xl border border-border-light p-2 mb-3">
-        <div className="flex items-center gap-2">
-          {/* 2) زر جديد */}
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <IoMdAdd size={20} />
-            <span className="!text-[#000000DE]">جديد</span>
-          </Button>
+            {/* Payment status */}
+            <div className="bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+              <label className="text-xs font-bold text-gray-500 uppercase mb-4 block">
+                حالة الدفع الأولية
+              </label>
+              <div className="grid grid-cols-3 gap-1 p-1 bg-gray-100 dark:bg-gray-900 rounded-lg">
+                <button className="py-2 text-xs font-bold rounded-md bg-white dark:bg-gray-800 shadow-sm text-primary">
+                  غير مدفوع
+                </button>
+                <button className="py-2 text-xs font-bold rounded-md text-gray-500 hover:text-gray-700">
+                  جزئي
+                </button>
+                <button className="py-2 text-xs font-bold rounded-md text-gray-500 hover:text-gray-700">
+                  مدفوع
+                </button>
+              </div>
 
-          {/* 3) زر تعديل */}
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <MdEdit size={20} className="text-purple-400" />
-            <span className="!text-[#000000DE]">تعديل</span>
-          </Button>
+              <div className="mt-6 space-y-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    defaultChecked
+                    className="w-4 h-4 rounded text-primary border-gray-300 focus:ring-primary"
+                    id="send-email"
+                    type="checkbox"
+                  />
+                  <label
+                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    htmlFor="send-email"
+                  >
+                    إرسال نسخة لبريد العميل
+                  </label>
+                </div>
 
-          {/* 4) زر حذف */}
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <RiDeleteBin6Fill size={20} className="text-red-400" />
-            <span className="!text-[#000000DE]">حذف</span>
-          </Button>
-
-          {/* 5) زر عرض */}
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <MdVisibility size={20} className="text-gray-400" />
-            <span className="!text-[#000000DE]">عرض</span>
-          </Button>
-
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <span className="!text-[#000000DE]">إدارة</span>
-          </Button>
-          <Button
-            className="gap-2 w-fit"
-            // onClick={() => navigate("/invoices/new")}
-          >
-            <span className="!text-[#000000DE]">خيارات</span>
-          </Button>
+                <div className="flex items-center gap-3">
+                  <input
+                    defaultChecked
+                    className="w-4 h-4 rounded text-primary border-gray-300 focus:ring-primary"
+                    id="inventory-sync"
+                    type="checkbox"
+                  />
+                  <label
+                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    htmlFor="inventory-sync"
+                  >
+                    تحديث مستويات المخزون فوراً
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </main>
+
+      {/* Mobile Button */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 lg:hidden">
+        <button className="px-8 py-4 rounded-full bg-primary text-white font-bold shadow-xl flex items-center gap-3 transform hover:scale-105 transition-all">
+          <span className="material-symbols-outlined">save</span>
+          معالجة الفاتورة
+        </button>
       </div>
-      {/* عنوان الصفحة */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4 lg:gap-0">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">قائمة الفواتير</h1>
-          <p className="text-sm text-[#657286] mt-1">
-            إدارة وتتبع فواتير المبيعات الخاصة بالمؤسسة
-          </p>
-        </div>
-      </div>
-
-      <Box
-        dir="rtl"
-        sx={{
-          height: "100%",
-          width: "100%",
-          direction: "rtl",
-        }}
-      >
-        <DataGrid
-          {...data}
-          localeText={{
-            ...arSD.components.MuiDataGrid.defaultProps.localeText,
-            columnMenuFilter: "تصفية",
-          }}
-          loading={loading}
-          slots={{ toolbar: CustomToolbar }}
-          showToolbar
-          hideFooterPagination
-          checkboxSelection
-          sx={{
-            direction: "rtl",
-
-            "& .MuiDataGrid-columnHeaders": {
-              direction: "rtl",
-              textAlign: "center",
-            },
-
-            "& .MuiDataGrid-cell": {
-              textAlign: "center",
-            },
-
-            "& .MuiDataGrid-toolbarContainer": {
-              direction: "rtl",
-            },
-          }}
-        />
-      </Box>
-    </ThemeProvider>
+    </div>
   );
 }

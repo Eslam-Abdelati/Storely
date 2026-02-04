@@ -4,9 +4,9 @@ import Select from "react-select";
 import { TbFileInvoice } from "react-icons/tb";
 import { HiOutlineTrash } from "react-icons/hi2";
 
-import PrintInvoice from "../../components/PrintInvoice/PrintInvoice";
-import AddClient from "../../components/AddClient/AddClient";
-import "../../components/PrintInvoice/invoice-print.css";
+import PrintInvoice from "../../components/Dashboard/PrintInvoice/PrintInvoice";
+import AddClient from "../../components/Dashboard/AddClient";
+import "../../components/Dashboard/PrintInvoice/invoice-print.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
@@ -28,7 +28,7 @@ const generateInvoiceNumber = () => {
 
   // فلترة الفواتير التي تم إنشاؤها اليوم
   const todayInvoices = storedInvoices.filter(
-    (inv) => inv.invoiceNumber && inv.invoiceNumber.includes(datePart)
+    (inv) => inv.invoiceNumber && inv.invoiceNumber.includes(datePart),
   );
 
   // تحديد الرقم التسلسلي الجديد
@@ -94,7 +94,7 @@ function AddSalesInvoice() {
     if (!product) return;
 
     const isExist = cartItems.some(
-      (item, i) => item.barcode === product.barcode && i !== index
+      (item, i) => item.barcode === product.barcode && i !== index,
     );
     if (isExist) {
       alert("⚠️ هذا المنتج موجود بالفعل في الفاتورة!");
@@ -139,7 +139,7 @@ function AddSalesInvoice() {
           return prev.map((item) =>
             item.barcode === product.barcode
               ? { ...item, qty: item.qty + 1 }
-              : item
+              : item,
           );
         }
         const emptyIndex = prev.findIndex((item) => !item.barcode);
@@ -189,8 +189,8 @@ function AddSalesInvoice() {
               ...item,
               [field]: field === "discountType" ? value : Number(value) || 0,
             }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
@@ -218,7 +218,7 @@ function AddSalesInvoice() {
       : formData.generalDiscount || 0;
   const netTotal = subtotal - totalDiscount - generalDiscountValue;
   const paidNow =
-    formData.paymentMethod === "آجل" ? formData.paidAmount ?? 0 : netTotal;
+    formData.paymentMethod === "آجل" ? (formData.paidAmount ?? 0) : netTotal;
   const remaining = formData.paymentMethod === "آجل" ? netTotal - paidNow : 0;
 
   const handleSubmit = () => {
@@ -562,7 +562,6 @@ function AddSalesInvoice() {
                     {/* خانة الصنف */}
                     <td className="p-2 border min-w-[220px]">
                       <div className="relative z-[1000]">
-                        
                         {/* ✅ هذا السطر يحل المشكلة */}
                         <Select
                           options={productsList.map((p) => ({
@@ -581,7 +580,7 @@ function AddSalesInvoice() {
                           className="w-full"
                           menuPortalTarget={
                             window.innerWidth > 768 ? document.body : null
-                          } 
+                          }
                           styles={{
                             menuPortal: (base) => ({
                               ...base,
@@ -589,7 +588,7 @@ function AddSalesInvoice() {
                             }),
                             menu: (base) => ({
                               ...base,
-                              zIndex: 50, 
+                              zIndex: 50,
                             }),
                           }}
                         />
@@ -607,7 +606,7 @@ function AddSalesInvoice() {
                           handleItemChange(
                             item.barcode,
                             "qty",
-                            e.target.value || 1
+                            e.target.value || 1,
                           )
                         }
                         className="border rounded px-2 py-1 w-full sm:w-16 text-center focus:ring-2 focus:ring-blue-300 outline-none"
@@ -625,7 +624,7 @@ function AddSalesInvoice() {
                           handleItemChange(
                             item.barcode,
                             "price",
-                            e.target.value || 0
+                            e.target.value || 0,
                           )
                         }
                         className="border rounded px-2 py-1 w-full sm:w-16 text-center focus:ring-2 focus:ring-blue-300 outline-none"
@@ -645,7 +644,7 @@ function AddSalesInvoice() {
                             handleItemChange(
                               item.barcode,
                               "discount",
-                              e.target.value || 0
+                              e.target.value || 0,
                             )
                           }
                           className="border rounded px-2 py-1 w-full sm:w-24 text-center focus:ring-2 focus:ring-blue-300 outline-none"
@@ -657,13 +656,13 @@ function AddSalesInvoice() {
                           id={`discountType-${index}`}
                           options={discountOptions}
                           value={discountOptions.find(
-                            (opt) => opt.value === item.discountType
+                            (opt) => opt.value === item.discountType,
                           )}
                           onChange={(selectedOption) =>
                             handleItemChange(
                               item.barcode,
                               "discountType",
-                              selectedOption.value
+                              selectedOption.value,
                             )
                           }
                           className="w-full sm:w-24"
@@ -764,7 +763,7 @@ function AddSalesInvoice() {
                   options={discountOptions}
                   value={discountOptions.find(
                     (opt) =>
-                      opt.value === (formData.generalDiscountType || "value")
+                      opt.value === (formData.generalDiscountType || "value"),
                   )}
                   onChange={(selectedOption) =>
                     setFormData((prev) => ({

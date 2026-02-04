@@ -1,8 +1,8 @@
 import React from "react";
-import RechartsCard from "../../components/RechartsCard/RechartsCard";
-import ReportBoxes from "../../components/ReportBoxes/ReportBoxes";
-import QuickAccess from "../../components/QuickAccess/QuickAccess";
-import FinancialSpreadsheet from "../../components/FinancialSpreadsheet/FinancialSpreadsheet";
+import RechartsCard from "../../components/Dashboard/RechartsCard";
+import ReportBoxes from "../../components/Dashboard/ReportBoxes";
+import QuickAccess from "../../components/Dashboard/QuickAccess";
+import FinancialSpreadsheet from "../../components/Dashboard/FinancialSpreadsheet";
 import Cookies from "js-cookie";
 
 const today = new Date().toLocaleDateString("ar-EG", {

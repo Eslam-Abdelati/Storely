@@ -32,7 +32,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
-import StatusBadge from "../../components/StatusBadge/StatusBadge";
+import StatusBadge from "../../components/Dashboard/StatusBadge";
 import {
   MdMoreVert,
   MdVisibility,
@@ -438,7 +438,10 @@ const salesInvoices = () => {
       {/* عنوان الصفحة */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4 lg:gap-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">قائمة الفواتير</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {" "}
+            فواتير المبيعات
+          </h1>
           <p className="text-sm text-[#657286] mt-1">
             إدارة وتتبع فواتير المبيعات الخاصة بالمؤسسة
           </p>

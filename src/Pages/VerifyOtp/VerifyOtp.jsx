@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import verifyImg from "../../assets/shield.png";
-import OtpBox from "../../components/OtpBox/OtpBox";
+import OtpBox from "../../components/Dashboard/OtpBox";
 import Button from "@mui/material/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import bgImage from "../../assets/patern.webp";
@@ -44,7 +44,8 @@ function VerifyOTP() {
         type: "error",
         message: "الدخول غير صحيح، قم بالتسجيل مرة أخرى",
       });
-      navigate("/");
+      // لو دخل الصفحة بدون state
+      navigate("/login", { replace: true });
     }
 
     if (alert.message) {
@@ -68,9 +69,10 @@ function VerifyOTP() {
       return;
     }
     try {
+      setLoading(true);
       if (type === "register") {
         const res = await axios.post(
-          "https://fb8bcfa8b0c8.ngrok-free.app/auth/verify-email",
+          "https://4a5aa2d8cec2.ngrok-free.app/auth/verify-email",
           { email, code: Number(otp) },
           { withCredentials: true },
         );
@@ -91,7 +93,7 @@ function VerifyOTP() {
         }
       } else if (type === "login") {
         const res = await axios.post(
-          "https://fb8bcfa8b0c8.ngrok-free.app/auth/verify-login-otp",
+          "https://4a5aa2d8cec2.ngrok-free.app/auth/verify-login-otp",
           { email, code: Number(otp) },
           { withCredentials: true },
         );

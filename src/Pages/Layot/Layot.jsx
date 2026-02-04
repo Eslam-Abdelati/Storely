@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Navbar from "../../components/Dashboard/Navbar";
+import Sidebar from "../../components/Dashboard/Sidebar";
 import { MyContext } from "../../context/MyContext";
-import Loading from "../../components/Loading/Loading";
+import PageLoader from "../../components/PageLoader/PageLoader";
 
 function Layot() {
   const { isOpenSidbar, isLoading, setIsLoading } = useContext(MyContext);
@@ -40,7 +40,7 @@ function Layot() {
         <main className="flex-1 overflow-y-auto py-2 px-2">
           {isLoading ? (
             <div className="absolute inset-0 z-50 bg-black/40 flex items-center justify-center">
-              <Loading />
+              <PageLoader />
             </div>
           ) : (
             <Outlet />

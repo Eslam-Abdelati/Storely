@@ -1,87 +1,119 @@
+import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 
 const MyContext = createContext();
 
-const MyProvider = ({ children }) => {
-  const [isOpenSidbar, setIsOpenSidbar] = useState(() => {
-    return window.innerWidth >= 1024; // مفتوح على الشاشات الكبيرة فقط
-  });
+/* ===============================
+   Initial Data (API Shape)
+================================ */
+const initialSignUpData = {
+  store_name: "",
+  businessType: "",
+  otherBusinessType: "",
+  country: "EG",
+  city: "",
+  address: "",
+  commercialRegistrationNumber: "",
+  taxID: "",
+  governorate_id: 1,
+  postalCode: "",
+  logo: null,
+  subscriptionType: "Free",
+  subscriptionPlan: "Monthly",
 
-  const [isLogin, setIsLogin] = useState(false);
-  // ✅ هنا نضيف Loading
-  const [isLoading, setIsLoading] = useState(false);
-  // ✅ البيانات المؤقتة الخاصة بالتسجيل (صفحتين)
-  const [signUpData, setSignUpData] = useState({
-    // صفحة FirstSignUp
-    store_name: "",
-    businessType: "",
-    otherBusinessType: "",
-    country: "",
-    city: "",
+  owner: {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    gender: "male",
     address: "",
-    commercialRegistrationNumber: "",
-    taxID: "",
-    subscriptionType: "Free",
-    subscriptionPlan: "Monthly",
-    postalCode: "",
-    governorate_id: 1,
-    logo: null,
+    userType: "owner",
+    start_date: "2023-04-09T00:00:00.000Z",
+    details: "",
+  },
+};
+const MyProvider = ({ children }) => {
+  /* ===============================
+    UI States
+  ================================ */
+  const [isOpenSidbar, setIsOpenSidbar] = useState(window.innerWidth >= 1024);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    // صفحة SignUp2
-    owner: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      gender: "male",
-      userType: "owner",
-      start_date: "2023-04-09T00:00:00.000Z",
-    },
+  /* ===============================
+     Register Data (Context + LS)
+  ================================ */
+  const [signUpData, setSignUpData] = useState(() => {
+    const saved = localStorage.getItem("register_company_data");
+    return saved ? JSON.parse(saved) : initialSignUpData;
   });
 
-  // دالة لتحديث أي جزء من البيانات
-  const updateSignUpData = (newData) => {
-    setSignUpData((prev) => {
-      // لو فيه بيانات تخص الـ owner
-      if (newData.owner) {
-        return {
-          ...prev,
-          owner: {
-            ...prev.owner,
-            ...newData.owner,
-          },
-        };
-      }
-      // غير كده، ندمج بشكل طبيعي
-      return { ...prev, ...newData };
-    });
+  /* ===============================
+     Save Register Data
+  ================================ */
+  const saveSignUpData = (data) => {
+    setSignUpData(data);
+    localStorage.setItem("register_company_data", JSON.stringify(data));
   };
 
+  /* ===============================
+     Submit Register
+  ================================ */
+  const submitRegister = async (onSuccess) => {
+    try {
+      setIsLoading(true);
+
+      console.log("FINAL PAYLOAD 👉", signUpData);
+
+      await axios.post(
+        "https://4a5aa2d8cec2.ngrok-free.app/auth/register",
+        signUpData,
+      );
+
+      // بعد النجاح
+      localStorage.removeItem("register_company_data");
+      setSignUpData(initialSignUpData);
+
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      console.error("Register Error:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /* ===============================
+     Sidebar Responsive
+  ================================ */
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsOpenSidbar(true);
-      } else {
-        setIsOpenSidbar(false);
-      }
+      setIsOpenSidbar(window.innerWidth >= 1024);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  /* ===============================
+     Context Values
+  ================================ */
   const values = {
+    // UI
     isOpenSidbar,
     setIsOpenSidbar,
     isLogin,
     setIsLogin,
-    // ✅ بيانات التسجيل
     isLoading,
     setIsLoading,
+
+    // Register
     signUpData,
-    updateSignUpData,
+    saveSignUpData,
+    submitRegister,
   };
 
   return <MyContext.Provider value={values}>{children}</MyContext.Provider>;

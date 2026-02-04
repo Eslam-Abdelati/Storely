@@ -36,6 +36,7 @@ function SignUp2() {
   const getArabicMessage = (msg) => {
     return AR_MESSAGES[msg] || "حدث خطأ ما، حاول مرة أخرى";
   };
+  
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => {

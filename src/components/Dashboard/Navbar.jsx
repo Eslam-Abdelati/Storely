@@ -67,7 +67,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="h-16 bg-white border-b border-border-color px-2 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+    <header className="h-16 bg-white border-b border-border-color px-2 flex items-center justify-between sticky top-0 z-50 shadow-sm">
       <div className="flex items-center gap-2 w-full max-w-xl">
         {/* زر القائمة */}
         <Button
