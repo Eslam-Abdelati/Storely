@@ -32,7 +32,7 @@ const Home = () => {
   };
   return (
     <>
-      {loading && <PageLoader/>}
+      {loading && <PageLoader />}
 
       <div className="bg-background-light  text-[#111418] transition-colors duration-300">
         {/* Navigation Bar */}
@@ -53,11 +53,11 @@ const Home = () => {
 
           {/* Content فوق الصورة */}
           <div className="relative z-20 w-full lg:w-1/2 flex flex-col gap-6 text-right px-4 md:px-0">
-            <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
+            <h1 className="text-2xl md:text-4xl font-black text-white leading-tight">
               إدارة أعمالك بكل <span className="text-primary">سهولة وذكاء</span>
             </h1>
 
-            <p className="text-[#cbd5e1] text-lg max-w-[550px]">
+            <p className="text-[#cbd5e1] text-md max-w-[550px]">
               تحكّم في المبيعات، المخازن، الفواتير، والموظفين من مكان واحد —
               بسرعة، أمان، ومرونة عالية.
             </p>
@@ -65,7 +65,7 @@ const Home = () => {
             {/* Buttons */}
             <div className="flex justify-center flex-wrap gap-4 mt-4">
               <Button
-                className="!bg-primary hover:!bg-blue-600 !text-white !px-8 !py-4 !rounded-lg !font-bold !text-lg !transition-all !shadow-lg"
+                className="!bg-primary hover:!bg-blue-600 !text-white !px-6 !py-3 !rounded-lg !transition-all !shadow-lg"
                 onClick={handleStart}
                 disabled={loading}
               >
@@ -73,7 +73,7 @@ const Home = () => {
               </Button>
               <Button
                 disabled
-                className="!bg-white/10  !backdrop-blur-sm !border !border-white/30 !px-8 !py-4 !rounded-lg !font-bold !text-lg !transition-all"
+                className="!bg-white/10 !backdrop-blur-sm !border !border-white/30 !px-6 !py-3 !rounded-lg !transition-all"
               >
                 الفديوهات التعليمية
               </Button>
@@ -148,10 +148,10 @@ const Home = () => {
           <section className="py-20">
             <div className="flex flex-col gap-12">
               <div className="flex flex-col gap-4 text-center items-center">
-                <h2 className="text-[#111418] dark:text-white text-3xl md:text-5xl font-black leading-tight tracking-tight max-w-[800px]">
+                <h2 className="text-[#111418] text-2xl md:text-4xl font-black leading-tight tracking-tight max-w-[800px]">
                   وحدات النظام المتكاملة لإدارة مؤسستك
                 </h2>
-                <p className="text-[#617589] dark:text-[#a1b0be] text-lg max-w-[700px]">
+                <p className="text-[#617589] text-md max-w-[700px]">
                   اختر الوحدات التي تناسب حجم وطبيعة عملك لتحقيق أقصى قدر من
                   الكفاءة والنمو المتسارع.
                 </p>
@@ -165,10 +165,10 @@ const Home = () => {
                     </span>
                   </div>
                   <div className="flex flex-col gap-3">
-                    <h3 className="text-[#111418] dark:text-white text-xl font-bold">
+                    <h3 className="text-[#111418] text-xl font-bold">
                       الإدارة المالية
                     </h3>
-                    <p className="text-[#617589] dark:text-[#a1b0be] text-base leading-relaxed">
+                    <p className="text-[#617589] text-base leading-relaxed">
                       إدارة المحاسبة، الفواتير الإلكترونية، والتقارير المالية
                       والضريبية بدقة متناهية مع امتثال كامل للمعايير المحلية.
                     </p>
@@ -244,17 +244,17 @@ const Home = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full -ml-20 -mb-20 blur-3xl"></div>
               <div className="flex flex-col gap-4 text-white text-right relative z-10">
-                <h2 className="text-3xl md:text-4xl font-black">
+                <h2 className="text-xl md:text-2xl font-black">
                   هل أنت مستعد لتطوير أعمالك؟
                 </h2>
-                <p className="text-lg text-white/80 max-w-[500px]">
+                <p className="text-md text-white/80 max-w-[500px]">
                   انضم إلى آلاف الشركات التي حققت طفرة في كفاءتها التشغيلية
                   باستخدام نظامنا المتطور.
                 </p>
               </div>
               <div className="flex gap-4 relative z-10">
                 <Button
-                  className="!px-10 !py-4 !bg-white !text-primary !rounded-xl hover:!bg-opacity-90 !transition-all !text-lg !shadow-md"
+                  className="!px-6 !py-3 !bg-white !text-primary !rounded-lg hover:!bg-opacity-90 !transition-all !shadow-md"
                   onClick={handleStart}
                 >
                   ابدأ الآن مجاناً
